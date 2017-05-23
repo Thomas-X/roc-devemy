@@ -1,0 +1,37 @@
+{
+  "name": "roc-devemy-1.0",
+  "version": "0.0.0",
+  "babel": {
+    "plugins": [
+      "transform-react-jsx"
+    ],
+    "presets": [
+      "react",
+      "es2015"
+    ]
+  },
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "babel-node": "babel-node",
+    "watch": "watch 'npm run build' src test",
+    "nodemon": "nodemon bin/www --ignore public/jsx/bundle.js"
+  },
+  "dependencies": {
+    "mongoose": "^4.10.2",
+    "passport-google-oauth20": "^1.0.0"
+  },
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.18.12",
+    "browserify": "^14.3.0",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "morgan": "^1.8.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  }
+}

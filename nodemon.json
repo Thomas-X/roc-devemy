@@ -1,0 +1,3 @@
+{
+  "ignore": ["public/lib/jsx/bundle.js", "README"]
+}

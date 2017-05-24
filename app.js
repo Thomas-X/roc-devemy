@@ -9,11 +9,8 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var session = require('express-session');
 var request = require('request');
+var hbs = require('hbs');
 
-
-// npm install morgan babelify gulp-nodemon --save-dev
-// TODO run npm install express serve-favicon cookie-parser body-parser passport express-session request --save
-// TODO finish making app.jsx
 
 var index = require('./routes/index');
 var api = require('./routes/api');

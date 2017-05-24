@@ -71,6 +71,7 @@ export default class CreateCourse extends Component {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                _id: this.props.params.courseid,
                 delete: true,
             }),
         };
@@ -147,7 +148,7 @@ export default class CreateCourse extends Component {
                             }.bind(this)}/>
                     </div>
                     <div style={styles.editorContainer}>
-                        <RaisedButton onClick={this.saveCourse} primary={true} style={styles.publishCourseButtonEditor} label='publiceer cursus'/>
+                        <RaisedButton onClick={this.saveCourse} primary={true} style={styles.publishCourseButtonEditor} label='cursus opslaan'/>
                         <RaisedButton label="verwijder cursus" onClick={this.deleteCourse} labelStyle={styles.removeChapterButton}/>
                     </div>
                 </Paper>

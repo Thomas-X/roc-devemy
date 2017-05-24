@@ -85,7 +85,6 @@ router.get('/createCourse', function (req, res, next) {
 
 router.post('/saveCourse', function (req, res, next) {
     if(req.app.locals.role == 'teacher' && req.body.delete == false) {
-        console.log(req.app.locals.role, req.app.locals._id);
         Course.findById(req.body._id, function (err, doc) {
             if(doc.authorId == req.app.locals._id) {
                 doc.title = req.body.title;
@@ -110,7 +109,14 @@ router.post('/saveCourse', function (req, res, next) {
             }
         })
     } else if (req.body.delete == true && req.app.locals.role == 'teacher') {
-        console.log('not authenticated!');
+        Course.findById(req.body._id, function (err, doc) {
+            console.log(req.body._id, doc);
+            if(doc.authorId == req.app.locals._id) {
+                Course.findByIdAndRemove(req.body._id,function (err, doc) {
+                    res.sendStatus(200);
+                });
+            }
+        })
     }
 });
 
@@ -160,15 +166,16 @@ router.post('/removeCourse', function(req,res,next) {
                             success: true,
                             id: doc._id,
                     }
+                    res.status(200)
                     res.send(response);
                     });
                 } else if (err) {
+                    res.status(500);
                     res.send({
                         success: false
                     })
                 }
             });
-
         })
     }
 });

@@ -111,7 +111,7 @@ class MyCoursesData extends Component {
                         </TableRow>
                     </TableHeader>
 
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody displayRowCheckbox={false} showRowHover={true}>
                         {this.state.data.map(function (dataItem, index) {
                             var commentLength = dataItem.comments.length
 
@@ -123,6 +123,7 @@ class MyCoursesData extends Component {
                                 />,
                                 <FlatButton
                                     label="Ja"
+                                    style={styles.removeChapterButton}
                                     primary={true}
                                     onTouchTap={this.handleClose}
                                     onClick={function () {

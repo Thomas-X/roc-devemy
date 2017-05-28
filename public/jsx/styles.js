@@ -288,7 +288,7 @@ export const cardTitleStyle = {
     color: customTheme.alternateTextColor
 }
 export const cardSubtitleStyle = {
-    width: 220,
+    width: 205,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     display: 'block',
@@ -301,18 +301,25 @@ export const userhomepagedivider = {
 export const cardTitleContainer ={
     display: 'flex',
     flexDirection: 'column',
-    width: 220,
+    width: 205,
     flexShrink: 0,
 }
 export const cardIndexLink = {
     width: 250,
     height: 250,
 }
+export const cardOverlayContainer = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexShrink: 0,
+    flexStretch: 0,
+    width:'100%',
+}
 export const appBarContainer = {
     display: 'flex',
     flexDirection: 'row',
 }
-export const appBarPlus = {
+export const appbarSearch = {
     alignSelf: 'center',
     color: customTheme.alternateTextColor,
     marginRight: 5,
@@ -374,4 +381,18 @@ export const editorContainer = {
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
     height:36,
+}
+export const cardOverlayAvgRating = {
+    color: customTheme.alternateTextColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignSelf: 'center',
+}
+export const cardStar = {
+    color: colors.yellow700,
+}
+export const cardRatingAvg = {
+    alignSelf: 'center',
+    position: 'relative',
+    left: -13,
 }

@@ -23,6 +23,25 @@ router.get('/getUserData', function (req, res, next) {
     }
 });
 
+
+router.get('/getUserProfile', function (req, res, next) {
+
+    // we don't have to worry about wheter user is logged in because we can just use isLoggedIn here and don't need to give
+    // an unique response versus the .get route /getUserData
+
+    if (req.isAuthenticated()) {
+        res.json(JSON.stringify({
+            data: req.user,
+            Authenticated: true,
+        }));
+    } else {
+        res.json(JSON.stringify({
+            Authenticated: false,
+        }))
+    }
+
+});
+
 router.get('/getCourseDataById', function (req, res, next) {
     if (req.isAuthenticated()) {
         var courses = [];
@@ -178,6 +197,15 @@ router.post('/removeCourse', function(req,res,next) {
             });
         })
     }
+});
+
+router.post('/search', function (req, res, next) {
+    var regex = new RegExp(req.body.searchQuery, 'i');
+    Course.find({title: regex}, function (err, courses) {
+        console.log(req.body.searchQuery, courses);
+        if (!err) res.send({courses: courses, success: true});
+        if (err) res.send({success: false});
+    });
 });
 
 

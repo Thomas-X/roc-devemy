@@ -18,6 +18,9 @@ import CreateCourse from "./components/CreateCourse";
 import CreateCourseAndRedirect from "./components/CreateCourseAndRedirect";
 import MyCourses from "./components/MyCourses";
 import test from './test';
+import Me from "./components/Me";
+import Search from './components/Search';
+import formsyExample from "./formsyExample";
 
 class App extends Component {
     render() {
@@ -29,9 +32,11 @@ class App extends Component {
                         <Route path="/logout" component={Logout}/>
                         <Route path="/courses/createCourse" component={CreateCourseAndRedirect}/>
                         <Route path="/courses/editor/:courseid" component={CreateCourse}/>
+                        <Route path="/about/me" component={Me}/>
                         <Route path="/about/me/mycourses" component={MyCourses}/>
+                        <Route path="/search" component={Search}/>
                         {/* this should always be the last route, otherwise the router params routes break*/}
-                        <Route path="/test" component={test}/>
+                        <Route path="/test" component={formsyExample}/>
                         <Route path="*" component={NotFound}/>
                     </Route>
                 </Router>

@@ -12,6 +12,7 @@ var CourseSchema = new Schema({
     title: {type: String, default: ''},
     imgURL: {type: String, default: ''},
     authorId: {type: String, default: ''},
+    author: {type: String, default: ''},
     URLToCourse: {type: String, default: ''},
     description: {type: String, default: ''},
     ratingAverage: {type: Number, default: 0},

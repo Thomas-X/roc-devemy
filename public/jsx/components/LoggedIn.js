@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Avatar, Divider, Drawer, FlatButton, List, ListItem, Menu, MenuItem,
+    Avatar, Divider, Drawer, FlatButton, IconButton, List, ListItem, Menu, MenuItem,
     Popover
 } from "material-ui";
 import PersonOutline from 'material-ui/svg-icons/social/person-outline';
@@ -10,7 +10,7 @@ import {muiTheme, customTheme} from '../customMuiTheme';
 import PropTypes from 'prop-types';
 
 import {IndexLink, Link} from 'react-router';
-import {ContentAdd, ActionPermMedia} from "material-ui/svg-icons/index";
+import {ContentAdd, ActionPermMedia, ActionSearch} from "material-ui/svg-icons/index";
 
 
 export default class LoggedIn extends React.Component {
@@ -43,7 +43,11 @@ export default class LoggedIn extends React.Component {
     render() {
         return (
             <div style={styles.appBarContainer}>
-                {/*<ContentAdd style={styles.appBarPlus}/>*/}
+                <IndexLink to="/search" style={styles.appbarSearch}>
+                    <IconButton tooltip="Zoek naar een cursus" style={styles.whiteText}>
+                        <ActionSearch style={styles.whiteText} className="searchButtonNavbar"/>
+                    </IconButton>
+                </IndexLink>
                 <List
                     style={styles.appbarUserAvatarAndImage2}>
                     <ListItem

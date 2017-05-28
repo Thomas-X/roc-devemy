@@ -1,12 +1,13 @@
 import React from 'react';
 import LoggedIn from './LoggedIn';
 import Login from './Login';
-import {AppBar, Avatar, Drawer, FlatButton, List, ListItem, MenuItem, Divider, Subheader} from "material-ui";
+import {AppBar, Avatar, Drawer, FlatButton, List, ListItem, MenuItem, Divider, Subheader, TextField} from "material-ui";
 import * as styles from '../styles';
 import axios from 'axios';
 import {IndexLink} from 'react-router';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import CoursesList from './CoursesList';
+import {ActionSearch} from "material-ui/svg-icons/index";
 
 export default class NavigationAndDrawer extends React.Component {
 

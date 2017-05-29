@@ -231,7 +231,7 @@ export const courseListItem = {
     paddingRight: 16,
     paddingBottom: 10,
     paddingLeft: 10,
-    position:'relative',
+    position: 'relative',
     display: 'flex',
 
 }
@@ -267,12 +267,12 @@ export const courseListItemSubTitleAuthor = {
     width: 156,
 }
 export const card = {
-    width:250,
+    width: 250,
     height: 250,
     cursor: 'pointer',
 }
 export const cardImage = {
-    width:250,
+    width: 250,
     height: 250,
     cursor: 'pointer',
 }
@@ -298,7 +298,7 @@ export const cardSubtitleStyle = {
 export const userhomepagedivider = {
     marginBottom: 10,
 }
-export const cardTitleContainer ={
+export const cardTitleContainer = {
     display: 'flex',
     flexDirection: 'column',
     width: 205,
@@ -313,7 +313,7 @@ export const cardOverlayContainer = {
     flexDirection: 'row',
     flexShrink: 0,
     flexStretch: 0,
-    width:'100%',
+    width: '100%',
 }
 export const appBarContainer = {
     display: 'flex',
@@ -338,12 +338,8 @@ export const courseTitleEditor = {
 export const courseImageEditor = {
     paddingRight: 5,
 }
-export const chapterTitleEditor = {
-
-}
-export const chapterImageEditor  = {
-
-}
+export const chapterTitleEditor = {}
+export const chapterImageEditor = {}
 export const removeChapterButton = {
     color: customTheme.dangerColor,
 }
@@ -355,17 +351,17 @@ export const leftSideCourseTitleEditorContainer = {
 }
 export const rightSideCourseButtonsEditorContainer = {
     alignSelf: 'flex-end',
-    display:'flex',
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 }
 export const marginButtonsNextToEachother = {
-    margin:5,
+    margin: 5,
     height: 36
 }
 export const publishCourseButtonEditor = {
     color: customTheme.alternateTextColor,
-    marginRight:10,
+    marginRight: 10,
     height: 36
 }
 export const courseEditorTextFieldsContainer = {
@@ -376,11 +372,11 @@ export const courseEditorTextFieldsContainer = {
     margin: 'auto',
 }
 export const editorContainer = {
-    display:'flex',
+    display: 'flex',
     width: '100%',
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
-    height:36,
+    height: 36,
 }
 export const cardOverlayAvgRating = {
     color: customTheme.alternateTextColor,
@@ -395,4 +391,44 @@ export const cardRatingAvg = {
     alignSelf: 'center',
     position: 'relative',
     left: -13,
+}
+export const ViewCourseFullWidthHeader = {
+    width: '100%',
+    height: 200,
+    backgroundColor: customTheme.footerColor,
+    display: 'flex',
+    flexDirection: 'row',
+}
+export const ViewCourseFullWidthContainer = {
+    paddingBottom: 10,
+    alignSelf: 'flex-end',
+    display: 'flex',
+    marginLeft: 40,
+    marginRight: 40,
+    width: '100%',
+    justifyContent: 'space-between',
+}
+export const ViewCourseFullWidthTitle = {
+    color: customTheme.alternateTextColor,
+    alignSelf: 'flex-start',
+}
+export const ViewCourseFullWidthAuthor = {
+    color: customTheme.alternateTextColor,
+    alignSelf: 'flex-end',
+    fontWeight: '300',
+}
+export const ViewCourseDivider = {
+    marginBottom: 10,
+}
+export const ViewCourseNavigation = {
+    position: 'absolute',
+    marginTop: 20,
+    alignSelf: 'flex-end',
+}
+export const ViewCourseContent = {
+    display:'flex',
+    flexDirection: 'column',
+}
+export const ViewCourseGoToCourse = {
+    marginRight: 5,
 }

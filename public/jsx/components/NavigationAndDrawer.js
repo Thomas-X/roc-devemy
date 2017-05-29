@@ -83,7 +83,11 @@ export default class NavigationAndDrawer extends React.Component {
                                     <IndexLink style={styles.drawerLogoContainer} to="/">
                                         <h1 id='drawer-logo' style={styles.drawerLogoh1}>roc-dev</h1>
                                     </IndexLink>
-                                    <MenuItem leftIcon={<ActionHome/>}>Homepage</MenuItem>
+                                    <IndexLink to="/">
+                                        <MenuItem leftIcon={<ActionHome/>}>
+                                            Homepage
+                                        </MenuItem>
+                                    </IndexLink>
                                     <CoursesList/>
                                     <Divider/>
                                     <Subheader>Resources</Subheader>

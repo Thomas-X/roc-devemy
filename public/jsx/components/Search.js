@@ -53,6 +53,7 @@ export default class Search extends Component {
                     floatingLabelText='Zoek naar een cursus'
                     floatingLabelStyle={styles.floatingLabelStyle}
                     underlineFocusStyle={styles.underlineStyle}
+                    autoFocus
                     style={styles.chapterTitleEditor}
                     onChange={function (event) {
                         this.handleSearchInput(event);

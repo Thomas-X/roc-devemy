@@ -103,16 +103,16 @@ router.get('/createCourse', function (req, res, next) {
 });
 
 router.post('/saveCourse', function (req, res, next) {
-    if(req.app.locals.role == 'teacher' && req.body.delete == false) {
+    if (req.app.locals.role == 'teacher' && req.body.delete == false) {
         Course.findById(req.body._id, function (err, doc) {
-            if(doc.authorId == req.app.locals._id) {
+            if (doc.authorId == req.app.locals._id) {
                 doc.title = req.body.title;
                 doc.imgURL = req.body.imgURL;
                 doc.URLToCourse = req.body.URL;
                 doc.description = req.body.description;
 
                 doc.save(function (err, updatedDoc) {
-                    if(err) {
+                    if (err) {
                         return console.log(err);
                     }
                     res.status(201)
@@ -130,8 +130,8 @@ router.post('/saveCourse', function (req, res, next) {
     } else if (req.body.delete == true && req.app.locals.role == 'teacher') {
         Course.findById(req.body._id, function (err, doc) {
             console.log(req.body._id, doc);
-            if(doc.authorId == req.app.locals._id) {
-                Course.findByIdAndRemove(req.body._id,function (err, doc) {
+            if (doc.authorId == req.app.locals._id) {
+                Course.findByIdAndRemove(req.body._id, function (err, doc) {
                     res.sendStatus(200);
                 });
             }
@@ -139,33 +139,33 @@ router.post('/saveCourse', function (req, res, next) {
     }
 });
 
-router.get('/getUserId', function(req,res,next) {
-    if(req.app.locals._id != null) {
+router.get('/getUserId', function (req, res, next) {
+    if (req.app.locals._id != null) {
         res.json(JSON.stringify({
             id: req.app.locals._id,
             success: true
         }));
     } else if (req.app.locals._id == null) {
         res.json(JSON.stringify({
-            success:false,
+            success: false,
         }))
     }
 });
 
 router.get('/authUser', function (req, res, next) {
-    if(req.app.locals._id != null) {
+    if (req.app.locals._id != null) {
         res.json(JSON.stringify({
             success: true
         }));
     } else if (req.app.locals._id == null) {
         res.json(JSON.stringify({
-            success:false,
+            success: false,
         }))
     }
 })
 
 router.get('/myCourses', function (req, res, next) {
-    if(req.app.locals.role == 'teacher') {
+    if (req.app.locals.role == 'teacher') {
         Course.find({'authorId': req.app.locals._id}, function (err, docs) {
             console.log(docs);
             res.json(JSON.stringify({
@@ -175,18 +175,18 @@ router.get('/myCourses', function (req, res, next) {
     }
 })
 
-router.post('/removeCourse', function(req,res,next) {
-    if(req.app.locals.role == 'teacher') {
-        Course.find({'authorId' : req.app.locals._id}, function (err, docs) {
+router.post('/removeCourse', function (req, res, next) {
+    if (req.app.locals.role == 'teacher') {
+        Course.find({'authorId': req.app.locals._id}, function (err, docs) {
             docs.forEach(function (elem) {
-                if(elem._id == req.body.id && !err) {
-                    Course.findByIdAndRemove(req.body.id, function(err, doc) {
+                if (elem._id == req.body.id && !err) {
+                    Course.findByIdAndRemove(req.body.id, function (err, doc) {
                         var response = {
                             success: true,
                             id: doc._id,
-                    }
-                    res.status(200)
-                    res.send(response);
+                        }
+                        res.status(200)
+                        res.send(response);
                     });
                 } else if (err) {
                     res.status(500);
@@ -208,5 +208,23 @@ router.post('/search', function (req, res, next) {
     });
 });
 
+router.post('/getCourseById', function (req, res, next) {
+    Course.findById(req.body._id, function (err, course) {
+        if (!err) res.send({course: course, success: true});
+        if (err) res.send({course: course, success: false});
+    })
+});
+
+router.post('/followCourse', function (req, res, next) {
+    Course.findById(req.body._id, function (err, course) {
+        if(err) res.send({success: false});
+        if(req.app.locals._id != null && !err) {
+            User.update({_id: req.app.locals._id}, {$addToSet: {followedCourses: req.body._id}}, function (err, user) {
+                res.send({success: true});
+                if(err) res.send({success: false});
+            })
+        }
+    })
+});
 
 module.exports = router;

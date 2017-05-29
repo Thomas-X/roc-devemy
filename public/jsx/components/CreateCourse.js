@@ -157,7 +157,8 @@ export default class CreateCourse extends Component {
                                 floatingLabelStyle={styles.floatingLabelStyle}
                                 underlineFocusStyle={styles.underlineStyle}
                                 underlineStyle={styles.underlineStyle}
-
+                                multiLine={true}
+                                rows={2}
                                 style={styles.chapterTitleEditor}
                                 updateImmediately
                                 onChange={function (event) {
@@ -186,7 +187,7 @@ export default class CreateCourse extends Component {
                                 validations="isUrl"
                                 validationError="Een geldige URL aub"
                                 required
-                                floatingLabelText="Plaatje van de cursus"
+                                floatingLabelText="URL naar de cursus"
                                 hintText="http://www.example.com"
                                 floatingLabelStyle={styles.floatingLabelStyle}
                                 underlineFocusStyle={styles.underlineStyle}

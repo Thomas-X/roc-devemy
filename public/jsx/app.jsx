@@ -20,6 +20,7 @@ import MyCourses from "./components/MyCourses";
 import test from './test';
 import Me from "./components/Me";
 import Search from './components/Search';
+import ViewCourse from './components/ViewCourse';
 import formsyExample from "./formsyExample";
 
 class App extends Component {
@@ -35,7 +36,8 @@ class App extends Component {
                         <Route path="/about/me" component={Me}/>
                         <Route path="/about/me/mycourses" component={MyCourses}/>
                         <Route path="/search" component={Search}/>
-                        {/* this should always be the last route, otherwise the router params routes break*/}
+                        <Route path="/courses/:courseid" component={ViewCourse}/>
+                               {/* this should always be the last route, otherwise the router params routes break*/}
                         <Route path="/test" component={formsyExample}/>
                         <Route path="*" component={NotFound}/>
                     </Route>

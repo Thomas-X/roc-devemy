@@ -220,14 +220,29 @@ router.post('/getCourseById', function (req, res, next) {
 
 router.post('/followCourse', function (req, res, next) {
     Course.findById(req.body._id, function (err, course) {
-        if(err) res.send({success: false});
-        if(req.app.locals._id != null && !err) {
+        if (err) res.send({success: false});
+        if (req.app.locals._id != null && !err) {
             User.update({_id: req.app.locals._id}, {$addToSet: {followedCourses: req.body._id}}, function (err, user) {
                 res.send({success: true});
-                if(err) res.send({success: false});
+                if (err) res.send({success: false});
             })
         }
     })
 });
+
+router.get('/getFollowedCourses', function (req, res, next) {
+    User.findById(req.app.locals._id, function (err, user) {
+        if (!err && req.app.locals._id != null) res.send({followedCourses: user.followedCourses, success: true});
+        else res.send({success: false});
+    })
+})
+
+router.post('/unFollowCourse', function (req, res, next) {
+    User.update({_id: req.app.locals._id}, {pull: {followedCourses: req.body._id}},function (err, user) {
+        if(!err && req.app.locals._id != null) res.send({success: true});
+        else res.send({success: false});
+        console.log(user);
+    })
+})
 
 module.exports = router;

@@ -11,7 +11,6 @@ router.get('/', function (req, res, next) {
 
 router.get('/logout', isLoggedIn, function (req, res, next) {
     // resetting user locals aswell
-    console.log('/');
 
     req.app.locals.username = null;
     req.app.locals.email = null;
@@ -24,7 +23,6 @@ router.get('/logout', isLoggedIn, function (req, res, next) {
 
 router.get('/#/logout', isLoggedIn, function (req, res, next) {
     // resetting user locals aswell
-    console.log('/#/');
     req.app.locals.username = null;
     req.app.locals.email = null;
     req.app.locals.displayImage = null;

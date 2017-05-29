@@ -33,7 +33,6 @@ export default class CreateCourse extends Component {
         axios.get('/api/getUserId').then(function (response) {
 
             response = JSON.parse(response['data']);
-            console.log(response, response.success);
 
             // I know, response.succes and !response.succes, but just to be safe
             if (response.success == true) {

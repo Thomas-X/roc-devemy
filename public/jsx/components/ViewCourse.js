@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {CircularProgress, Divider, FlatButton, Paper, RaisedButton} from "material-ui";
 import * as styles from "../styles";
 import axios from 'axios';
-import {ActionBookmarkBorder, HardwareKeyboardArrowRight, NavigationArrowForward} from "material-ui/svg-icons/index";
+import {
+    ActionBookmark, ActionBookmarkBorder, AlertErrorOutline, HardwareKeyboardArrowRight,
+    NavigationArrowForward
+} from "material-ui/svg-icons/index";
 
 export default class ViewCourse extends Component {
     constructor(props) {
@@ -15,15 +18,36 @@ export default class ViewCourse extends Component {
             errorFollowing: false,
         }
         this.followCourse = this.followCourse.bind(this);
+        this.unFollowCourse = this.unFollowCourse.bind(this);
     }
 
     componentDidMount() {
         axios.post('/api/getCourseById', {_id: this.props.params.courseid}).then(function (response) {
+            console.log('pre-if');
             if (response != null) this.setState({
                 course: response.data.course,
-                loaded: true,
             });
+            console.log('post-if');
+
+            axios.get('/api/getFollowedCourses').then(function (response2) {
+                console.log('pre-if2')
+                if (response2.data.success === true) {
+                    var followedCourses = response2.data.followedCourses;
+                    followedCourses.forEach(function (elem) {
+                        if (elem == this.props.params.courseid) {
+                            this.setState(
+                                {
+                                    followed: true,
+                                    loaded: true,
+                                })
+                        }
+                    }.bind(this))
+                }
+                console.log(response2, response2.success);
+
+            }.bind(this))
         }.bind(this))
+
         // todo do post request to api/getFollowedCourses and
         // todo if this.props.params.courseid is in the array of followed courses change state of button
     }
@@ -31,13 +55,27 @@ export default class ViewCourse extends Component {
     followCourse() {
         // todo add error handler for if api request fails and update state of button if success
         axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
-            if(response.success === true) {
+            if (response.success === true) {
                 this.setState({
                     followed: true,
                 });
             } else if (response.success === false) {
                 this.setState({
                     errorFollowing: true,
+                })
+            }
+        })
+    }
+
+    unFollowCourse() {
+        axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
+            if (response.success === true) {
+                this.setState({
+                    followed: false,
+                })
+            } else if (response.success === false) {
+                this.setState({
+                    errorFollowing:true,
                 })
             }
         })
@@ -73,10 +111,35 @@ export default class ViewCourse extends Component {
                                     <FlatButton
                                         secondary={true}
                                         labelPosition="before"
-                                        label='Cursus volgen'
-                                        onClick={this.followCourse}
-                                        href='#'
-                                        icon={<ActionBookmarkBorder/>}
+                                        label={this.state.errorFollowing ?
+                                                'Error met volgen'
+                                            :
+                                            this.state.followed ?
+                                                'Cursus ontvolgen'
+                                                :
+                                            'Cursus volgen'
+                                        }
+                                        onClick={this.state.followed ?
+                                            this.unFollowCourse
+                                            :
+                                            this.followCourse}
+
+                                        style={this.state.errorFollowing ?
+                                            styles.errorFollowingButton
+                                            :
+                                            this.state.followed ?
+                                                styles.followedFollowingButton
+                                                :
+                                                null
+                                        }
+                                        icon={this.state.errorFollowing ?
+                                            <AlertErrorOutline/>
+                                            :
+                                            this.state.followed ?
+                                                <ActionBookmark/>
+                                                :
+                                                <ActionBookmarkBorder/>
+                                        }
                                     />
                                 </div>
 

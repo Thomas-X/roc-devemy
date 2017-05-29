@@ -63,9 +63,8 @@ export default class Search extends Component {
                             ?
                             <div>
                                 {this.state.courses.map(function (course, index) {
-                                    console.log(course);
                                     return (
-                                        <IndexLink to={"/courses/" + course._id}>
+                                        <IndexLink to={"/courses/" + course._id} key={index}>
                                             <Card style={styles.card} className='cardMediaItem'>
                                                 <CardMedia
                                                     overlay={

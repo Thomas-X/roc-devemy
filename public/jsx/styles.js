@@ -432,3 +432,11 @@ export const ViewCourseContent = {
 export const ViewCourseGoToCourse = {
     marginRight: 5,
 }
+export const errorFollowingButton = {
+    backgroundColor: customTheme.dangerColor,
+    color: customTheme.alternateTextColor,
+}
+export const followedFollowingButton = {
+    backgroundColor: colors.lightGreen600,
+    color: customTheme.alternateTextColor,
+}

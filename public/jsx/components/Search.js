@@ -36,7 +36,6 @@ export default class Search extends Component {
             } else if (response.data.success === false) {
                 this.setState({
                     success: false,
-
                 })
             }
         }.bind(this))
@@ -47,7 +46,7 @@ export default class Search extends Component {
 
     render() {
         return (
-            <Paper style={styles.paperEditorContent} zDepth={1}>
+            <Paper style={styles.paperEditorContent} zDepth={1} id="minHeight">
                 <TextField
                     hintText='Type iets ..'
                     floatingLabelText='Zoek naar een cursus'

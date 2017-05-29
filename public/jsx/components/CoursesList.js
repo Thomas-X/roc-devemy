@@ -11,6 +11,7 @@ export default class CoursesList extends Component {
         this.state = {
             open: true,
             data: [],
+            loaded: false,
         }
     }
 
@@ -18,11 +19,20 @@ export default class CoursesList extends Component {
         axios.get('/api/getCourseDataById').then(function (responseCourseData) {
             //we get a return of course by user from the server API
 
-            var courses = JSON.parse(responseCourseData['data'])['courses'];
+            var success = JSON.parse(responseCourseData['data']['success']);
 
+            if(success) {
+                var courses = JSON.parse(responseCourseData['data'])['courses'];
 
-            for (var o = 0; o < courses.length; o++) {
-                this.state.data.push(courses[o]);
+                console.log(JSON.parse(responseCourseData['data']));
+
+                this.setState({
+                    loaded: true,
+                })
+
+                for (var o = 0; o < courses.length; o++) {
+                    this.state.data.push(courses[o]);
+                }
             }
         }.bind(this));
     };
@@ -30,35 +40,44 @@ export default class CoursesList extends Component {
     render() {
         return (
             <div>
-                <ListItem
-                    primaryText='Courses'
-                    leftIcon={<ActionAssignment/>}
-                    initiallyOpen={true}
-                    primaryTogglesNestedList={true}
-                    nestedItems=
-                        {
-                            this.state.data.map(function (courseItem, index) {
-                                return (
-                                    <IndexLink to={"/courses/" + courseItem._id}><ListItem
-                                        key={index}
-                                        primaryText={
-                                            <div style={styles.courseListItemTitleContainer}>
-                                                <span style={styles.courseListItemTitle}>{courseItem.title}</span>
-                                                <span
-                                                    style={styles.courseListItemSubTitleAuthor}>{courseItem.author}</span>
-                                            </div>}
-                                        innerDivStyle={styles.courseListItem}
-                                        leftAvatar={
-                                            <Avatar size={30} style={styles.courseListItemAvatar}>
-                                                {courseItem.title.substr(0, 1)}
-                                            </Avatar>}>
-                                    </ListItem>
-                                    </IndexLink>
-                                )
-                            })
-                        }
-                />
+                {this.state.loaded ?
+                    <div>
+                        <ListItem
+                            primaryText='Courses'
+                            leftIcon={<ActionAssignment/>}
+                            initiallyOpen={true}
+                            primaryTogglesNestedList={true}
+                            nestedItems=
+                                {
+                                    this.state.data.map(function (courseItem, index) {
+                                        console.log(this.state.data, courseItem);
+                                        return (
+                                            <IndexLink to={"/courses/" + courseItem._id}><ListItem
+                                                key={index}
+                                                primaryText={
+                                                    <div style={styles.courseListItemTitleContainer}>
+                                                        <span
+                                                            style={styles.courseListItemTitle}>{courseItem.title}</span>
+                                                        <span
+                                                            style={styles.courseListItemSubTitleAuthor}>{courseItem.author}</span>
+                                                    </div>}
+                                                innerDivStyle={styles.courseListItem}
+                                                leftAvatar={
+                                                    <Avatar size={30} style={styles.courseListItemAvatar}>
+                                                        {courseItem.title.substr(0, 1)}
+                                                    </Avatar>}>
+                                            </ListItem>
+                                            </IndexLink>
+                                        )
+                                    }.bind(this))
+                                }
+                        />
+                    </div>
+                    :
+                    null
+                }
             </div>
+
         )
     }
 

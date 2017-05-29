@@ -22,13 +22,15 @@ export default class UserHomePage extends Component {
         axios.get('/api/getCourseDataById').then(function (responseCourseData) {
             //we get a return of course by user from the server API
 
-            var courses = JSON.parse(responseCourseData['data'])['courses'];
+            if(JSON.parse(responseCourseData['data'])['courses'] != null) {
+                var courses = JSON.parse(responseCourseData['data'])['courses'];
 
 
-            for (var o = 0; o < courses.length; o++) {
-                this.state.data.push(courses[o]);
+                for (var o = 0; o < courses.length; o++) {
+                    this.state.data.push(courses[o]);
+                }
+                this.setState(this.state);
             }
-            this.setState(this.state);
         }.bind(this));
     };
 
@@ -68,7 +70,7 @@ class CourseItem extends Component {
                                     subtitle={this.props.courseData.author}/>
                             </div>
                         }>
-                        <img src={this.props.courseData.backgroundImage} style={styles.cardImage}/>
+                        <img src={this.props.courseData.imgURL} style={styles.cardImage}/>
                     </CardMedia>
                 </Card>
             </IndexLink>

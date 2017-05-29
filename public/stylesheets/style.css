@@ -489,3 +489,6 @@ a {
 .searchButtonNavbar {
     color: white !important;
 }
+#minHeight {
+    min-height: 500px;
+}

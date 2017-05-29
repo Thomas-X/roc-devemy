@@ -48,7 +48,7 @@ router.get('/getCourseDataById', function (req, res, next) {
 
         function IloveRecursion(callback) {
             req.user.followedCourses.forEach(function (elem, index) {
-                Course.findById(elem['courseId'], function (err, course) {
+                Course.findById(elem, function (err, course) {
                     courses.push(course);
                     if ((index + 1) == req.user.followedCourses.length) {
                         callback();
@@ -60,8 +60,11 @@ router.get('/getCourseDataById', function (req, res, next) {
         IloveRecursion(function () {
             res.json(JSON.stringify({
                 courses: courses,
+                success: true,
             }))
         });
+    } else {
+        res.json({success: false})
     }
 });
 

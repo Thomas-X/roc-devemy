@@ -24,6 +24,9 @@ import ViewCourse from './components/ViewCourse';
 import formsyExample from "./formsyExample";
 
 class App extends Component {
+
+
+
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>

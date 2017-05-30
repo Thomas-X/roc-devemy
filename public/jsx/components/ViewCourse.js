@@ -19,66 +19,70 @@ export default class ViewCourse extends Component {
         }
         this.followCourse = this.followCourse.bind(this);
         this.unFollowCourse = this.unFollowCourse.bind(this);
+
     }
+
 
     componentDidMount() {
         axios.post('/api/getCourseById', {_id: this.props.params.courseid}).then(function (response) {
-            console.log('pre-if');
             if (response != null) this.setState({
                 course: response.data.course,
             });
-            console.log('post-if');
 
             axios.get('/api/getFollowedCourses').then(function (response2) {
-                console.log('pre-if2')
+
                 if (response2.data.success === true) {
                     var followedCourses = response2.data.followedCourses;
-                    followedCourses.forEach(function (elem) {
-                        if (elem == this.props.params.courseid) {
-                            this.setState(
-                                {
-                                    followed: true,
-                                    loaded: true,
-                                })
-                        }
-                    }.bind(this))
+
+                    if (followedCourses.length > 0) {
+                        followedCourses.forEach(function (elem) {
+                            if (elem == this.props.params.courseid) {
+                                this.setState(
+                                    {
+                                        followed: true,
+                                        loaded: true,
+                                    })
+                            }
+                        }.bind(this))
+                    } else if (followedCourses.length <= 0) {
+                        this.setState({
+                            loaded:true,
+                            followed: false,
+                        })
+                    }
                 }
-                console.log(response2, response2.success);
 
             }.bind(this))
         }.bind(this))
 
-        // todo do post request to api/getFollowedCourses and
-        // todo if this.props.params.courseid is in the array of followed courses change state of button
     }
 
     followCourse() {
-        // todo add error handler for if api request fails and update state of button if success
         axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
-            if (response.success === true) {
+            if (response.data.success === true) {
                 this.setState({
                     followed: true,
                 });
-            } else if (response.success === false) {
+            } else if (response.data.success === false) {
                 this.setState({
                     errorFollowing: true,
                 })
             }
-        })
+        }.bind(this))
     }
 
     unFollowCourse() {
         axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
-            if (response.success === true) {
+            if (response.data.success === true) {
                 this.setState({
                     followed: false,
                 })
-            } else if (response.success === false) {
+            } else if (response.data.success === false) {
                 this.setState({
                     errorFollowing:true,
                 })
             }
-        })
+        }.bind(this))
     }
 
 
@@ -112,12 +116,12 @@ export default class ViewCourse extends Component {
                                         secondary={true}
                                         labelPosition="before"
                                         label={this.state.errorFollowing ?
-                                                'Error met volgen'
+                                            'Error met volgen'
                                             :
                                             this.state.followed ?
                                                 'Cursus ontvolgen'
                                                 :
-                                            'Cursus volgen'
+                                                'Cursus volgen'
                                         }
                                         onClick={this.state.followed ?
                                             this.unFollowCourse

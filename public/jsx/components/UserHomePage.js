@@ -13,10 +13,42 @@ export default class UserHomePage extends Component {
         super(props);
         this.state = {
             data: [],
-            loaded: false,
+            loaded: null,
             success: null
         }
 
+    }
+
+    componentDidUpdate() {
+        console.log('i liev!!!');
+        axios.get('/api/getCourseDataById').then(function (responseCourseData) {
+            //we get a return of course by user from the server API
+            //we get a return of course by user from the server API
+
+            var success = JSON.parse(responseCourseData.data).success
+
+            var length = JSON.parse(responseCourseData.data).courses.length;
+
+            if (success && length > 0) {
+                var courses = JSON.parse(responseCourseData.data).courses
+
+
+                this.setState({
+                    loaded: true,
+                    success: true,
+                    data: [],
+                })
+
+                for (var o = 0; o < courses.length; o++) {
+                    this.state.data.push(courses[o]);
+                }
+            } else if (!success && length <= 0) {
+                this.setState({
+                    success: false,
+                    loaded: false,
+                })
+            }
+        }.bind(this));
     }
 
     componentDidMount() {
@@ -26,18 +58,25 @@ export default class UserHomePage extends Component {
 
             var success = JSON.parse(responseCourseData.data).success
 
-            if (success) {
+            var length = JSON.parse(responseCourseData.data).courses.length;
+
+            if (success && length > 0) {
                 var courses = JSON.parse(responseCourseData.data).courses
 
 
                 this.setState({
                     loaded: true,
-                    success: success,
+                    success: true,
                 })
 
                 for (var o = 0; o < courses.length; o++) {
                     this.state.data.push(courses[o]);
                 }
+            } else if (!success && length <= 0) {
+                this.setState({
+                    success: false,
+                    loaded: false,
+                })
             }
         }.bind(this));
     };
@@ -60,9 +99,10 @@ export default class UserHomePage extends Component {
                         :
                         <div>
                             {this.state.success ?
-                                null
-                                :
                                 <CircularProgress size={80} thickness={5}/>
+                                :
+                                <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een link van de leraar om er een te
+                                    volgen.</h3>
                             }
                         </div>
                     }

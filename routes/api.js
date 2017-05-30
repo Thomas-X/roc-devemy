@@ -238,7 +238,8 @@ router.get('/getFollowedCourses', function (req, res, next) {
 })
 
 router.post('/unFollowCourse', function (req, res, next) {
-    User.update({_id: req.app.locals._id}, {pull: {followedCourses: req.body._id}},function (err, user) {
+    console.log(req.body, req.app.locals._id);
+    User.update({_id: req.app.locals._id}, {$pull: {followedCourses: req.body._id}},function (err, user) {
         if(!err && req.app.locals._id != null) res.send({success: true});
         else res.send({success: false});
         console.log(user);

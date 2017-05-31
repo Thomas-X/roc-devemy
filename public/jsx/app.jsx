@@ -25,7 +25,8 @@ import formsyExample from "./formsyExample";
 
 class App extends Component {
 
-
+    // TODO if a course is deleted, remove that specific courseID from all the user's followedCourses, since it doesn't exist anymore
+    // TODO and it'll give an error if React tries to do anything  with it
 
     render() {
         return (
@@ -40,7 +41,7 @@ class App extends Component {
                         <Route path="/about/me/mycourses" component={MyCourses}/>
                         <Route path="/search" component={Search}/>
                         <Route path="/courses/:courseid" component={ViewCourse}/>
-                               {/* this should always be the last route, otherwise the router params routes break*/}
+                        {/* this should always be the last route, otherwise the router params routes break*/}
                         <Route path="/test" component={formsyExample}/>
                         <Route path="*" component={NotFound}/>
                     </Route>

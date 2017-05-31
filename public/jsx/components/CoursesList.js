@@ -18,8 +18,11 @@ export default class CoursesList extends Component {
     componentDidMount() {
         axios.get('/api/getCourseDataById').then(function (responseCourseData) {
             //we get a return of course by user from the server API
-
-            var success = JSON.parse(responseCourseData.data).success
+            try {
+                var success = JSON.parse(responseCourseData.data).success
+            } catch (err) {
+                // do nothing since this is an error that occurs when the user is not logged in
+            }
 
             if (success) {
                 var courses = JSON.parse(responseCourseData.data).courses

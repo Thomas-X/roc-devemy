@@ -14,47 +14,24 @@ export default class UserHomePage extends Component {
         this.state = {
             data: [],
             loaded: null,
-            success: null
+            success: null,
+            isEmpty: true,
         }
-
-    }
-
-    componentDidUpdate() {
-        console.log('i liev!!!');
-        axios.get('/api/getCourseDataById').then(function (responseCourseData) {
-            //we get a return of course by user from the server API
-            //we get a return of course by user from the server API
-
-            var success = JSON.parse(responseCourseData.data).success
-
-            var length = JSON.parse(responseCourseData.data).courses.length;
-
-            if (success && length > 0) {
-                var courses = JSON.parse(responseCourseData.data).courses
-
-
-                this.setState({
-                    loaded: true,
-                    success: true,
-                    data: [],
-                })
-
-                for (var o = 0; o < courses.length; o++) {
-                    this.state.data.push(courses[o]);
-                }
-            } else if (!success && length <= 0) {
-                this.setState({
-                    success: false,
-                    loaded: false,
-                })
-            }
-        }.bind(this));
     }
 
     componentDidMount() {
+        console.log('componentDidMount');
+        this.setState({
+            data: [],
+            loaded: false,
+            success: true,
+            isEmpty: true,
+        })
+
         axios.get('/api/getCourseDataById').then(function (responseCourseData) {
             //we get a return of course by user from the server API
             //we get a return of course by user from the server API
+
 
             var success = JSON.parse(responseCourseData.data).success
 
@@ -63,19 +40,22 @@ export default class UserHomePage extends Component {
             if (success && length > 0) {
                 var courses = JSON.parse(responseCourseData.data).courses
 
+                for (var o = 0; o < courses.length; o++) {
+                    this.state.data.push(courses[o]);
+                }
 
                 this.setState({
                     loaded: true,
                     success: true,
+                    isEmpty: false,
                 })
 
-                for (var o = 0; o < courses.length; o++) {
-                    this.state.data.push(courses[o]);
-                }
+
             } else if (!success && length <= 0) {
                 this.setState({
                     success: false,
                     loaded: false,
+                    isEmpty: true,
                 })
             }
         }.bind(this));
@@ -85,25 +65,34 @@ export default class UserHomePage extends Component {
 
         return (
             <div style={styles.userhomepage}>
-                <h2>Verder kijken</h2>
                 <Divider style={styles.userhomepagedivider}/>
                 <div>
                     {this.state.loaded ?
                         <div>
                             {this.state.data.map(function (courseItem, index) {
                                 return (
-                                    <CourseItem key={index} courseData={courseItem}/>
+                                    <div>
+                                        <h2>Verder kijken</h2>
+                                        <CourseItem key={index} courseData={courseItem}/>
+                                    </div>
                                 )
                             })}
                         </div>
                         :
                         <div>
-                            {this.state.success ?
-                                <CircularProgress size={80} thickness={5}/>
-                                :
-                                <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een link van de leraar om er een te
+                            {this.state.isEmpty ?
+                                <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een
+                                    link van de leraar om er een te
                                     volgen.</h3>
+                                :
+                                this.state.success ?
+                                    <CircularProgress size={80} thickness={5}/>
+                                    :
+                                    <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een
+                                        link van de leraar om er een te
+                                        volgen.</h3>
                             }
+
                         </div>
                     }
                 </div>

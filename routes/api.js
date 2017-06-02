@@ -43,21 +43,24 @@ router.get('/getUserProfile', function (req, res, next) {
 });
 
 router.get('/getCourseDataById', function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.app.locals._id != null) {
         var courses = [];
 
-        function IloveRecursion(callback) {
-            req.user.followedCourses.forEach(function (elem, index) {
-                Course.findById(elem, function (err, course) {
-                    courses.push(course);
-                    if ((index + 1) == req.user.followedCourses.length) {
-                        callback();
-                    }
-                });
-            });
+        function getCoursesAndPushToArray(callback) {
+            User.findById(req.app.locals._id, function (err, user) {
+
+                    user['followedCourses'].forEach(function (elem, index) {
+                        Course.findById(elem, function (err, course) {
+                            courses.push(course);
+                            if ((index + 1) == user['followedCourses'].length) {
+                                callback();
+                            }
+                        });
+                    });
+            })
         }
 
-        IloveRecursion(function () {
+        getCoursesAndPushToArray(function () {
             res.json(JSON.stringify({
                 courses: courses,
                 success: true,
@@ -239,8 +242,8 @@ router.get('/getFollowedCourses', function (req, res, next) {
 
 router.post('/unFollowCourse', function (req, res, next) {
     console.log(req.body, req.app.locals._id);
-    User.update({_id: req.app.locals._id}, {$pull: {followedCourses: req.body._id}},function (err, user) {
-        if(!err && req.app.locals._id != null) res.send({success: true});
+    User.update({_id: req.app.locals._id}, {$pull: {followedCourses: req.body._id}}, function (err, user) {
+        if (!err && req.app.locals._id != null) res.send({success: true});
         else res.send({success: false});
         console.log(user);
     })

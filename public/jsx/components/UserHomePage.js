@@ -15,7 +15,7 @@ export default class UserHomePage extends Component {
             data: [],
             loaded: null,
             success: null,
-            isEmpty: true,
+            isEmpty: null,
         }
     }
 
@@ -27,39 +27,56 @@ export default class UserHomePage extends Component {
             success: true,
             isEmpty: true,
         })
+        console.log('after setState');
 
-        axios.get('/api/getCourseDataById').then(function (responseCourseData) {
+        var init = {
+            method: 'GET',
+            cache: false
+        }
+
+        fetch('/api/getCourseDataById', init).then((response) => response.json().then(function (responseCourseData){
             //we get a return of course by user from the server API
             //we get a return of course by user from the server API
+            console.log('in get');
+
+            try {
+
+                var success = responseCourseData.success;
+
+                var length = responseCourseData.courses.length;
+
+                if (success && length > 0 && length != null) {
+                    var courses = JSON.parse(responseCourseData.data).courses
+
+                    for (var o = 0; o < courses.length; o++) {
+                        this.state.data.push(courses[o]);
+                    }
+
+                    this.setState({
+                        loaded: true,
+                        success: true,
+                        isEmpty: false,
+                    })
 
 
-            var success = JSON.parse(responseCourseData.data).success
-
-            var length = JSON.parse(responseCourseData.data).courses.length;
-
-            if (success && length > 0) {
-                var courses = JSON.parse(responseCourseData.data).courses
-
-                for (var o = 0; o < courses.length; o++) {
-                    this.state.data.push(courses[o]);
+                } else if (!success && length <= 0) {
+                    this.setState({
+                        success: false,
+                        loaded: false,
+                        isEmpty: true,
+                    })
                 }
 
-                this.setState({
-                    loaded: true,
-                    success: true,
-                    isEmpty: false,
-                })
-
-
-            } else if (!success && length <= 0) {
-                this.setState({
-                    success: false,
-                    loaded: false,
-                    isEmpty: true,
-                })
+                console.log('FETCHED DATA: ',responseCourseData);
+            } catch(err) {
+                // do nothing because this error happens when user is either not authenticated or
+                // there is an actual error (lets hope not)
+                console.l
             }
-        }.bind(this));
-    };
+            console.log('end of function');
+
+        }.bind(this)
+        ))};
 
     render() {
 
@@ -71,9 +88,9 @@ export default class UserHomePage extends Component {
                         <div>
                             {this.state.data.map(function (courseItem, index) {
                                 return (
-                                    <div>
+                                    <div key={index}>
                                         <h2>Verder kijken</h2>
-                                        <CourseItem key={index} courseData={courseItem}/>
+                                        <CourseItem courseData={courseItem}/>
                                     </div>
                                 )
                             })}
@@ -109,8 +126,8 @@ class CourseItem extends Component {
 
     render() {
         return (
-            <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
-                <Card style={styles.card}>
+            <Card style={styles.card}>
+                <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
                     <CardMedia
                         overlay={
                             <div style={styles.cardTitleContainer}>
@@ -123,8 +140,8 @@ class CourseItem extends Component {
                         }>
                         <img src={this.props.courseData.imgURL} style={styles.cardImage}/>
                     </CardMedia>
-                </Card>
-            </IndexLink>
+                </IndexLink>
+            </Card>
         )
     }
 }

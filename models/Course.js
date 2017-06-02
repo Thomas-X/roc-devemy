@@ -17,6 +17,7 @@ var CourseSchema = new Schema({
     description: {type: String, default: ''},
     ratingAverage: {type: Number, default: 0},
     totalRatingCount: {type: Number, default: 0},
+    allRatingValues: {type: Array, default: []},
     comments: [CommentSchema],
 })
 

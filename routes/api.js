@@ -49,14 +49,14 @@ router.get('/getCourseDataById', function (req, res, next) {
         function getCoursesAndPushToArray(callback) {
             User.findById(req.app.locals._id, function (err, user) {
 
-                    user['followedCourses'].forEach(function (elem, index) {
-                        Course.findById(elem, function (err, course) {
-                            courses.push(course);
-                            if ((index + 1) == user['followedCourses'].length) {
-                                callback();
-                            }
-                        });
+                user['followedCourses'].forEach(function (elem, index) {
+                    Course.findById(elem, function (err, course) {
+                        courses.push(course);
+                        if ((index + 1) == user['followedCourses'].length) {
+                            callback();
+                        }
                     });
+                });
             })
         }
 
@@ -67,7 +67,7 @@ router.get('/getCourseDataById', function (req, res, next) {
             }))
         });
     } else {
-        res.json({success: false})
+        res.json(JSON.stringify({success: false}));
     }
 });
 
@@ -241,12 +241,20 @@ router.get('/getFollowedCourses', function (req, res, next) {
 })
 
 router.post('/unFollowCourse', function (req, res, next) {
-    console.log(req.body, req.app.locals._id);
     User.update({_id: req.app.locals._id}, {$pull: {followedCourses: req.body._id}}, function (err, user) {
         if (!err && req.app.locals._id != null) res.send({success: true});
         else res.send({success: false});
         console.log(user);
     })
+})
+
+router.post('/rateCourse', function (req, res, next) {
+    if(req.app.locals._id != null) {
+        Course.findById(req.body.courseId, function (err, course) {
+            course.totalRatingCount += 1;
+            course.ratingAverage = (course.totalRatingCount * course.ratingAverage + req.body.rating) / (course.totalRatingCount + 1);
+        })
+    }
 })
 
 module.exports = router;

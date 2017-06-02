@@ -6,6 +6,7 @@ import {
     ActionBookmark, ActionBookmarkBorder, AlertErrorOutline, HardwareKeyboardArrowRight,
     NavigationArrowForward
 } from "material-ui/svg-icons/index";
+import { Rating } from 'material-ui-rating'
 
 export default class ViewCourse extends Component {
     constructor(props) {
@@ -16,10 +17,12 @@ export default class ViewCourse extends Component {
             loaded: false,
             followed: false,
             errorFollowing: false,
+            rating: 0,
         }
         this.followCourse = this.followCourse.bind(this);
         this.unFollowCourse = this.unFollowCourse.bind(this);
 
+        this.rateCourse = this.rateCourse.bind(this);
     }
 
 
@@ -56,6 +59,16 @@ export default class ViewCourse extends Component {
         }.bind(this))
 
     }
+
+    rateCourse(value) {
+        axios.post('/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
+                if(response.data.success) this.setState({
+                    rating: value,
+                });
+        }.bind(this));
+    }
+
+
 
     followCourse() {
         axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
@@ -148,6 +161,13 @@ export default class ViewCourse extends Component {
                                 </div>
 
                                 <Divider style={styles.ViewCourseDivider}/>
+                                <Rating
+                                    value={this.state.rating}
+                                    max={5}
+                                    onChange={function(value) {
+                                        this.rateCourse(value)
+                                    }}
+                                />
                                 <p>
                                     {course.description}
                                 </p>

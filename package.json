@@ -27,6 +27,7 @@
     "formsy-react": "^0.19.2",
     "hbs": "^4.0.1",
     "material-ui": "^0.18.1",
+    "material-ui-rating": "^1.3.2",
     "mongoose": "^4.10.2",
     "passport": "^0.3.2",
     "passport-google-oauth20": "^1.0.0",

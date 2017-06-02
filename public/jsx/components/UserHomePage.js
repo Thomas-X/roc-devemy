@@ -20,63 +20,37 @@ export default class UserHomePage extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
-        this.setState({
-            data: [],
-            loaded: false,
-            success: true,
-            isEmpty: true,
-        })
-        console.log('after setState');
 
-        var init = {
-            method: 'GET',
-            cache: false
-        }
+        var config = {
+            headers: {'cache-control': 'no-cache'}
+        };
 
-        fetch('/api/getCourseDataById', init).then((response) => response.json().then(function (responseCourseData){
-            //we get a return of course by user from the server API
-            //we get a return of course by user from the server API
-            console.log('in get');
+        axios.get('/api/getCourseDataById', config)
+                .then(function (responseJson) {
+                responseJson = JSON.parse(responseJson['data']);
 
-            try {
-
-                var success = responseCourseData.success;
-
-                var length = responseCourseData.courses.length;
-
+                var success = responseJson.success;
+                if (responseJson.courses != null) {
+                    var length = responseJson.courses.length;
+                }
                 if (success && length > 0 && length != null) {
-                    var courses = JSON.parse(responseCourseData.data).courses
+                    var courses = responseJson.courses
 
                     for (var o = 0; o < courses.length; o++) {
                         this.state.data.push(courses[o]);
                     }
-
-                    this.setState({
-                        loaded: true,
-                        success: true,
-                        isEmpty: false,
-                    })
-
-
+                    this.state.loaded = true;
+                    this.state.success = true;
+                    this.state.isEmpty = false;
+                    this.setState(this.state);
                 } else if (!success && length <= 0) {
-                    this.setState({
-                        success: false,
-                        loaded: false,
-                        isEmpty: true,
-                    })
+                    this.state.success = false;
+                    this.state.loaded = false;
+                    this.state.isEmpty = true;
+                    this.setState(this.state);
                 }
-
-                console.log('FETCHED DATA: ',responseCourseData);
-            } catch(err) {
-                // do nothing because this error happens when user is either not authenticated or
-                // there is an actual error (lets hope not)
-                console.l
-            }
-            console.log('end of function');
-
-        }.bind(this)
-        ))};
+            }.bind(this))
+    };
 
     render() {
 

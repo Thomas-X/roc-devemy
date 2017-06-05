@@ -249,10 +249,47 @@ router.post('/unFollowCourse', function (req, res, next) {
 })
 
 router.post('/rateCourse', function (req, res, next) {
-    if(req.app.locals._id != null) {
+    if (req.app.locals._id != null && req.body.rating <= 5 && req.body.rating >= 1) {
         Course.findById(req.body.courseId, function (err, course) {
-            course.totalRatingCount += 1;
-            course.ratingAverage = (course.totalRatingCount * course.ratingAverage + req.body.rating) / (course.totalRatingCount + 1);
+            let sum = 0;
+            var allRatingValues = course.allRatingValues;
+            if (!err) {
+                if (allRatingValues.length > 0) {
+                    allRatingValues.forEach(function (elem, index) {
+                        if (elem.authorId.equals(req.app.locals._id)) {
+                            elem.rating = req.body.rating;
+                            course.allRatingValues[index].rating = req.body.rating
+                            console.log(elem.rating);
+                        }
+                        // last item of array, check if that one is the rating left by the user, else push a new rating
+                        console.log((index + 1) == allRatingValues.length);
+                        if ((index + 1) == allRatingValues.length) {
+                            if (elem.authorId.equals(req.app.locals._id)) {
+                                elem.rating = req.body.rating;
+                                course.allRatingValues[index].rating = req.body.rating
+
+                            } else {
+                                allRatingValues.push({authorId: req.app.locals._id, rating: req.body.rating});
+                                course.totalRatingCount += 1;
+                            }
+                        }
+                        sum += elem.rating;
+                        console.log(course.allRatingValues[index].rating,allRatingValues[index].rating, req.body.rating);
+                    });
+                    course.ratingAverage = sum / (allRatingValues.length);
+
+                } else if (allRatingValues.length <= 0) {
+                    course.ratingAverage = req.body.rating;
+                    course.totalRatingCount = 1;
+                    allRatingValues.push({authorId: req.app.locals._id, rating: req.body.rating});
+                }
+
+                course.save((err, updatedCourse) => {
+                    console.log(updatedCourse);
+                    if (err) res.json({success: false});
+                    else res.json({success: true});
+                })
+            }
         })
     }
 })

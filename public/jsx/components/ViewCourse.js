@@ -61,7 +61,9 @@ export default class ViewCourse extends Component {
     }
 
     rateCourse(value) {
+        console.log(value);
         axios.post('/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
+                console.log(response);
                 if(response.data.success) this.setState({
                     rating: value,
                 });
@@ -161,12 +163,14 @@ export default class ViewCourse extends Component {
                                 </div>
 
                                 <Divider style={styles.ViewCourseDivider}/>
+                                total ratings: {course.totalRatingCount} <br/>
+                                average rating: {course.ratingAverage}
                                 <Rating
                                     value={this.state.rating}
                                     max={5}
                                     onChange={function(value) {
                                         this.rateCourse(value)
-                                    }}
+                                    }.bind(this)}
                                 />
                                 <p>
                                     {course.description}

@@ -5,8 +5,9 @@ var Schema = mongoose.Schema;
 
 var CommentSchema = new Schema({
     author: {type: String, default: ''},
+    authorId: {type: String, default: ''},
     comment: {type: String, default: ''},
-    Date: {type: Date, default: Date.now},
+    date: {type: Date, default: Date.now},
 });
 var CourseSchema = new Schema({
     title: {type: String, default: ''},

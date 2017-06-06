@@ -216,7 +216,13 @@ router.post('/search', function (req, res, next) {
 
 router.post('/getCourseById', function (req, res, next) {
     Course.findById(req.body._id, function (err, course) {
-        if (!err) res.send({course: course, success: true});
+        if (!err) res.send({
+            course: course,
+            success: true,
+            userImage: req.app.locals.displayImage,
+            userId: req.app.locals._id,
+            author: req.app.locals.username,
+        });
         if (err) res.send({course: course, success: false});
     })
 });
@@ -255,43 +261,73 @@ router.post('/rateCourse', function (req, res, next) {
             var allRatingValues = course.allRatingValues;
             if (!err) {
                 if (allRatingValues.length > 0) {
-                    allRatingValues.forEach(function (elem, index) {
+                    for(let i = 0; i < allRatingValues.length; i++) {
+                        var elem = allRatingValues[i];
+                        var index = i;
                         if (elem.authorId.equals(req.app.locals._id)) {
                             elem.rating = req.body.rating;
-                            course.allRatingValues[index].rating = req.body.rating
-                            console.log(elem.rating);
-                        }
-                        // last item of array, check if that one is the rating left by the user, else push a new rating
-                        console.log((index + 1) == allRatingValues.length);
-                        if ((index + 1) == allRatingValues.length) {
-                            if (elem.authorId.equals(req.app.locals._id)) {
-                                elem.rating = req.body.rating;
-                                course.allRatingValues[index].rating = req.body.rating
-
-                            } else {
+                            course.allRatingValues[index].rating = req.body.rating;
+                        } else if ((index + 1) == allRatingValues.length) {
+                            if (!elem.authorId.equals(req.app.locals._id)) {
                                 allRatingValues.push({authorId: req.app.locals._id, rating: req.body.rating});
                                 course.totalRatingCount += 1;
                             }
                         }
                         sum += elem.rating;
-                        console.log(course.allRatingValues[index].rating,allRatingValues[index].rating, req.body.rating);
-                    });
+                    }
                     course.ratingAverage = sum / (allRatingValues.length);
+                    course.ratingAverage = course.ratingAverage.toFixed(1);
 
                 } else if (allRatingValues.length <= 0) {
                     course.ratingAverage = req.body.rating;
+                    course.ratingAverage = course.ratingAverage.toFixed(1);
                     course.totalRatingCount = 1;
                     allRatingValues.push({authorId: req.app.locals._id, rating: req.body.rating});
                 }
 
                 course.save((err, updatedCourse) => {
-                    console.log(updatedCourse);
                     if (err) res.json({success: false});
-                    else res.json({success: true});
+                    else res.json({success: true, course: updatedCourse});
                 })
             }
         })
     }
 })
+
+router.post('/createComment', function(req,res,next) {
+    if (req.app.locals._id != null) {
+        if(req.app.locals._id.equals(req.body._id)) {
+                Course.findById(req.body.courseId, function(err, course) {
+                    course.comments.push({
+                        author: req.body.author,
+                        authorId: req.app.locals._id,
+                        comment: req.body.comment
+                    });
+                    course.comments.sort(function(date1,date2){
+                        // Turn your strings into dates, and then subtract them
+                        // to get a value that is either negative, positive, or zero.
+                        if (date1.date > date2.date) return -1;
+                        if (date1.date < date2.date) return 1;
+                        return 0;
+                    });
+
+
+                    course.save(function (err, updatedCourse) {
+
+                        console.log(updatedCourse.comments);
+
+                        if(!err) res.json({success: true, newComments: updatedCourse.comments});
+                        else res.json({success: false});
+                    })
+                })
+        } else {
+
+            res.json({success: false});
+        }
+    } else {
+        res.json({success: false});
+    }
+
+});
 
 module.exports = router;

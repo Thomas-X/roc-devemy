@@ -6,7 +6,10 @@ import {
     ActionBookmark, ActionBookmarkBorder, AlertErrorOutline, HardwareKeyboardArrowRight,
     NavigationArrowForward
 } from "material-ui/svg-icons/index";
-import { Rating } from 'material-ui-rating'
+import {Rating} from 'material-ui-rating'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Comment from './Comment';
+import CreateComment from './CreateComment';
 
 export default class ViewCourse extends Component {
     constructor(props) {
@@ -18,11 +21,17 @@ export default class ViewCourse extends Component {
             followed: false,
             errorFollowing: false,
             rating: 0,
+            totalRatingsCallback: null,
+            avgRating: null,
+            userImage: null,
+            author: null,
+
         }
         this.followCourse = this.followCourse.bind(this);
         this.unFollowCourse = this.unFollowCourse.bind(this);
 
         this.rateCourse = this.rateCourse.bind(this);
+        this.newComment = this.newComment.bind(this);
     }
 
 
@@ -30,6 +39,11 @@ export default class ViewCourse extends Component {
         axios.post('/api/getCourseById', {_id: this.props.params.courseid}).then(function (response) {
             if (response != null) this.setState({
                 course: response.data.course,
+                totalRatingsCallback: response.data.course.totalRatingCount,
+                avgRating: response.data.course.ratingAverage,
+                userImage: response.data.userImage,
+                userId: response.data.userId,
+                author: response.data.author,
             });
 
             axios.get('/api/getFollowedCourses').then(function (response2) {
@@ -49,7 +63,7 @@ export default class ViewCourse extends Component {
                         }.bind(this))
                     } else if (followedCourses.length <= 0) {
                         this.setState({
-                            loaded:true,
+                            loaded: true,
                             followed: false,
                         })
                     }
@@ -60,16 +74,21 @@ export default class ViewCourse extends Component {
 
     }
 
-    rateCourse(value) {
-        console.log(value);
-        axios.post('/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
-                console.log(response);
-                if(response.data.success) this.setState({
-                    rating: value,
-                });
-        }.bind(this));
+    newComment(comments) {
+        console.log('COMMENTS:       ',comments);
+        this.state.course.comments = comments;
+        this.setState(this.state);
     }
 
+    rateCourse(value) {
+        axios.post('/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
+            if (response.data.success) this.setState({
+                rating: value,
+                totalRatingsCallback: response.data.course.totalRatingCount,
+                avgRating: response.data.course.ratingAverage,
+            });
+        }.bind(this));
+    }
 
 
     followCourse() {
@@ -94,7 +113,7 @@ export default class ViewCourse extends Component {
                 })
             } else if (response.data.success === false) {
                 this.setState({
-                    errorFollowing:true,
+                    errorFollowing: true,
                 })
             }
         }.bind(this))
@@ -163,12 +182,18 @@ export default class ViewCourse extends Component {
                                 </div>
 
                                 <Divider style={styles.ViewCourseDivider}/>
-                                total ratings: {course.totalRatingCount} <br/>
-                                average rating: {course.ratingAverage}
+                                <ReactCSSTransitionGroup
+                                    transitionName="example"
+                                    transitionEnterTimeout={500}
+                                    transitionLeaveTimeout={300}>
+                                    <span key={1}> total ratings: {this.state.totalRatingsCallback}</span>
+                                    <br key={2}/>
+                                    <span key={3}>average rating: {this.state.avgRating}</span>
+                                </ReactCSSTransitionGroup>
                                 <Rating
                                     value={this.state.rating}
                                     max={5}
-                                    onChange={function(value) {
+                                    onChange={function (value) {
                                         this.rateCourse(value)
                                     }.bind(this)}
                                 />
@@ -176,6 +201,29 @@ export default class ViewCourse extends Component {
                                     {course.description}
                                 </p>
                             </div>
+                        </Paper>
+                        <Paper style={styles.commentContentContainer} zDepth={1}>
+
+                            <CreateComment
+                                userImage={this.state.userImage}
+                                userId={this.state.userId}
+                                commentCreated={this.newComment}
+                                author={this.state.author}
+                                courseId={this.props.params.courseid}/>
+
+                            <ReactCSSTransitionGroup
+                                transitionName="example"
+                                transitionEnterTimeout={500}
+                                transitionLeaveTimeout={300}>
+                                {this.state.course.comments.map((elem, index) => {
+                                    return (
+                                        <Comment key={index} comment={elem}
+                                                 userImage={this.state.userImage}/>
+                                    )
+                                })}
+                            </ReactCSSTransitionGroup>
+
+
                         </Paper>
                     </div>
                     :
@@ -185,3 +233,5 @@ export default class ViewCourse extends Component {
         )
     }
 }
+
+

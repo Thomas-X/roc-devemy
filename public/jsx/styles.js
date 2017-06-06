@@ -440,3 +440,60 @@ export const followedFollowingButton = {
     backgroundColor: colors.lightGreen600,
     color: customTheme.alternateTextColor,
 }
+export const commentContentContainer = {
+    padding: 10,
+    margin: 25,
+}
+export const commentContainer = {
+    width: '100%',
+    display:'flex',
+
+}
+export const commentUserImage = {
+    height: 48,
+    width: 48,
+    margin: 16,
+}
+export const createCommentContainer = {
+    display:'flex',
+    flexWrap: 'no-wrap',
+}
+export const mCreateCommentContainer = {
+    display:'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    maxWidth: 710,
+
+}
+export const createCommentSubmitButton = {
+    alignSelf: 'flex-end',
+    marginRight: 16,
+}
+export const commentDateAndDescriptionContainer = {
+    display:'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginTop: 16,
+    width:'100%',
+    maxWidth: 710,
+    height: 48,
+}
+export const commentAuthor = {
+    marginBottom: 5,
+}
+export const commentContent = {
+    marginBottom: 5,
+    marginTop: 5,
+}
+export const commentDate = {
+    fontWeight: '300',
+    alignSelf: 'flex-end',
+    marginRight: 16,
+    top: -16,
+    position: 'relative',
+}
+export const commentViewMore = {
+    alignSelf: 'flex-end',
+}

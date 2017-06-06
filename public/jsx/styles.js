@@ -473,9 +473,8 @@ export const createCommentSubmitButton = {
 export const commentDateAndDescriptionContainer = {
     display:'flex',
     justifyContent: 'space-between',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'flex-start',
-    marginTop: 16,
     width:'100%',
     maxWidth: 710,
     height: 48,
@@ -491,9 +490,19 @@ export const commentDate = {
     fontWeight: '300',
     alignSelf: 'flex-end',
     marginRight: 16,
-    top: -16,
-    position: 'relative',
 }
 export const commentViewMore = {
     alignSelf: 'flex-end',
+}
+export const authorAndCommentContentContainer = {
+    display:'flex',
+    flexDirection:'column',
+    height:48,
+    marginTop: 16,
+}
+export const commentMoreAndDateContainer = {
+    height: '48px !important',
+    display:'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column-reverse',
 }

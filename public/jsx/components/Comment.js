@@ -35,26 +35,32 @@ export default class Comment extends Component {
 
 
                 <div style={styles.commentDateAndDescriptionContainer}>
-                    <strong><span style={styles.commentAuthor}>{this.props.comment.author}</span></strong>
-                    <span style={styles.commentContent}>{this.props.comment.comment}</span>
-                    <IconButton tooltip='View more' style={styles.commentViewMore} onClick={this.handleOpen}>
+                    <div style={styles.authorAndCommentContentContainer}>
+                        <strong><span style={styles.commentAuthor}>{this.props.comment.author}</span></strong>
+                        <span style={styles.commentContent}>{this.props.comment.comment}</span>
+                    </div>
+
+
+                    <div style={styles.commentMoreAndDateContainer}>
+                        <i style={styles.commentDate}><span>Op: {this.props.comment.date}</span></i>
+                        <IconButton tooltip='View more' style={styles.commentViewMore} onClick={this.handleOpen}>
                         <NavigationMoreVert/>
                     </IconButton>
                     <Popover
                         open={this.state.open}
                         anchorEl={this.state.anchorEl}
-                        anchorOrigin={{horizontal:"right",vertical:"bottom"}}
-                        targetOrigin={{horizontal:"right",vertical:"top"}}
+                        anchorOrigin={{horizontal: "right", vertical: "bottom"}}
+                        targetOrigin={{horizontal: "right", vertical: "top"}}
                         onRequestClose={this.handleClose}
                     >
                         <Menu>
-                            <MenuItem primaryText="Refresh" />
-                            <MenuItem primaryText="Help &amp; feedback" />
-                            <MenuItem primaryText="Settings" />
-                            <MenuItem primaryText="Sign out" />
+                            <MenuItem primaryText="Refresh"/>
+                            <MenuItem primaryText="Help &amp; feedback"/>
+                            <MenuItem primaryText="Settings"/>
+                            <MenuItem primaryText="Sign out"/>
                         </Menu>
                     </Popover>
-                    <i style={styles.commentDate}><span>Op: {this.props.comment.date}</span></i>
+                    </div>
                 </div>
             </div>
 

@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import * as styles from "../styles";
 import PropTypes from 'prop-types';
 import {IconButton, Menu, MenuItem, Popover} from "material-ui";
-import {NavigationMoreVert} from "material-ui/svg-icons/index";
+import {ActionDeleteForever, ActionReportProblem, NavigationMoreVert} from "material-ui/svg-icons/index";
+import axios from 'axios';
 
 export default class Comment extends Component {
     constructor(props) {
         super(props);
+
 
         this.state = {
             open: false,
@@ -21,6 +23,7 @@ export default class Comment extends Component {
         })
     }
 
+
     handleOpen(event) {
         this.setState({
             open: true,
@@ -29,9 +32,15 @@ export default class Comment extends Component {
     }
 
     render() {
+        var removeAuth = false;
+
+        if(this.props.userId == this.props.comment.authorId) {
+            removeAuth = true;
+        }
+
         return (
             <div style={styles.commentContainer}>
-                <img src={this.props.userImage} style={styles.commentUserImage}/>
+                <img src={this.props.comment.authorImage} style={styles.commentUserImage}/>
 
 
                 <div style={styles.commentDateAndDescriptionContainer}>
@@ -54,10 +63,17 @@ export default class Comment extends Component {
                         onRequestClose={this.handleClose}
                     >
                         <Menu>
-                            <MenuItem primaryText="Refresh"/>
-                            <MenuItem primaryText="Help &amp; feedback"/>
-                            <MenuItem primaryText="Settings"/>
-                            <MenuItem primaryText="Sign out"/>
+                            {removeAuth ?
+                                <MenuItem
+                                    primaryText="Delete comment"
+                                    leftIcon={<ActionDeleteForever/>}
+                                    style={styles.removeChapterButton}
+                                    onClick={this.props.removeComment}
+                                />
+                                :
+                                null
+                            }
+                            <MenuItem primaryText="Report comment" leftIcon={<ActionReportProblem/>} />
                         </Menu>
                     </Popover>
                     </div>
@@ -69,4 +85,5 @@ export default class Comment extends Component {
 }
 Comment.propTypes = {
     comment: PropTypes.object,
+    removeComment: PropTypes.func,
 }

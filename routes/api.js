@@ -299,9 +299,11 @@ router.post('/createComment', function(req,res,next) {
         if(req.app.locals._id.equals(req.body._id)) {
                 Course.findById(req.body.courseId, function(err, course) {
                     course.comments.push({
-                        author: req.body.author,
+                        author: req.app.locals.displayName,
                         authorId: req.app.locals._id,
+                        authorImage: req.app.locals.displayImage,
                         comment: req.body.comment
+
                     });
                     course.comments.sort(function(date1,date2){
                         // Turn your strings into dates, and then subtract them
@@ -328,6 +330,24 @@ router.post('/createComment', function(req,res,next) {
         res.json({success: false});
     }
 
+});
+
+router.delete('/deleteComment', function(req,res,next) {
+    if(req.body.userId == req.app.locals._id) {
+        Course.findById(req.body.courseId, function (err, course) {
+             let comments = course.comments;
+             comments.forEach((elem, index) => {
+                 if(elem._id == req.body._id) {
+                     comments = comments.splice(index, 1);
+                 }
+             })
+            course.save(function (err, updatedCourse) {
+                if(!err) res.json({success: true});
+                else res.json({success: false});
+            })
+        });
+
+    }
 });
 
 module.exports = router;

@@ -32,6 +32,8 @@ export default class ViewCourse extends Component {
 
         this.rateCourse = this.rateCourse.bind(this);
         this.newComment = this.newComment.bind(this);
+
+        this.deleteComment = this.deleteComment.bind(this);
     }
 
 
@@ -75,9 +77,17 @@ export default class ViewCourse extends Component {
     }
 
     newComment(comments) {
-        console.log('COMMENTS:       ',comments);
         this.state.course.comments = comments;
         this.setState(this.state);
+    }
+
+    deleteComment(courseId, userId, _id) {
+
+        axios.post('/api/deleteComment/', {courseId: courseId,_id: _id, userId: userId}).then((responseJson) => {
+            if(responseJson.data.success === true) {
+            }
+        });
+
     }
 
     rateCourse(value) {
@@ -203,7 +213,8 @@ export default class ViewCourse extends Component {
                             </div>
                         </Paper>
                         <Paper style={styles.commentContentContainer} zDepth={1}>
-
+                            img: {this.state.userImage}
+                            id: {this.state.userId}
                             <CreateComment
                                 userImage={this.state.userImage}
                                 userId={this.state.userId}
@@ -216,14 +227,15 @@ export default class ViewCourse extends Component {
                                 transitionEnterTimeout={500}
                                 transitionLeaveTimeout={300}>
                                 {this.state.course.comments.map((elem, index) => {
+                                    console.log(elem);
                                     return (
-                                        <Comment key={index} comment={elem}
-                                                 userImage={this.state.userImage}/>
+                                        <Comment key={index} comment={elem} userId={this.state.userId} removeComment={() => {
+                                            this.deleteComment(this.props.params.courseid, this.state.userId, elem._id)
+                                        }}
+                                        />
                                     )
                                 })}
                             </ReactCSSTransitionGroup>
-
-
                         </Paper>
                     </div>
                     :

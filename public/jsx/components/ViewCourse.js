@@ -47,6 +47,9 @@ export default class ViewCourse extends Component {
                 userId: response.data.userId,
                 author: response.data.author,
             });
+            if(response.data.firstTime === true) {
+                this.followCourse();
+            }
 
             axios.get('/api/getFollowedCourses').then(function (response2) {
 

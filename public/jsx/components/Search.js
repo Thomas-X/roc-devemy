@@ -22,27 +22,35 @@ export default class Search extends Component {
     }
 
     handleSearchInput(event) {
-        this.setState({loading: true});
-        axios.post('/api/search', {
-            searchQuery: event.target.value
-        }).then(function (response) {
-            if (response.data.success === true) {
-                this.setState({
-                    loading: false,
-                    courses: response.data.courses,
-                    success: true,
-                    coursesNotNull: true,
-                })
-            } else if (response.data.success === false) {
-                this.setState({
-                    success: false,
-                    courses: [],
-                })
-            }
-        }.bind(this))
-            .catch(function (error) {
-                console.log(error);
-            });
+        var str = event.target.value;
+        if(str !== '') {
+            this.setState({loading: true});
+            axios.post('/api/search', {
+                searchQuery: event.target.value
+            }).then(function (response) {
+                if (response.data.success === true) {
+                    this.setState({
+                        loading: false,
+                        courses: response.data.courses,
+                        success: true,
+                        coursesNotNull: true,
+                    })
+                } else if (response.data.success === false) {
+                    this.setState({
+                        success: false,
+                        courses: [],
+                    })
+                }
+            }.bind(this))
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            this.setState({
+                loading: false,
+                coursesNotNull: false,
+            })
+        }
     }
 
     render() {
@@ -58,11 +66,12 @@ export default class Search extends Component {
                     onChange={function (event) {
                         this.handleSearchInput(event);
                     }.bind(this)}/>
+                <br/>
                 {this.state.loading ? <CircularProgress size={80} thickness={5}/>
                     : <div>
                         {this.state.coursesNotNull
                             ?
-                            <div>
+                            <div style={styles.searchCoursesResultContainer}>
                                 {this.state.courses.map(function (course, index) {
                                     return (
                                         <IndexLink to={"/courses/" + course._id} key={index}>

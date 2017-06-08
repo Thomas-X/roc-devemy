@@ -270,6 +270,7 @@ export const card = {
     width: 250,
     height: 250,
     cursor: 'pointer',
+    margin:10,
 }
 export const cardImage = {
     width: 250,
@@ -505,4 +506,9 @@ export const commentMoreAndDateContainer = {
     display:'flex',
     justifyContent: 'space-between',
     flexDirection: 'column-reverse',
+}
+export const searchCoursesResultContainer = {
+    display:'flex',
+    flexWrap: 'wrap',
+
 }

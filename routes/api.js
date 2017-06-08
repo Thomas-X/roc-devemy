@@ -216,16 +216,40 @@ router.post('/search', function (req, res, next) {
 });
 
 router.post('/getCourseById', function (req, res, next) {
+    let firstTime = false;
+
     Course.findById(req.body._id, function (err, course) {
-        if (!err) res.send({
-            course: course,
-            success: true,
-            userImage: req.app.locals.displayImage,
-            userId: req.app.locals._id,
-            author: req.app.locals.username,
-        });
-        if (err) res.send({course: course, success: false});
-    })
+            User.findById(req.app.locals._id, function (err2, user) {
+                if(user != null) {
+                    let followedCourses;
+                    let foundItem;
+                    if (user.followedCourses != null) followedCourses = user.followedCourses;
+                    if (followedCourses.length > 0) {
+                        followedCourses.forEach((elem, index) => {
+                            if(elem == course._id) {
+                                foundItem = true;
+                            }
+                            if (index == followedCourses[followedCourses.length - 1] && foundItem === false) {
+                                firstTime = true;
+                            }
+
+                        });
+                    } else {
+                        firstTime = true;
+                    }
+                }
+                if (!err) res.send({
+                    course: course,
+                    success: true,
+                    userImage: req.app.locals.displayImage,
+                    userId: req.app.locals._id,
+                    author: req.app.locals.username,
+                    firstTime: firstTime,
+                });
+                if (err) res.send({course: course, success: false});
+            });
+        }
+    )
 });
 
 router.post('/followCourse', function (req, res, next) {
@@ -262,7 +286,7 @@ router.post('/rateCourse', function (req, res, next) {
             var allRatingValues = course.allRatingValues;
             if (!err) {
                 if (allRatingValues.length > 0) {
-                    for(let i = 0; i < allRatingValues.length; i++) {
+                    for (let i = 0; i < allRatingValues.length; i++) {
                         var elem = allRatingValues[i];
                         var index = i;
                         if (elem.authorId.equals(req.app.locals._id)) {
@@ -295,34 +319,34 @@ router.post('/rateCourse', function (req, res, next) {
     }
 })
 
-router.post('/createComment', function(req,res,next) {
+router.post('/createComment', function (req, res, next) {
     if (req.app.locals._id != null) {
-        if(req.app.locals._id.equals(req.body._id)) {
-                Course.findById(req.body.courseId, function(err, course) {
-                    course.comments.push({
-                        author: req.body.author,
-                        authorId: req.app.locals._id,
-                        authorImage: req.app.locals.displayImage,
-                        comment: req.body.comment
+        if (req.app.locals._id.equals(req.body._id)) {
+            Course.findById(req.body.courseId, function (err, course) {
+                course.comments.push({
+                    author: req.body.author,
+                    authorId: req.app.locals._id,
+                    authorImage: req.app.locals.displayImage,
+                    comment: req.body.comment
 
-                    });
-                    course.comments.sort(function(date1,date2){
-                        // Turn your strings into dates, and then subtract them
-                        // to get a value that is either negative, positive, or zero.
-                        if (date1.date > date2.date) return -1;
-                        if (date1.date < date2.date) return 1;
-                        return 0;
-                    });
+                });
+                course.comments.sort(function (date1, date2) {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    if (date1.date > date2.date) return -1;
+                    if (date1.date < date2.date) return 1;
+                    return 0;
+                });
 
 
-                    course.save(function (err, updatedCourse) {
+                course.save(function (err, updatedCourse) {
 
-                        console.log(updatedCourse.comments);
+                    console.log(updatedCourse.comments);
 
-                        if(!err) res.json({success: true, newComments: updatedCourse.comments});
-                        else res.json({success: false});
-                    })
+                    if (!err) res.json({success: true, newComments: updatedCourse.comments});
+                    else res.json({success: false});
                 })
+            })
         } else {
 
             res.json({success: false});
@@ -333,17 +357,17 @@ router.post('/createComment', function(req,res,next) {
 
 });
 
-router.post('/deleteComment', function(req,res,next) {
-    if(req.body.userId == req.app.locals._id) {
+router.post('/deleteComment', function (req, res, next) {
+    if (req.body.userId == req.app.locals._id) {
         Course.findById(req.body.courseId, function (err, course) {
-             let comments = course.comments;
-             comments.forEach((elem, index) => {
-                 if(elem._id == req.body._id) {
-                     comments = comments.splice(index, 1);
-                 }
-             })
+            let comments = course.comments;
+            comments.forEach((elem, index) => {
+                if (elem._id == req.body._id) {
+                    comments = comments.splice(index, 1);
+                }
+            })
             course.save(function (err, updatedCourse) {
-                if(!err) res.json({success: true, newComments: updatedCourse.comments});
+                if (!err) res.json({success: true, newComments: updatedCourse.comments});
                 else res.json({success: false});
             })
         });

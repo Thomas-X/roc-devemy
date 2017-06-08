@@ -64,33 +64,28 @@ class MyCoursesData extends Component {
             modalOpen: false,
         }
         this.removeCourse = this.removeCourse.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleClose = this.handleClose.bind(this);
     }
 
-
-
     removeCourse(id, index) {
-        console.log('removing course with id:', id,' with index: ',index)
 
-        // var init = {
-        //     method: 'POST',
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         id: id,
-        //     }),
-        // };
-        // fetch('/api/removeCourse', init)
-        //     .then(function (response) {
-        //         console.log(response);
-        //             if (response.status == 200) {
-        //                 this.state.data.splice(index, 1);
-        //                 this.setState(this.state);
-        //             }
-        //         }.bind(this)
-        //     );
+        var init = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+            }),
+        };
+        fetch('/api/removeCourse', init)
+            .then(function (response) {
+                console.log(response);
+                    if (response.status == 200) {
+                        this.state.data.splice(index, 1);
+                        this.setState(this.state);
+                    }
+                }.bind(this)
+            );
     }
 
     render() {
@@ -121,11 +116,10 @@ class MyCoursesData extends Component {
                                         (totaal: {dataItem.totalRatingCount})</TableRowColumn>
                                     <TableRowColumn>{commentLength}</TableRowColumn>
                                     <TableRowColumn>
-                                        <FlatButton label='verwijder cursus'
-                                                    labelStyle={styles.removeChapterButton}
-                                                    onTouchTap={this.handleOpen}/>
+
+                                        <PopUpModalDialog removeCourse={this.removeCourse} dataItem={dataItem} index={index}/>
+
                                     </TableRowColumn>
-                                    <PopUpModalDialog/>
                                 </TableRow>
                             )
                         }.bind(this))}

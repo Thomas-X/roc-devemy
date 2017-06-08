@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dialog, FlatButton} from "material-ui";
 import * as styles from "../styles";
-
+import PropTypes from 'prop-types';
 
 export default class PopUpModalDialog extends Component {
 
@@ -10,9 +10,11 @@ export default class PopUpModalDialog extends Component {
         this.state = {
             modalOpen: false,
         }
+        this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
     }
 
-        handleOpen() {
+    handleOpen() {
         this.setState({modalOpen: true});
     }
 
@@ -22,30 +24,40 @@ export default class PopUpModalDialog extends Component {
 
     render() {
         return (
-            <Dialog
-                title="Deze actie kan niet ongedaan worden, weet je het zeker?"
-                actions={
-                    <div>
-                        <FlatButton
-                            label="Nee"
-                            secondary={true}
-                            onTouchTap={this.handleClose}
-                        />
-                        <FlatButton
-                            label="Ja"
-                            style={styles.removeChapterButton}
-                            primary={true}
-                            onTouchTap={this.handleClose}
-                            onClick={function () {
-                                console.log('data in onClick of JA button ',dataItem._id, index);
-                                this.removeCourse(dataItem._id, index);
-                            }.bind(this)}
-                        />
-                    </div>}
-                modal={false}
-                open={this.state.modalOpen}
-                onRequestClose={this.handleClose}>
-            </Dialog>
+            <div>
+                <FlatButton label='verwijder cursus'
+                            labelStyle={styles.removeChapterButton}
+                            onTouchTap={this.handleOpen}/>
+                <Dialog
+                    title="Deze actie kan niet ongedaan worden, weet je het zeker?"
+                    actions={
+                        <div>
+                            <FlatButton
+                                label="Nee"
+                                secondary={true}
+                                onTouchTap={this.handleClose}
+                            />
+                            <FlatButton
+                                label="Ja"
+                                style={styles.removeChapterButton}
+                                primary={true}
+                                onTouchTap={this.handleClose}
+                                onClick={function () {
+                                    console.log(this.props.dataItem._id, this.props.index);
+                                    this.props.removeCourse(this.props.dataItem._id, this.props.index);
+                                }.bind(this)}
+                            />
+                        </div>
+                    }
+                    modal={false}
+                    open={this.state.modalOpen}
+                    onRequestClose={this.handleClose}>
+                </Dialog>
+            </div>
         )
     }
+}
+
+PopUpModalDialog.propTypes = {
+    dataItem: PropTypes.object,
 }

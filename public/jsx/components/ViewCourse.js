@@ -85,6 +85,8 @@ export default class ViewCourse extends Component {
 
         axios.post('/api/deleteComment/', {courseId: courseId,_id: _id, userId: userId}).then((responseJson) => {
             if(responseJson.data.success === true) {
+                this.state.course.comments = responseJson.data.newComments
+                this.setState(this.state);
             }
         });
 
@@ -213,8 +215,6 @@ export default class ViewCourse extends Component {
                             </div>
                         </Paper>
                         <Paper style={styles.commentContentContainer} zDepth={1}>
-                            img: {this.state.userImage}
-                            id: {this.state.userId}
                             <CreateComment
                                 userImage={this.state.userImage}
                                 userId={this.state.userId}

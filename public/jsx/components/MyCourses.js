@@ -12,7 +12,7 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import {hashHistory} from "react-router";
-
+import PopUpModalDialog from './PopUpModalDialog';
 import {TransitionGroup, CSSTransitionGroup} from 'react-transition-group';
 
 export default class MyCourses extends Component {
@@ -68,32 +68,29 @@ class MyCoursesData extends Component {
         this.handleClose = this.handleClose.bind(this);
     }
 
-    handleOpen() {
-        this.setState({modalOpen: true});
-    }
 
-    handleClose() {
-        this.setState({modalOpen: false});
-    }
 
     removeCourse(id, index) {
-        var init = {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: id,
-            }),
-        };
-        fetch('/api/removeCourse', init)
-            .then(function (response) {
-                    if (response.status == 200) {
-                        this.state.data.splice(index, 1);
-                        this.setState(this.state);
-                    }
-                }.bind(this)
-            );
+        console.log('removing course with id:', id,' with index: ',index)
+
+        // var init = {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         id: id,
+        //     }),
+        // };
+        // fetch('/api/removeCourse', init)
+        //     .then(function (response) {
+        //         console.log(response);
+        //             if (response.status == 200) {
+        //                 this.state.data.splice(index, 1);
+        //                 this.setState(this.state);
+        //             }
+        //         }.bind(this)
+        //     );
     }
 
     render() {
@@ -114,23 +111,8 @@ class MyCoursesData extends Component {
                     <TableBody displayRowCheckbox={false} showRowHover={true}>
                         {this.state.data.map(function (dataItem, index) {
                             var commentLength = dataItem.comments.length
+                            console.log('pre return dataItem id and data item values: ',dataItem._id, dataItem);
 
-                            actions = [
-                                <FlatButton
-                                    label="Nee"
-                                    secondary={true}
-                                    onTouchTap={this.handleClose}
-                                />,
-                                <FlatButton
-                                    label="Ja"
-                                    style={styles.removeChapterButton}
-                                    primary={true}
-                                    onTouchTap={this.handleClose}
-                                    onClick={function () {
-                                        this.removeCourse(dataItem._id, index);
-                                    }.bind(this)}
-                                />,
-                            ];
 
                             return (
                                 <TableRow key={index}>
@@ -143,19 +125,14 @@ class MyCoursesData extends Component {
                                                     labelStyle={styles.removeChapterButton}
                                                     onTouchTap={this.handleOpen}/>
                                     </TableRowColumn>
+                                    <PopUpModalDialog/>
                                 </TableRow>
                             )
                         }.bind(this))}
                     </TableBody>
                 </Table>
 
-                <Dialog
-                    title="Deze actie kan niet ongedaan worden, weet je het zeker?"
-                    actions={actions}
-                    modal={false}
-                    open={this.state.modalOpen}
-                    onRequestClose={this.handleClose}>
-                </Dialog>
+
             </div>
         )
     }

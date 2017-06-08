@@ -186,6 +186,7 @@ router.post('/removeCourse', function (req, res, next) {
         Course.find({'authorId': req.app.locals._id}, function (err, docs) {
             docs.forEach(function (elem) {
                 if (elem._id == req.body.id && !err) {
+                    console.log(req.body.id);
                     Course.findByIdAndRemove(req.body.id, function (err, doc) {
                         var response = {
                             success: true,
@@ -299,7 +300,7 @@ router.post('/createComment', function(req,res,next) {
         if(req.app.locals._id.equals(req.body._id)) {
                 Course.findById(req.body.courseId, function(err, course) {
                     course.comments.push({
-                        author: req.app.locals.displayName,
+                        author: req.body.author,
                         authorId: req.app.locals._id,
                         authorImage: req.app.locals.displayImage,
                         comment: req.body.comment
@@ -332,7 +333,7 @@ router.post('/createComment', function(req,res,next) {
 
 });
 
-router.delete('/deleteComment', function(req,res,next) {
+router.post('/deleteComment', function(req,res,next) {
     if(req.body.userId == req.app.locals._id) {
         Course.findById(req.body.courseId, function (err, course) {
              let comments = course.comments;
@@ -342,7 +343,7 @@ router.delete('/deleteComment', function(req,res,next) {
                  }
              })
             course.save(function (err, updatedCourse) {
-                if(!err) res.json({success: true});
+                if(!err) res.json({success: true, newComments: updatedCourse.comments});
                 else res.json({success: false});
             })
         });

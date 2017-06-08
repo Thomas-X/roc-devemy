@@ -36,6 +36,7 @@ export default class Search extends Component {
             } else if (response.data.success === false) {
                 this.setState({
                     success: false,
+                    courses: [],
                 })
             }
         }.bind(this))

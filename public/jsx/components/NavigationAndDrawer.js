@@ -95,6 +95,10 @@ export default class NavigationAndDrawer extends React.Component {
                                         <MenuItem
                                             leftIcon={<i className="fa fa-github" style={styles.githubIconDrawer}/>}>GitHub</MenuItem>
                                     </a>
+                                    <a href="https://google.com/">
+                                        <MenuItem
+                                            leftIcon={<i className="fa fa-google" style={styles.githubIconDrawer}/>}>google</MenuItem>
+                                    </a>
                                 </div>
                                 :
                                 <div>

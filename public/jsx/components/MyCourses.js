@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CircularProgress, Dialog, FlatButton, Paper} from "material-ui";
+import {CircularProgress, Dialog, FlatButton, Paper, RaisedButton} from "material-ui";
 import * as styles from "../styles";
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import {hashHistory} from "react-router";
+import {hashHistory, IndexLink} from "react-router";
 import PopUpModalDialog from './PopUpModalDialog';
 import {TransitionGroup, CSSTransitionGroup} from 'react-transition-group';
 
@@ -99,6 +99,7 @@ class MyCoursesData extends Component {
                             <TableHeaderColumn tooltip="De titel">Titel</TableHeaderColumn>
                             <TableHeaderColumn tooltip="De beoordeling">Beoordeling</TableHeaderColumn>
                             <TableHeaderColumn tooltip="Totaal aantal commentaar">Commentaar</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Naar de beheerpagina van de cursus">Beheerpagina</TableHeaderColumn>
                             <TableHeaderColumn tooltip="Verwijderen">Verwijderen</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
@@ -115,6 +116,13 @@ class MyCoursesData extends Component {
                                     <TableRowColumn>{dataItem.ratingAverage}
                                         (totaal: {dataItem.totalRatingCount})</TableRowColumn>
                                     <TableRowColumn>{commentLength}</TableRowColumn>
+                                    <TableRowColumn>
+
+                                        <IndexLink to={"/teacher/course/" + dataItem._id}>
+                                            <RaisedButton primary={true} label='Naar beheerpagina' labelStyle={styles.whiteText}/>
+                                        </IndexLink>
+
+                                    </TableRowColumn>
                                     <TableRowColumn>
 
                                         <PopUpModalDialog removeCourse={this.removeCourse} dataItem={dataItem} index={index}/>

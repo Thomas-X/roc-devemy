@@ -10,6 +10,7 @@ var UserSchema = new Schema({
     email: {type: String, default: null},
     role: {type: String, default: 'student'},
     followedCourses: {type: [], default: null},
+    finishedCourses: {type: [], default: null},
 });
 
 var User = mongoose.model('User', UserSchema);

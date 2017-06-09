@@ -170,6 +170,7 @@ router.get('/authUser', function (req, res, next) {
     }
 })
 
+
 router.get('/myCourses', function (req, res, next) {
     if (req.app.locals.role == 'teacher') {
         Course.find({'authorId': req.app.locals._id}, function (err, docs) {
@@ -220,13 +221,13 @@ router.post('/getCourseById', function (req, res, next) {
 
     Course.findById(req.body._id, function (err, course) {
             User.findById(req.app.locals._id, function (err2, user) {
-                if(user != null) {
+                if (user != null) {
                     let followedCourses;
                     let foundItem;
                     if (user.followedCourses != null) followedCourses = user.followedCourses;
                     if (followedCourses.length > 0) {
                         followedCourses.forEach((elem, index) => {
-                            if(elem == course._id) {
+                            if (elem == course._id) {
                                 foundItem = true;
                             }
                             if (index == followedCourses[followedCourses.length - 1] && foundItem === false) {
@@ -375,4 +376,96 @@ router.post('/deleteComment', function (req, res, next) {
     }
 });
 
+router.post('/getStudentsFollowingCourse', function (req, res, next) {
+    if (req.body.courseId != null) {
+        Course.findById(req.body.courseId, (err, course) => {
+            if (course.authorId != req.app.locals._id) {
+                res.send({authenticated: false});
+            }
+            if (req.app.locals.role == 'teacher' && !err && course.authorId == req.app.locals._id) {
+                let usersFollowingCourse = [];
+                User.find({}, function (err, users) {
+                    users.forEach((user) => {
+                        if (user.followedCourses.includes(req.body.courseId)) {
+                            let finishedCourse = false;
+                            if (user.finishedCourses.includes(req.body.courseId)) {
+                                finishedCourse = true;
+                            }
+                            usersFollowingCourse.push({
+                                _id: user._id,
+                                username: user.displayName,
+                                email: user.email,
+                                finishedCourse: finishedCourse,
+                            });
+                        }
+                    });
+                    if (usersFollowingCourse.length > 0) {
+                        res.send({users: usersFollowingCourse, success: true});
+                    } else {
+                        res.send({success: false});
+                    }
+                });
+            } else if (course.authorId == req.app.locals._id) {
+                res.send({success: false});
+            }
+        })
+    } else {
+        res.send({success: false});
+    }
+});
+
+router.post('/finishCourse', function (req, res, next) {
+    if (req.body.courseId != null && req.body.notFinished == true) {
+        console.log('user is finished but we say yes to him called')
+        Course.findById(req.body.courseId, (err, course) => {
+            if (course.authorId != req.app.locals._id) {
+                res.send({authenticated: false});
+            }
+            if (req.app.locals.role == 'teacher' && !err && course.authorId == req.app.locals._id) {
+                User.findById(req.body.user._id, function (err, user) {
+                    if (!err) {
+                        if (!user.finishedCourses.includes(req.body.courseId)) {
+                            user.finishedCourses.push(req.body.courseId);
+                            user.save((err) => {
+                                if (!err) res.send({success: true, finishedCourse: true});
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    } else if (req.body.notFinished == false && req.body.courseId != null) {
+        console.log('user is finished but we say no to him called')
+        // this is so if the user already finished it but for some reason it isnt finished any more
+        // no we undo the fact that the user finished course
+        Course.findById(req.body.courseId, (err, course) => {
+            if (course.authorId != req.app.locals._id) {
+                res.send({authenticated: false});
+            }
+            console.log('first if after auth:', req.app.locals.role === 'teacher' && !err && course.authorId == req.app.locals._id);
+            if (req.app.locals.role === 'teacher' && !err && course.authorId == req.app.locals._id) {
+                User.findById(req.body.user._id, (err, user) => {
+                    console.log('user find by id errr', err);
+                    if (!err) {
+                        console.log('finished courses includes', user.finishedCourses.includes(req.body.courseId));
+                        if (user.finishedCourses.includes(req.body.courseId)) {
+                            user.finishedCourses.forEach((elem, index) => {
+                                console.log('foreach elem == courseid', elem == req.body.courseId);
+                                if (elem == req.body.courseId) {
+                                    user.finishedCourses.splice(index, 1);
+                                    user.save((err) => {
+                                        if (!err) {
+                                            console.log('sending success call..');
+                                            res.send({success: true, finishedCourse: false})
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        });
+    }
+})
 module.exports = router;

@@ -510,5 +510,7 @@ export const commentMoreAndDateContainer = {
 export const searchCoursesResultContainer = {
     display:'flex',
     flexWrap: 'wrap',
-
+}
+export const loader = {
+    margin:20,
 }

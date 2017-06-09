@@ -22,6 +22,7 @@ import Me from "./components/Me";
 import Search from './components/Search';
 import ViewCourse from './components/ViewCourse';
 import formsyExample from "./formsyExample";
+import TeacherBoardPage from './components/TeacherBoardPage';
 
 class App extends Component {
 
@@ -37,10 +38,12 @@ class App extends Component {
                         <Route path="/logout" component={Logout}/>
                         <Route path="/courses/createCourse" component={CreateCourseAndRedirect}/>
                         <Route path="/courses/editor/:courseid" component={CreateCourse}/>
+                        <Route path="/courses/:courseid" component={ViewCourse}/>
+
                         <Route path="/about/me" component={Me}/>
                         <Route path="/about/me/mycourses" component={MyCourses}/>
                         <Route path="/search" component={Search}/>
-                        <Route path="/courses/:courseid" component={ViewCourse}/>
+                        <Route path="/teacher/course/:courseid" component={TeacherBoardPage}/>
                         {/* this should always be the last route, otherwise the router params routes break*/}
                         <Route path="/test" component={formsyExample}/>
                         <Route path="*" component={NotFound}/>

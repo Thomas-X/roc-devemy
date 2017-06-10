@@ -8,7 +8,7 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import axios from 'axios';
-import {Checkbox, CircularProgress, Paper} from "material-ui";
+import {Checkbox, CircularProgress, Paper, TextField} from "material-ui";
 import * as styles from "../styles";
 import {hashHistory} from 'react-router';
 
@@ -20,9 +20,11 @@ export default class TeacherBoardPage extends Component {
             data: null,
             loaded: false,
             noItems: false,
+            searchData: [],
         }
 
         this.handleRowClick = this.handleRowClick.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -75,6 +77,19 @@ export default class TeacherBoardPage extends Component {
         }
     }
 
+    handleSearch(event) {
+
+        // this doenst work at all, fix this 
+
+        this.state.searchData = [];
+        this.state.data.forEach((elem, index) => {
+            if(elem.includes(event.target.value)) {
+                this.state.searchData.push(elem);
+            }
+        });
+        this.setState(this.state);
+    }
+
     render() {
         return (
             <Paper style={styles.paperEditorContent} zDepth={1}>
@@ -84,9 +99,22 @@ export default class TeacherBoardPage extends Component {
                         height={500}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
+                                <TableHeaderColumn tooltip='Zoek naar een specifieke student' colSpan="3">
+                                    <TextField
+                                        hintText="Search students .."
+                                        floatingLabelStyle={styles.floatingLabelStyle}
+                                        underlineFocusStyle={styles.underlineStyle}
+                                        onChange={(event) => {
+                                            this.handleSearch(event)
+                                        }}
+                                    />
+                                </TableHeaderColumn>
+                            </TableRow>
+                            <TableRow>
                                 <TableHeaderColumn tooltip='Of de student de cursus af heeft'>Klaar met cursus</TableHeaderColumn>
                                 <TableHeaderColumn tooltip='De naam van de student'>Naam</TableHeaderColumn>
                                 <TableHeaderColumn tooltip='De email van de student'>Email</TableHeaderColumn>
+
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false} showRowHover={true}>

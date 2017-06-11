@@ -272,6 +272,12 @@ export const card = {
     cursor: 'pointer',
     margin: 10,
 }
+export const finishedCard = {
+    width: 250,
+    height: 286,
+    cursor: 'pointer',
+    margin: 10,
+}
 export const cardImage = {
     width: 250,
     height: 250,
@@ -567,7 +573,9 @@ export const certificate = {
 }
 export const iFramedescriptionContainer = {
     padding:20,
+    height: 100,
     backgroundColor: colors.white,
+    textOverflow: 'ellipsis',
 }
 export const iFrameHeaderTitle = {
     fontSize: '1.5em',

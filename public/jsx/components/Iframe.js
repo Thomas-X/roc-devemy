@@ -13,6 +13,20 @@ export default class Iframe extends Component {
         }
     }
 
+    // this is some sketchy style changing to prevent iFrame from getting some standard styling that normally
+    // would be okay to have (padding top for the nav and background image)
+    componentWillMount(){
+        document.body.style.padding = 0;
+        document.body.style.minWidth = 0;
+        document.body.style.backgroundImage = 'none';
+
+    }
+    componentWillUnmount(){
+        document.body.style.padding = null;
+        document.body.style.minWidth = null;
+        document.body.style.backgroundImage = null;
+    }
+
     componentDidMount() {
         axios.post('/api/iFrameData', {courseId: this.props.params.courseid, userId: this.props.params.userid,}).then((response) => {
             if(response.data.success === true) {
@@ -25,6 +39,10 @@ export default class Iframe extends Component {
     }
 
     render() {
+        let date;
+        if(this.state.data != null) {
+            date = this.state.data.date.substr(0, 10);
+        }
         return (
             <div>
             {this.state.loaded ?
@@ -37,7 +55,7 @@ export default class Iframe extends Component {
                         <img src="/images/roc-dev-logo.png" style={styles.iFrameHeaderLogo}/>
                     </Paper>
                     <div style={styles.iFramedescriptionContainer}>
-                        <span>Op {this.state.data.date} heeft {this.state.data.username} {this.state.data.title} succesvol afgerond.</span>
+                        <span>Op {date} heeft {this.state.data.username} {this.state.data.title} succesvol afgerond.</span>
                     </div>
                 </div>
             :

@@ -34,6 +34,7 @@
     "prop-types": "latest",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.5.2",
+    "react-copy-to-clipboard": "^5.0.0",
     "react-dom": "^15.5.4",
     "react-router": "^2.8.0",
     "react-tap-event-plugin": "^2.0.1",

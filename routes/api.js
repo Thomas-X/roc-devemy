@@ -33,11 +33,11 @@ router.get('/getUserProfile', function (req, res, next) {
 
         var finishedCoursesData = [];
 
-        if(req.user.finishedCourses.length > 0) {
-            req.user.finishedCourses.forEach((elem ,index) => {
-                Course.findById(elem, function (err, course) {
-                    if(!err) finishedCoursesData.push(course);
-                    if((index) == (req.user.finishedCourses.length - 1)) {
+        if (req.user.finishedCourses.length > 0) {
+            req.user.finishedCourses.forEach((elem, index) => {
+                Course.findById(elem.courseId, function (err, course) {
+                    if (!err) finishedCoursesData.push(course);
+                    if ((index) == (req.user.finishedCourses.length - 1)) {
                         console.log(finishedCoursesData);
                         res.json(JSON.stringify({
                             data: req.user,
@@ -410,9 +410,13 @@ router.post('/getStudentsFollowingCourse', function (req, res, next) {
                     users.forEach((user) => {
                         if (user.followedCourses.includes(req.body.courseId)) {
                             let finishedCourse = false;
-                            if (user.finishedCourses.includes(req.body.courseId)) {
-                                finishedCourse = true;
-                            }
+
+                            user.finishedCourses.forEach((elem) => {
+                                if (elem.courseId == req.body.courseId) {
+                                    finishedCourse = true;
+                                }
+                            })
+
                             usersFollowingCourse.push({
                                 _id: user._id,
                                 username: user.displayName,
@@ -446,8 +450,27 @@ router.post('/finishCourse', function (req, res, next) {
             if (req.app.locals.role == 'teacher' && !err && course.authorId == req.app.locals._id) {
                 User.findById(req.body.user._id, function (err, user) {
                     if (!err) {
-                        if (!user.finishedCourses.includes(req.body.courseId)) {
-                            user.finishedCourses.push(req.body.courseId);
+                        if (user.finishedCourses.length > 0) {
+
+                            let foundOne = false;
+                            user.finishedCourses.forEach((elem, index) => {
+
+                                if(elem.courseId == req.body.courseId) {
+                                    foundOne = true;
+                                }
+
+                                if (index == (user.finishedCourses.length - 1) && foundOne === false) {
+                                    user.finishedCourses.push({courseId: req.body.courseId});
+                                    user.save((err) => {
+                                        if (!err) res.send({success: true, finishedCourse: true});
+                                    });
+                                }
+                            });
+                        } else {
+
+                            console.log('finished courses else');
+                            let finishedCourses = user.finishedCourses;
+                            finishedCourses.push({courseId: req.body.courseId});
                             user.save((err) => {
                                 if (!err) res.send({success: true, finishedCourse: true});
                             });
@@ -470,24 +493,88 @@ router.post('/finishCourse', function (req, res, next) {
                     console.log('user find by id errr', err);
                     if (!err) {
                         console.log('finished courses includes', user.finishedCourses.includes(req.body.courseId));
-                        if (user.finishedCourses.includes(req.body.courseId)) {
-                            user.finishedCourses.forEach((elem, index) => {
-                                console.log('foreach elem == courseid', elem == req.body.courseId);
-                                if (elem == req.body.courseId) {
+                        user.finishedCourses.forEach((elem, index) => {
+                            if (user.finishedCourses[index].courseId == req.body.courseId) {
+                                console.log('foreach elem == courseid', elem.courseId == req.body.courseId);
+                                if (elem.courseId == req.body.courseId) {
                                     user.finishedCourses.splice(index, 1);
                                     user.save((err) => {
                                         if (!err) {
                                             console.log('sending success call..');
                                             res.send({success: true, finishedCourse: false})
                                         }
-                                    })
+                                    });
                                 }
-                            })
-                        }
+                            }
+                        })
+
                     }
                 });
             }
         });
     }
-})
+});
+
+router.post('/removeAllStudentsFromCourse', function (req, res, next) {
+    Course.findById(req.body.courseId, (err, course) => {
+        if (course.authorId != req.app.locals._id) {
+            res.json({authenticated: false});
+        }
+        if (req.app.locals.role === 'teacher' && !err && course.authorId == req.app.locals._id) {
+            User.find({}, (err, users) => {
+                users.forEach((user, index) => {
+                    if (user.followedCourses.includes(req.body.courseId)) {
+                        user.followedCourses.forEach((elem, index) => {
+                            if (elem == req.body.courseId) {
+                                user.followedCourses.splice(index, 1);
+                            }
+                        })
+                    }
+                    if (user.finishedCourses.includes(req.body.courseId)) {
+                        user.finishedCourses.forEach((elem, index) => {
+                            if (elem.courseId == req.body.courseId) {
+                                user.finishedCourses.splice(index, 1);
+                            }
+                        });
+                    }
+                });
+                users.forEach((elem, index) => {
+                    elem.save((err) => {
+                        if (!err && index == (users.length - 1)) res.json({success: true});
+                    });
+                })
+            });
+        }
+    });
+});
+
+router.post('/iFrameData', function (req, res, next) {
+
+    // there is no auth here since this data is public and not sensitive
+
+    User.findById(req.body.userId, (err, user) => {
+        if (!err) {
+            user.finishedCourses.forEach((elem, index) => {
+                if (elem.courseId == req.body.courseId) {
+                    Course.findById(req.body.courseId, (err, course) => {
+                        if (!err) {
+                            let iFrameData = {};
+                            iFrameData.title = course.title;
+                            iFrameData.date = elem.date;
+                            iFrameData.username = user.displayName;
+                            res.json({iFrameData: iFrameData, success: true});
+                        } else {
+                            res.json({success: false})
+                        }
+                    })
+                } else {
+                    res.json({success: false})
+                }
+            })
+        } else {
+            res.json({success: false})
+        }
+    })
+
+});
 module.exports = router;

@@ -63,7 +63,6 @@ export const container = {
     height: '100%',
 }
 export const userProfileAbout = {
-    marginLeft: 5,
 }
 export const circularLoader = {
     width: '100%',
@@ -517,8 +516,14 @@ export const loader = {
 }
 export const meAboutContainer = {
     width: 420,
+    alignSelf: 'center',
 }
 export const finishedCoursesContainer = {
+    width: '80%',
+    padding: 10,
+    marginTop: 40,
+    marginBottom: 40,
+    alignSelf: 'center',
 }
 export const aboutContainer = {
     marginTop: 40,
@@ -529,4 +534,54 @@ export const aboutContainer = {
 }
 export const lightHeader = {
     fontWeight: 300,
+}
+export const tableRemoveStudents = {
+    display:'flex',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'space-between',
+}
+export const removeStudentsFromCourseButtonContainer = {
+    height: 36,
+    alignSelf: 'center',
+}
+export const finishedCourseItemsContainer = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+}
+export const iFrame = {
+    width:300,
+}
+export const bannerContainer = {
+    width: '100%',
+    backgroundColor: customTheme.primary1Color,
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+}
+export const certificate = {
+    color: colors.amber500,
+    fontSize: '2em',
+    padding: 10
+}
+export const iFramedescriptionContainer = {
+    padding:20,
+    backgroundColor: colors.white,
+}
+export const iFrameHeaderTitle = {
+    fontSize: '1.5em',
+    color: customTheme.alternateTextColor,
+    alignSelf: 'center'
+}
+export const iFrameHeaderLogo = {
+    height: 'auto',
+    width: 90,
+    alignSelf: 'center',
+    paddingRight: 10,
+}
+export const certificateAndIframeHeaderTitleContainer = {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
 }

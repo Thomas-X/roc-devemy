@@ -7,6 +7,7 @@ import ActionInfoOutline from "material-ui/svg-icons/action/info-outline";
 import SocialPersonOutline from "material-ui/svg-icons/social/person-outline";
 import axios from 'axios';
 import CourseItem from './CourseItem';
+import FinishedCourseItem from "./FinishedCourseItem";
 
 
 export default class UserProfile extends React.Component {
@@ -72,21 +73,21 @@ export default class UserProfile extends React.Component {
 
                     </div>
                 </Paper>
-                <div style={styles.finishedCoursesContainer}>
-                    <hr/>
-                    {this.props.finishedCoursesData.map((elem, index) => {
-                        if (elem != null && this.props.finishedCoursesData.length > 0) {
-                            return (
-                                <div>
-                                    <h1 style={styles.lightHeader}>Afgemaakte cursussen</h1>
-                                    <CourseItem courseData={elem}/>
+                {this.props.finishedCoursesData.map((elem, index) => {
+                    if (elem != null && this.props.finishedCoursesData.length > 0) {
+                        return (
+                            <Paper style={styles.finishedCoursesContainer} zDepth={1}>
+                                <h1 style={styles.lightHeader}>Afgemaakte cursussen</h1>
+                                <Divider/>
+                                <div style={styles.finishedCourseItemsContainer}>
+                                <FinishedCourseItem courseData={elem} userId={this.props.userdata._id}/>
                                 </div>
-                            )
-                        } else {
-                            return null;
-                        }
-                    })}
-                </div>
+                            </Paper>
+                        )
+                    } else {
+                        return null;
+                    }
+                })}
             </div>
         )
     }

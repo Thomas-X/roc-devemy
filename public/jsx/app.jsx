@@ -23,6 +23,7 @@ import Search from './components/Search';
 import ViewCourse from './components/ViewCourse';
 import formsyExample from "./formsyExample";
 import TeacherBoardPage from './components/TeacherBoardPage';
+import Iframe from "./components/Iframe";
 
 class App extends Component {
 
@@ -42,12 +43,14 @@ class App extends Component {
 
                         <Route path="/about/me" component={Me}/>
                         <Route path="/about/me/mycourses" component={MyCourses}/>
+
                         <Route path="/search" component={Search}/>
                         <Route path="/teacher/course/:courseid" component={TeacherBoardPage}/>
                         {/* this should always be the last route, otherwise the router params routes break*/}
                         <Route path="/test" component={formsyExample}/>
-                        <Route path="*" component={NotFound}/>
                     </Route>
+                    <Route path="/iframe/:courseid/:userid" component={Iframe}/>
+                    <Route path="*" component={NotFound}/>
                 </Router>
             </MuiThemeProvider>
         )

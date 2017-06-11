@@ -27,6 +27,10 @@ class Hero extends Component {
     render() {
         return (
             <div style={styles.heroContainer} className="heroContainer">
+
+                <iframe src="http://localhost:7000/#/iframe/593d36eb1062b024108287ec/593d3677acd7f00c18b98cbb?_k=u17ro7" width={300}>
+
+                </iframe>
                 <img src="../images/roc-dev-logo.png" style={styles.heroImage}/> <br/>
                 <h2 style={styles.heroTitle}>Roc-Devemy</h2>
                 <span style={styles.heroDescription} className="heroDescription">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi

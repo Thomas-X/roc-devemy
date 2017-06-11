@@ -26,14 +26,36 @@ router.get('/getUserData', function (req, res, next) {
 
 router.get('/getUserProfile', function (req, res, next) {
 
-    // we don't have to worry about wheter user is logged in because we can just use isLoggedIn here and don't need to give
-    // an unique response versus the .get route /getUserData
+    console.log('HI GET USER PROFILE!!!!');
+
 
     if (req.isAuthenticated()) {
-        res.json(JSON.stringify({
-            data: req.user,
-            Authenticated: true,
-        }));
+
+        var finishedCoursesData = [];
+
+        if(req.user.finishedCourses.length > 0) {
+            req.user.finishedCourses.forEach((elem ,index) => {
+                Course.findById(elem, function (err, course) {
+                    if(!err) finishedCoursesData.push(course);
+                    if((index) == (req.user.finishedCourses.length - 1)) {
+                        console.log(finishedCoursesData);
+                        res.json(JSON.stringify({
+                            data: req.user,
+                            finishedCoursesData: finishedCoursesData,
+                            Authenticated: true,
+                        }));
+                    }
+                })
+            })
+        } else {
+            res.json(JSON.stringify({
+                data: req.user,
+                finishedCoursesData: finishedCoursesData,
+                Authenticated: true,
+            }))
+        }
+
+
     } else {
         res.json(JSON.stringify({
             Authenticated: false,

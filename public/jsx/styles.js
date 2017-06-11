@@ -80,9 +80,10 @@ export const userProfileAboutUserImage = {
     alignSelf: 'center',
 }
 export const userProfileAboutUserImageAndUsernameContainer = {
-    width: '100%',
-    display: 'flex',
-    height: 80,
+    display:'flex',
+    justifyContent: 'center',
+    height: 190,
+    backgroundColor: customTheme.footerColor,
 }
 
 export const floatingLabelStyle = {
@@ -270,7 +271,7 @@ export const card = {
     width: 250,
     height: 250,
     cursor: 'pointer',
-    margin:10,
+    margin: 10,
 }
 export const cardImage = {
     width: 250,
@@ -427,7 +428,7 @@ export const ViewCourseNavigation = {
     alignSelf: 'flex-end',
 }
 export const ViewCourseContent = {
-    display:'flex',
+    display: 'flex',
     flexDirection: 'column',
 }
 export const ViewCourseGoToCourse = {
@@ -447,7 +448,7 @@ export const commentContentContainer = {
 }
 export const commentContainer = {
     width: '100%',
-    display:'flex',
+    display: 'flex',
 
 }
 export const commentUserImage = {
@@ -456,11 +457,11 @@ export const commentUserImage = {
     margin: 16,
 }
 export const createCommentContainer = {
-    display:'flex',
+    display: 'flex',
     flexWrap: 'no-wrap',
 }
 export const mCreateCommentContainer = {
-    display:'flex',
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -472,11 +473,11 @@ export const createCommentSubmitButton = {
     marginRight: 16,
 }
 export const commentDateAndDescriptionContainer = {
-    display:'flex',
+    display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    width:'100%',
+    width: '100%',
     maxWidth: 710,
     height: 48,
 }
@@ -496,21 +497,36 @@ export const commentViewMore = {
     alignSelf: 'flex-end',
 }
 export const authorAndCommentContentContainer = {
-    display:'flex',
-    flexDirection:'column',
-    height:48,
+    display: 'flex',
+    flexDirection: 'column',
+    height: 48,
     marginTop: 16,
 }
 export const commentMoreAndDateContainer = {
     height: '48px !important',
-    display:'flex',
+    display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column-reverse',
 }
 export const searchCoursesResultContainer = {
-    display:'flex',
+    display: 'flex',
     flexWrap: 'wrap',
 }
 export const loader = {
-    margin:20,
+    margin: 20,
+}
+export const meAboutContainer = {
+    width: 420,
+}
+export const finishedCoursesContainer = {
+}
+export const aboutContainer = {
+    marginTop: 40,
+    marginBottom: 40,
+    display:'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+}
+export const lightHeader = {
+    fontWeight: 300,
 }

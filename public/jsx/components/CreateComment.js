@@ -22,14 +22,13 @@ export default class CreateComment extends Component {
     }
 
     commentInput(event) {
-        console.log(event.target.value);
         var str = event.target.value;
 
         // if this is not true, it only contains whitespace which we dont accept
         if (str.replace(/\s/g, '').length) {
             this.setState({
                 submitButtonDisabled: false,
-                textValue: str,
+                textValue: event.target.value,
             })
         } else {
             this.setState({
@@ -69,7 +68,7 @@ export default class CreateComment extends Component {
                         buttonBgColour: '#ff5722',
                         submitButtonLabel: 'Create comment',
                     })
-                }, 4000)
+                }, 1000)
             }.bind(this))
     }
 
@@ -91,7 +90,7 @@ export default class CreateComment extends Component {
                 </div>
                 <RaisedButton style={styles.createCommentSubmitButton}
                               disabled={this.state.submitButtonDisabled}
-                              primary={true}
+                              labelStyle={styles.whiteText}
                               backgroundColor={this.state.buttonBgColour}
                               onClick={this.submitComment}
                               label={this.state.submitButtonLabel}/>

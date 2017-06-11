@@ -6,6 +6,8 @@ import CommunicationMailOutline from "material-ui/svg-icons/communication/mail-o
 import ActionInfoOutline from "material-ui/svg-icons/action/info-outline";
 import SocialPersonOutline from "material-ui/svg-icons/social/person-outline";
 import axios from 'axios';
+import CourseItem from './CourseItem';
+
 
 export default class UserProfile extends React.Component {
     constructor(props) {
@@ -15,12 +17,13 @@ export default class UserProfile extends React.Component {
     }
 
     render() {
-        this.props.userdata.isTeacher = String(this.props.userdata.isTeacher);
+        let role = false
+        if (this.props.userdata.role == 'teacher') {
+            role = true;
+        }
         return (
-            <div>
-                <Paper style={styles.paperEditorContent} zDepth={1}>
-                    <h1>About me</h1>
-                    <hr/>
+            <div style={styles.aboutContainer}>
+                <Paper style={styles.meAboutContainer} zDepth={1}>
                     <div style={styles.userProfileAbout}>
                         <div style={styles.userProfileAboutUserImageAndUsernameContainer}>
                             <img src={this.props.userdata.displayImage} style={styles.userProfileAboutUserImage}/>
@@ -52,7 +55,7 @@ export default class UserProfile extends React.Component {
                                     </div>
                                 }>
                             </ListItem>
-                            {this.props.userdata.isTeacher ?
+                            {role ?
                                 <ListItem
                                     primaryText="You're a Teacher!"
                                     leftIcon={<ActionInfoOutline/>}
@@ -69,6 +72,21 @@ export default class UserProfile extends React.Component {
 
                     </div>
                 </Paper>
+                <div style={styles.finishedCoursesContainer}>
+                    <hr/>
+                    {this.props.finishedCoursesData.map((elem, index) => {
+                        if (elem != null && this.props.finishedCoursesData.length > 0) {
+                            return (
+                                <div>
+                                    <h1 style={styles.lightHeader}>Afgemaakte cursussen</h1>
+                                    <CourseItem courseData={elem}/>
+                                </div>
+                            )
+                        } else {
+                            return null;
+                        }
+                    })}
+                </div>
             </div>
         )
     }
@@ -76,5 +94,5 @@ export default class UserProfile extends React.Component {
 
 // TODO add watchedCourses as a PropType
 UserProfile.propTypes = {
-    userdata: PropTypes.object
+    userdata: PropTypes.object,
 }

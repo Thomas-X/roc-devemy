@@ -8,6 +8,8 @@ import {CircularProgress, Divider} from "material-ui";
 import ActionHome from 'material-ui/svg-icons/action/home';
 import {IndexLink} from "react-router";
 
+import CourseItem from './CourseItem';
+
 export default class UserHomePage extends Component {
     constructor(props) {
         super(props);
@@ -92,33 +94,3 @@ export default class UserHomePage extends Component {
     }
 }
 
-class CourseItem extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <Card style={styles.card}>
-                <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
-                    <CardMedia
-                        overlay={
-                            <div style={styles.cardTitleContainer}>
-                                <CardTitle
-                                    titleStyle={styles.cardTitleStyle}
-                                    subtitleStyle={styles.cardSubtitleStyle}
-                                    title={this.props.courseData.title}
-                                    subtitle={this.props.courseData.author}/>
-                            </div>
-                        }>
-                        <img src={this.props.courseData.imgURL} style={styles.cardImage}/>
-                    </CardMedia>
-                </IndexLink>
-            </Card>
-        )
-    }
-}
-CourseItem.propTypes = {
-    courseData: PropTypes.object
-}

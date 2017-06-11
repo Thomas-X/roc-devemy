@@ -20,6 +20,7 @@ export default class TeacherBoardPage extends Component {
             data: null,
             loaded: false,
             noItems: false,
+            searchQuery: null,
             searchData: [],
         }
 
@@ -29,13 +30,13 @@ export default class TeacherBoardPage extends Component {
 
     componentDidMount() {
         axios.post('/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
-            console.log(response);
             if (response.data.authenticated === false) {
                 hashHistory.push('/');
             } else {
                 if (response.data.success === true) {
                     this.setState({
                         data: response.data.users,
+                        searchData: response.data.users,
                         loaded: true,
                         noItems: false,
                     });
@@ -67,10 +68,12 @@ export default class TeacherBoardPage extends Component {
                 }
                 if (response.data.success === true && response.data.finishedCourse === true) {
                     this.state.data[index].finishedCourse = true;
+                    this.state.searchData[index].finishedCourse = true;
                     this.setState(this.state);
                 }
                 if (response.data.success === true && response.data.finishedCourse === false) {
                     this.state.data[index].finishedCourse = false;
+                    this.state.searchData[index].finishedCourse = false;
                     this.setState(this.state);
                 }
             })
@@ -78,15 +81,13 @@ export default class TeacherBoardPage extends Component {
     }
 
     handleSearch(event) {
-
-        // this doenst work at all, fix this 
-
         this.state.searchData = [];
+        this.state.searchQuery = event.target.value;
         this.state.data.forEach((elem, index) => {
-            if(elem.includes(event.target.value)) {
+            if (elem.username.toLowerCase().indexOf(event.target.value.toLowerCase()) != -1) {
                 this.state.searchData.push(elem);
             }
-        });
+        })
         this.setState(this.state);
     }
 
@@ -96,7 +97,7 @@ export default class TeacherBoardPage extends Component {
 
                 {this.state.loaded ?
                     <Table
-                        height={500}>
+                        height='500'>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
                                 <TableHeaderColumn tooltip='Zoek naar een specifieke student' colSpan="3">
@@ -111,15 +112,15 @@ export default class TeacherBoardPage extends Component {
                                 </TableHeaderColumn>
                             </TableRow>
                             <TableRow>
-                                <TableHeaderColumn tooltip='Of de student de cursus af heeft'>Klaar met cursus</TableHeaderColumn>
+                                {/* no tool tip because of weird hovering issue*/}
+                                <TableHeaderColumn>Klaar met cursus</TableHeaderColumn>
                                 <TableHeaderColumn tooltip='De naam van de student'>Naam</TableHeaderColumn>
                                 <TableHeaderColumn tooltip='De email van de student'>Email</TableHeaderColumn>
 
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false} showRowHover={true}>
-                            {this.state.data.map((user, index) => {
-                                console.log(user.finishedCourse, user);
+                            {this.state.searchData.map((user, index) => {
                                 return (
                                     <TableRow key={index}>
                                         <TableRowColumn>

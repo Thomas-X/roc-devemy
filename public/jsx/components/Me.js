@@ -12,21 +12,27 @@ export default class Me extends React.Component {
             loaded: false,
             data: null,
             authenticated: true,
+            finishedCoursesData: null,
         }
     }
 
     componentDidMount() {
         axios.get('/api/getUserProfile').then(function (responseJson) {
 
+            console.log(responseJson);
+
+
             var auth = JSON.parse(responseJson['data']).Authenticated
 
-            if(!auth) {
-                this.state.authenticated = false
-            } else if(auth) {
-                responseJson = JSON.parse(responseJson['data']).data;
-                this.state.authenticated = true,
-                    this.state.loaded = true;
-                this.state.data = responseJson;
+
+            if (!auth) {
+                this.state.authenticated = false;
+            } else if (auth) {
+                this.state.authenticated = true;
+                this.state.loaded = true;
+                this.state.data =  JSON.parse(responseJson['data']).data;
+
+                this.state.finishedCoursesData = JSON.parse(responseJson['data']).finishedCoursesData;
             }
             this.setState(this.state);
         }.bind(this));
@@ -36,7 +42,8 @@ export default class Me extends React.Component {
     render() {
         return (
             <div>
-                {this.state.loaded ? <UserProfile userdata={this.state.data}/> : <CircularLoader isAuthenticated={this.state.authenticated}/>}
+                {this.state.loaded ? <UserProfile userdata={this.state.data} finishedCoursesData={this.state.finishedCoursesData}/> :
+                    <CircularLoader isAuthenticated={this.state.authenticated}/>}
             </div>
         )
     }
@@ -46,10 +53,12 @@ class CircularLoader extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return (
             <div style={styles.circularLoader}>
-                {this.props.isAuthenticated ? <CircularProgress size={80} thickness={5}/> : <h1>Please log in before trying to check your profile.</h1>}
+                {this.props.isAuthenticated ? <CircularProgress size={80} thickness={5}/> :
+                    <h1>Please log in before trying to check your profile.</h1>}
             </div>
         )
     }

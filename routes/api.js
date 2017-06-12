@@ -135,6 +135,9 @@ router.post('/saveCourse', function (req, res, next) {
     if (req.app.locals.role == 'teacher' && req.body.delete == false) {
         Course.findById(req.body._id, function (err, doc) {
             if (doc.authorId == req.app.locals._id) {
+                if(req.body.description.indexOf('\n') != -1) {
+                    req.body.description = req.body.description.replace('\n', '<br/>');
+                }
                 doc.title = req.body.title;
                 doc.imgURL = req.body.imgURL;
                 doc.URLToCourse = req.body.URL;
@@ -605,6 +608,9 @@ router.post('/saveEditCourse', function (req, res, next) {
     if (req.body.courseId != null) {
         Course.findById(req.body.courseId, (err, course) => {
             if (req.app.locals._id == course.authorId) {
+                if(req.body.description.indexOf('\n') != -1) {
+                    req.body.description = req.body.description.replace('\n', '<br/>');
+                }
                 course.title = req.body.title;
                 course.imgURL = req.body.imgURL;
                 course.URLToCourse = req.body.URLToCourse;

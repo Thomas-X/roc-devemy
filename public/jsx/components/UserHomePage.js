@@ -9,6 +9,7 @@ import ActionHome from 'material-ui/svg-icons/action/home';
 import {IndexLink} from "react-router";
 
 import CourseItem from './CourseItem';
+import FollowedCourseItem from "./FollowedCourseItem";
 
 export default class UserHomePage extends Component {
     constructor(props) {
@@ -58,7 +59,7 @@ export default class UserHomePage extends Component {
 
         return (
             <div style={styles.userhomepage}>
-                <Divider style={styles.userhomepagedivider}/>
+
                 <div>
                     {this.state.loaded ?
                         <div>
@@ -66,7 +67,8 @@ export default class UserHomePage extends Component {
                                 return (
                                     <div key={index}>
                                         <h2>Verder kijken</h2>
-                                        <CourseItem courseData={courseItem}/>
+                                        <Divider style={styles.userhomepagedivider}/>
+                                        <FollowedCourseItem courseData={courseItem}/>
                                     </div>
                                 )
                             })}

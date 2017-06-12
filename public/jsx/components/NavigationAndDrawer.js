@@ -50,8 +50,8 @@ export default class NavigationAndDrawer extends React.Component {
                 if (responseJson.loggedIn == true) {
                     this.state.loggedIn = true;
                     this.state.username = responseJson.username;
-                    this.state.isTeacher = responseJson.isTeacher,
-                        this.state.email = responseJson.email;
+                    this.state.role = responseJson.role;
+                    this.state.email = responseJson.email;
                     this.state.displayImage = responseJson.displayImage;
                     this.setState(this.state);
                 }
@@ -65,7 +65,7 @@ export default class NavigationAndDrawer extends React.Component {
                 <AppBar title=''
                         onLeftIconButtonTouchTap={this.drawerActivated}
                         iconElementRight={this.state.loggedIn ?
-                            <LoggedIn displayImage={this.state.displayImage} isTeacher={this.state.isTeacher}
+                            <LoggedIn displayImage={this.state.displayImage} role={this.state.role}
                                       username={this.state.username}/> :
                             <Login/>}
                         iconStyleRight={styles.appbarUserAvatarAndImage}

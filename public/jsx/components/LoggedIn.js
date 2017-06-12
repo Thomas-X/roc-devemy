@@ -34,6 +34,7 @@ export default class LoggedIn extends React.Component {
             anchorEl: event.currentTarget,
         });
     }
+
     handleRequestClose() {
         this.setState({
             open: false,
@@ -41,6 +42,12 @@ export default class LoggedIn extends React.Component {
     }
 
     render() {
+        let isTeacher = false
+        console.log(this.props.role);
+        if (this.props.role == 'teacher') {
+            isTeacher = true;
+        }
+
         return (
             <div style={styles.appBarContainer}>
                 <IndexLink to="/search" style={styles.appbarSearch}>
@@ -73,10 +80,18 @@ export default class LoggedIn extends React.Component {
                     >
                         <Menu>
                             <MePopoverAppbar username={this.props.username}/>
-                            <NewCoursePopoverAppbar/>
-                            <MyCoursesPopOverAppbar/>
+                            {isTeacher
+                                ?
+                                <div>
+                                    <NewCoursePopoverAppbar/>
+                                    <MyCoursesPopOverAppbar/>
+                                </div>
+                                :
+                                null
+                            }
                             <Divider/>
-                            <IndexLink activeClassName="active" to="/logout"><MenuItem primaryText="Sign out" leftIcon={<Input/>}/></IndexLink>
+                            <IndexLink activeClassName="active" to="/logout"><MenuItem primaryText="Sign out"
+                                                                                       leftIcon={<Input/>}/></IndexLink>
                         </Menu>
                     </Popover>
                 </List>
@@ -90,23 +105,27 @@ export class MePopoverAppbar extends React.Component {
         super(props);
     }
 
-    render () {
+    render() {
         return (
-            <IndexLink activeClassName='active' to='/about/me'><MenuItem primaryText={this.props.username} leftIcon={<PersonOutline/>} /></IndexLink>
+            <IndexLink activeClassName='active' to='/about/me'><MenuItem primaryText={this.props.username}
+                                                                         leftIcon={<PersonOutline/>}/></IndexLink>
         )
     }
 }
 export class NewCoursePopoverAppbar extends React.Component {
     render() {
         return (
-            <IndexLink activeClassName="active" to="/courses/createCourse/"><MenuItem primaryText='New course' leftIcon={<ContentAdd/>}/></IndexLink>
+            <IndexLink activeClassName="active" to="/courses/createCourse/"><MenuItem primaryText='New course'
+                                                                                      leftIcon={
+                                                                                          <ContentAdd/>}/></IndexLink>
         )
     }
 }
 export class MyCoursesPopOverAppbar extends React.Component {
     render() {
         return (
-            <IndexLink activeClassName="active" to="/about/me/mycourses"><MenuItem primaryText='My courses' leftIcon={<ActionPermMedia/>}/></IndexLink>
+            <IndexLink activeClassName="active" to="/about/me/mycourses"><MenuItem primaryText='My courses' leftIcon={
+                <ActionPermMedia/>}/></IndexLink>
         )
     }
 }

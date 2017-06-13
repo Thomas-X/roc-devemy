@@ -23,11 +23,11 @@ export default class UserProfile extends React.Component {
             role = true;
         }
         return (
-            <div style={styles.aboutContainer}>
-                <Paper style={styles.meAboutContainer} zDepth={1}>
-                    <div style={styles.userProfileAbout}>
-                        <div style={styles.userProfileAboutUserImageAndUsernameContainer}>
-                            <img src={this.props.userdata.displayImage} style={styles.userProfileAboutUserImage}/>
+            <div className='aboutContainer'>
+                <Paper className='meAboutContainer' zDepth={1}>
+                    <div className='userProfileAbout'>
+                        <div className='userProfileAboutUserImageAndUsernameContainer'>
+                            <img src={this.props.userdata.displayImage} className='styles.userProfileAboutUserImage'/>
                         </div>
                         <List>
                             <ListItem
@@ -37,12 +37,12 @@ export default class UserProfile extends React.Component {
                             </ListItem>
 
                             <ListItem
-                                style={styles.userProfileAboutUserName}
+                                className='userProfileAboutUserName'
                                 disabled={true}
                                 children={
-                                    <div key={0} style={styles.userProfileAboutEmailAndIsTeacherContainer}>
+                                    <div key={0} className='userProfileAboutEmailAndIsTeacherContainer'>
                                         <CommunicationMailOutline key={1}
-                                                                  style={styles.userProfileAboutLeftIconEmail}/>
+                                                                  className='userProfileAboutLeftIconEmail'/>
                                         <TextField
                                             disabled={true}
                                             key={2}
@@ -51,7 +51,7 @@ export default class UserProfile extends React.Component {
                                             defaultValue={this.props.userdata.email}
                                             floatingLabelStyle={styles.floatingLabelStyle}
                                             underlineFocusStyle={styles.underlineStyle}
-                                            style={styles.userProfileAboutEmail}
+                                            className='userProfileAboutEmail'
                                         />
                                     </div>
                                 }>
@@ -76,10 +76,10 @@ export default class UserProfile extends React.Component {
                 {this.props.finishedCoursesData.map((elem, index) => {
                     if (elem != null && this.props.finishedCoursesData.length > 0) {
                         return (
-                            <Paper style={styles.finishedCoursesContainer} zDepth={1}>
-                                <h1 style={styles.lightHeader}>Afgemaakte cursussen</h1>
+                            <Paper className='finishedCoursesContainer' zDepth={1}>
+                                <h1 className='lightHeader'>Afgemaakte cursussen</h1>
                                 <Divider/>
-                                <div style={styles.finishedCourseItemsContainer}>
+                                <div className='finishedCourseItemsContainer'>
                                 <FinishedCourseItem courseData={elem} userId={this.props.userdata._id}/>
                                 </div>
                             </Paper>

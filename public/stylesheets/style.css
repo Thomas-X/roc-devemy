@@ -2,7 +2,7 @@
 
 body {
     font-family: "Roboto" !important;
-    background-image: url("../images/backgroundpattern.png");
+    background-image: url("../../src/images/backgroundpattern.png");
     min-width: 368px;
     margin:0;
     position:relative;

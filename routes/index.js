@@ -18,7 +18,7 @@ router.get('/logout', isLoggedIn, function (req, res, next) {
     req.app.locals._id = null;
     req.app.locals.role = null;
     req.logout();
-    res.redirect('/');
+    res.redirect('http://localhost:3000/');
 });
 
 router.get('/#/logout', isLoggedIn, function (req, res, next) {
@@ -29,7 +29,7 @@ router.get('/#/logout', isLoggedIn, function (req, res, next) {
     req.app.locals._id = null
     req.app.locals.role = null;
     req.logout();
-    res.redirect('/');
+    res.redirect('http://localhost:3000/');
 });
 
 router.get('/test', function (req, res, next) {
@@ -68,7 +68,7 @@ router.get('/auth/google/callback',
         req.app.locals.displayImage = req.user.displayImage;
         req.app.locals._id = req.user._id;
         req.app.locals.role = req.user.role;
-        res.redirect('/');
+        res.redirect('http://localhost:3000/');
 });
 
 // route middleware to make sure a user is logged in
@@ -79,7 +79,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     // if user isn't logged in redirect them to the home page
-    res.redirect('/');
+    res.redirect('http://localhost:3000/');
 }
 
 function isTeacherLoggedIn(req, res, next) {
@@ -89,7 +89,7 @@ function isTeacherLoggedIn(req, res, next) {
             return next();
         }
     }
-    res.redirect('/');
+    res.redirect('http://localhost:3000/');
 
 }
 

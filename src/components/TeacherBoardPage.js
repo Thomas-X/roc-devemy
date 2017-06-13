@@ -42,7 +42,7 @@ export default class TeacherBoardPage extends Component {
     }
 
     removeAllStudents() {
-        axios.post('/api/removeAllStudentsFromCourse', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('http://localhost:5000/api/removeAllStudentsFromCourse', {courseId: this.props.params.courseid}).then((response) => {
             if(response.data.authenticated === false) {
                 hashHistory.push('/');
             } else if (response.data.success === true) {
@@ -58,7 +58,7 @@ export default class TeacherBoardPage extends Component {
     }
 
     componentDidMount() {
-        axios.post('/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('http://localhost:5000/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
             if (response.data.authenticated === false) {
                 hashHistory.push('/');
             } else {
@@ -79,7 +79,7 @@ export default class TeacherBoardPage extends Component {
     }
 
     handleRowClick(index, user) {
-            axios.post('/api/finishCourse', {
+            axios.post('http://localhost:5000/api/finishCourse', {
                 notFinished: user.finishedCourse? false : true,
                 courseId: this.props.params.courseid,
                 user: user
@@ -131,7 +131,7 @@ export default class TeacherBoardPage extends Component {
 
     render() {
         return (
-            <Paper style={styles.paperEditorContent} zDepth={1}>
+            <Paper className='paperEditorContent' zDepth={1}>
 
                 {this.state.loaded ?
                     <Table
@@ -149,10 +149,10 @@ export default class TeacherBoardPage extends Component {
                                     />
                                 </TableHeaderColumn>
 
-                                <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1" style={styles.tableRemoveStudents}>
-                                    <div style={styles.removeStudentsFromCourseButtonContainer}>
+                                <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1" className='tableRemoveStudents'>
+                                    <div className='removeStudentsFromCourseButtonContainer'>
                                         <FlatButton label='verwijder studenten'
-                                                    labelStyle={styles.removeChapterButton}
+                                                    className='removeChapterButton'
                                                     onTouchTap={this.handleOpen}/>
                                         <Dialog
                                             title="Deze actie kan niet ongedaan worden, weet je het zeker?"
@@ -165,7 +165,7 @@ export default class TeacherBoardPage extends Component {
                                                     />
                                                     <FlatButton
                                                         label="Ja"
-                                                        style={styles.removeChapterButton}
+                                                        className='removeChapterButton'
                                                         primary={true}
                                                         onTouchTap={this.handleClose}
                                                         onClick={this.removeAllStudents}
@@ -212,7 +212,7 @@ export default class TeacherBoardPage extends Component {
                     this.state.noItems ?
                         <h1>Er zijn nog geen studenten die de cursus volgen!</h1>
                         :
-                        <CircularProgress size={80} thickness={5} style={styles.loader}/>
+                        <CircularProgress size={80} thickness={5} className='circularLoader'/>
                 }
             </Paper>
         )

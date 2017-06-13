@@ -28,7 +28,7 @@ export default class Iframe extends Component {
     }
 
     componentDidMount() {
-        axios.post('/api/iFrameData', {courseId: this.props.params.courseid, userId: this.props.params.userid,}).then((response) => {
+        axios.post('http://localhost:5000/api/iFrameData', {courseId: this.props.params.courseid, userId: this.props.params.userid,}).then((response) => {
             if(response.data.success === true) {
                 this.setState({
                     data: response.data.iFrameData,
@@ -46,20 +46,20 @@ export default class Iframe extends Component {
         return (
             <div>
             {this.state.loaded ?
-                <div style={styles.iFrame}>
-                    <Paper style={styles.bannerContainer} zDepth={1}>
-                        <div style={styles.certificateAndIframeHeaderTitleContainer}>
-                            <i className="fa fa-certificate" style={styles.certificate}></i>
-                            <span style={styles.iFrameHeaderTitle}>{this.state.data.title}</span>
+                <div className='iFrame'>
+                    <Paper className='bannerContainer' zDepth={1}>
+                        <div className='certificateAndIframeHeaderTitleContainer'>
+                            <i className="fa fa-certificate" id='certificate'></i>
+                            <span className='iFrameHeaderTitle'>{this.state.data.title}</span>
                         </div>
-                        <img src="/images/roc-dev-logo.png" style={styles.iFrameHeaderLogo}/>
+                        <img src="/images/roc-dev-logo.png" className='iFrameHeaderLogo'/>
                     </Paper>
-                    <div style={styles.iFramedescriptionContainer}>
+                    <div className='iFramedescriptionContainer'>
                         <span>Op {date} heeft {this.state.data.username} {this.state.data.title} succesvol afgerond.</span>
                     </div>
                 </div>
             :
-                <CircularProgress size={80} thickness={5}/>
+                <CircularProgress size={80} thickness={5} className='circularLoader'/>
             }
             </div>
 

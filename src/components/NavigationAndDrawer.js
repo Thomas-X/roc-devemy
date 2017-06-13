@@ -41,7 +41,7 @@ export default class NavigationAndDrawer extends React.Component {
 
     componentDidMount() {
 
-        axios.get('/api/getUserData')
+        axios.get('http://localhost:5000/api/getUserData')
             .then(function (responseJson) {
                 responseJson = JSON.parse(responseJson['data']);
 
@@ -68,8 +68,7 @@ export default class NavigationAndDrawer extends React.Component {
                             <LoggedIn displayImage={this.state.displayImage} role={this.state.role}
                                       username={this.state.username}/> :
                             <Login/>}
-                        iconStyleRight={styles.appbarUserAvatarAndImage}
-                        style={styles.appbarFixed}
+                        className='appbarFixed'
                 />
                 <Drawer
                     open={this.state.drawerOpen}
@@ -80,8 +79,8 @@ export default class NavigationAndDrawer extends React.Component {
                             {this.state.loggedIn
                                 ?
                                 <div>
-                                    <IndexLink style={styles.drawerLogoContainer} to="/">
-                                        <h1 id='drawer-logo' style={styles.drawerLogoh1}>roc-dev</h1>
+                                    <IndexLink className='drawerLogoContainer' to="/">
+                                        <h1 id='drawer-logo' className='drawerLogoh1'>roc-dev</h1>
                                     </IndexLink>
                                     <IndexLink to="/">
                                         <MenuItem leftIcon={<ActionHome/>}>
@@ -93,17 +92,17 @@ export default class NavigationAndDrawer extends React.Component {
                                     <Subheader>Resources</Subheader>
                                     <a href="https://github.com/">
                                         <MenuItem
-                                            leftIcon={<i className="fa fa-github" style={styles.githubIconDrawer}/>}>GitHub</MenuItem>
+                                            leftIcon={<i className="fa fa-github" id='githubIconDrawer'/>}>GitHub</MenuItem>
                                     </a>
                                     <a href="https://google.com/">
                                         <MenuItem
-                                            leftIcon={<i className="fa fa-google" style={styles.githubIconDrawer}/>}>google</MenuItem>
+                                            leftIcon={<i className="fa fa-google" id='githubIconDrawer'/>}>google</MenuItem>
                                     </a>
                                 </div>
                                 :
                                 <div>
-                                    <IndexLink style={styles.drawerLogoContainer} to="/">
-                                        <h1 id='drawer-logo' style={styles.drawerLogoh1}>roc-dev</h1>
+                                    <IndexLink className='drawerLogoContainer' to="/">
+                                        <h1 id='drawer-logo' className='drawerLogoh1'>roc-dev</h1>
                                     </IndexLink>
                                     <IndexLink to="/about/author">
                                         <MenuItem>About this site</MenuItem>

@@ -9,7 +9,7 @@ export default class CreateCourseAndRedirect extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/createCourse').then(function (responseJson) {
+        axios.get('http://localhost:5000/api/createCourse').then(function (responseJson) {
             if (!responseJson.data.userNotValid) {
                 hashHistory.push('/courses/editor/' + responseJson.data);
             } else {

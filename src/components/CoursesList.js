@@ -16,7 +16,7 @@ export default class CoursesList extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/getCourseDataById').then(function (responseCourseData) {
+        axios.get('http://localhost:5000/api/getCourseDataById').then(function (responseCourseData) {
             //we get a return of course by user from the server API
             try {
                 var success = JSON.parse(responseCourseData.data).success
@@ -58,15 +58,15 @@ export default class CoursesList extends Component {
                                                 key={index}>
                                                 <ListItem
                                                     primaryText={
-                                                        <div style={styles.courseListItemTitleContainer}>
+                                                        <div className='courseListItemTitleContainer'>
                                                         <span
-                                                            style={styles.courseListItemTitle}>{courseItem.title}</span>
+                                                            className='courseListItemTitle'>{courseItem.title}</span>
                                                             <span
-                                                                style={styles.courseListItemSubTitleAuthor}>{courseItem.author}</span>
+                                                                className='courseListItemSubTitleAuthor'>{courseItem.author}</span>
                                                         </div>}
                                                     innerDivStyle={styles.courseListItem}
                                                     leftAvatar={
-                                                        <Avatar size={30} style={styles.courseListItemAvatar}>
+                                                        <Avatar size={30} className='courseListItemAvatar'>
                                                             {courseItem.title.substr(0, 1)}
                                                         </Avatar>}>
                                                 </ListItem>

@@ -21,6 +21,7 @@ import formsyExample from "./formsyExample";
 import TeacherBoardPage from './components/TeacherBoardPage';
 import Iframe from "./components/Iframe";
 import EditCourse from "./components/EditCourse";
+import './App.css';
 
 injectTapEventPlugin();
 
@@ -67,7 +68,7 @@ class Container extends React.Component {
         return (
             <div>
                 <NavigationAndDrawer/>
-                <div style={styles.container}>
+                <div className='container'>
                     {this.props.children}
                 </div>
                 <Footer/>

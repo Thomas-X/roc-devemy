@@ -14,7 +14,7 @@ export default class NotLoggedInHomepage extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/api/loggedIn').then(function (responseJson) {
+        axios.get('http://localhost:5000/api/loggedIn').then(function (responseJson) {
 
             var auth = JSON.parse(responseJson['data']).Authenticated
 

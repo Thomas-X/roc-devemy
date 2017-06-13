@@ -38,7 +38,7 @@ export default class ViewCourse extends Component {
 
 
     componentDidMount() {
-        axios.post('/api/getCourseById', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('http://localhost:5000/api/getCourseById', {_id: this.props.params.courseid}).then(function (response) {
             if (response != null) this.setState({
                 course: response.data.course,
                 totalRatingsCallback: response.data.course.totalRatingCount,
@@ -51,7 +51,7 @@ export default class ViewCourse extends Component {
                 this.followCourse();
             }
 
-            axios.get('/api/getFollowedCourses').then(function (response2) {
+            axios.get('http://localhost:5000/api/getFollowedCourses').then(function (response2) {
 
                 if (response2.data.success === true) {
                     var followedCourses = response2.data.followedCourses;
@@ -86,7 +86,7 @@ export default class ViewCourse extends Component {
 
     deleteComment(courseId, userId, _id) {
 
-        axios.post('/api/deleteComment/', {courseId: courseId,_id: _id, userId: userId}).then((responseJson) => {
+        axios.post('http://localhost:5000/api/deleteComment/', {courseId: courseId,_id: _id, userId: userId}).then((responseJson) => {
             if(responseJson.data.success === true) {
                 this.state.course.comments = responseJson.data.newComments
                 this.setState(this.state);
@@ -96,7 +96,7 @@ export default class ViewCourse extends Component {
     }
 
     rateCourse(value) {
-        axios.post('/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
+        axios.post('http://localhost:5000/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
             if (response.data.success) this.setState({
                 rating: value,
                 totalRatingsCallback: response.data.course.totalRatingCount,
@@ -107,7 +107,7 @@ export default class ViewCourse extends Component {
 
 
     followCourse() {
-        axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('http://localhost:5000/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: true,
@@ -121,7 +121,7 @@ export default class ViewCourse extends Component {
     }
 
     unFollowCourse() {
-        axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('http://localhost:5000/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: false,
@@ -143,21 +143,21 @@ export default class ViewCourse extends Component {
             <div>
                 {this.state.loaded ?
                     <div>
-                        <div style={styles.ViewCourseFullWidthHeader}>
-                            <div style={styles.ViewCourseFullWidthContainer}>
-                                <h2 style={styles.ViewCourseFullWidthTitle}>{course.title}</h2>
-                                <h3 style={styles.ViewCourseFullWidthAuthor}><i>Door: {course.author}</i></h3>
+                        <div className='ViewCourseFullWidthHeader'>
+                            <div className='ViewCourseFullWidthContainer'>
+                                <h2 className='ViewCourseFullWidthTitle'>{course.title}</h2>
+                                <h3 className='ViewCourseFullWidthAuthor'><i>Door: {course.author}</i></h3>
                             </div>
                         </div>
-                        <Paper style={styles.paperEditorContent} zDepth={1}>
-                            <div style={styles.ViewCourseContent}>
+                        <Paper className='paperEditorContent' zDepth={1}>
+                            <div className='ViewCourseContent'>
                                 <h1>Description</h1>
-                                <div style={styles.ViewCourseNavigation}>
+                                <div className='ViewCourseNavigation'>
                                     <RaisedButton
                                         labelPosition="before"
                                         primary={true}
                                         label='Naar cursus'
-                                        style={styles.ViewCourseGoToCourse}
+                                        className='ViewCourseGoToCourse'
                                         href={course.URLToCourse}
                                         icon={<NavigationArrowForward/>}
                                     />
@@ -177,11 +177,11 @@ export default class ViewCourse extends Component {
                                             :
                                             this.followCourse}
 
-                                        style={this.state.errorFollowing ?
-                                            styles.errorFollowingButton
+                                        className={this.state.errorFollowing ?
+                                            'errorFollowingButton'
                                             :
                                             this.state.followed ?
-                                                styles.followedFollowingButton
+                                                'followedFollowingButton'
                                                 :
                                                 null
                                         }
@@ -196,7 +196,7 @@ export default class ViewCourse extends Component {
                                     />
                                 </div>
 
-                                <Divider style={styles.ViewCourseDivider}/>
+                                <Divider className='ViewCourseDivider'/>
                                 <ReactCSSTransitionGroup
                                     transitionName="example"
                                     transitionEnterTimeout={500}
@@ -217,7 +217,7 @@ export default class ViewCourse extends Component {
                                 </p>
                             </div>
                         </Paper>
-                        <Paper style={styles.commentContentContainer} zDepth={1}>
+                        <Paper className='commentContentContainer' zDepth={1}>
                             <CreateComment
                                 userImage={this.state.userImage}
                                 userId={this.state.userId}
@@ -242,7 +242,7 @@ export default class ViewCourse extends Component {
                         </Paper>
                     </div>
                     :
-                    <CircularProgress size={80} thickness={5}/>
+                    <CircularProgress size={80} thickness={5} className='circularLoader'/>
                 }
             </div>
         )

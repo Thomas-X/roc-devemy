@@ -7,9 +7,9 @@ import FlatButton from 'material-ui/FlatButton';
 import {CircularProgress, Divider} from "material-ui";
 import ActionHome from 'material-ui/svg-icons/action/home';
 import {IndexLink} from "react-router";
-
 import CourseItem from './CourseItem';
 import FollowedCourseItem from "./FollowedCourseItem";
+
 
 export default class UserHomePage extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ export default class UserHomePage extends Component {
             headers: {'cache-control': 'no-cache'}
         };
 
-        axios.get('/api/getCourseDataById', config)
+        axios.get('http://localhost:5000/api/getCourseDataById', config)
                 .then(function (responseJson) {
                 responseJson = JSON.parse(responseJson['data']);
 
@@ -58,7 +58,7 @@ export default class UserHomePage extends Component {
     render() {
 
         return (
-            <div style={styles.userhomepage}>
+            <div className='userHomePage'>
 
                 <div>
                     {this.state.loaded ?
@@ -67,7 +67,7 @@ export default class UserHomePage extends Component {
                                 return (
                                     <div key={index}>
                                         <h2>Verder kijken</h2>
-                                        <Divider style={styles.userhomepagedivider}/>
+                                        <Divider className='userhomepagedivider'/>
                                         <FollowedCourseItem courseData={courseItem}/>
                                     </div>
                                 )
@@ -76,14 +76,14 @@ export default class UserHomePage extends Component {
                         :
                         <div>
                             {this.state.isEmpty ?
-                                <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een
+                                <h3 style={{fontWeight: 300}} className="test">Je volgt nog geen cursussen, zoek of vraag naar een
                                     link van de leraar om er een te
                                     volgen.</h3>
                                 :
                                 this.state.success ?
-                                    <CircularProgress size={80} thickness={5}/>
+                                    <CircularProgress size={80} thickness={5} className='circularLoader'/>
                                     :
-                                    <h3 style={{fontWeight: 300}}>Je volgt nog geen cursussen, zoek of vraag naar een
+                                    <h3 style={{fontWeight: 300}} className="test">Je volgt nog geen cursussen, zoek of vraag naar een
                                         link van de leraar om er een te
                                         volgen.</h3>
                             }

@@ -32,7 +32,7 @@ export default class EditCourse extends Component {
 
 
     componentDidMount() {
-        axios.post('/api/getCourseData', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('http://localhost:5000/api/getCourseData', {courseId: this.props.params.courseid}).then((response) => {
             console.log(response.data);
             if (response.data.success === true) {
                 let data = response.data
@@ -49,7 +49,7 @@ export default class EditCourse extends Component {
     }
 
     saveCourse() {
-        axios.post('/api/saveEditCourse', {
+        axios.post('http://localhost:5000/api/saveEditCourse', {
             title: this.state.title,
             imgURL: this.state.imgURL,
             description: this.state.description,
@@ -75,7 +75,7 @@ export default class EditCourse extends Component {
                 delete: true,
             }),
         };
-        fetch('/api/saveCourse', init)
+        fetch('http://localhost:5000/api/saveCourse', init)
             .then(function (response) {
                 hashHistory.push('/');
             }.bind(this));
@@ -120,12 +120,12 @@ export default class EditCourse extends Component {
     render() {
         return (
             <div>
-                <Paper style={styles.paperEditorContent} zDepth={1}>
+                <Paper className='paperEditorContent' zDepth={1}>
 
                     <Formsy.Form
                         onValid={this.enableButton}
                         onInvalid={this.disableButton}
-                        style={styles.courseEditorTextFieldsContainer}>
+                        className='courseEditorTextFieldsContainer'>
 
                         <FormsyText
                             name="Titel"
@@ -137,7 +137,7 @@ export default class EditCourse extends Component {
                             floatingLabelStyle={styles.floatingLabelStyle}
                             underlineStyle={styles.underlineStyle}
                             underlineFocusStyle={styles.underlineStyle}
-                            style={styles.chapterTitleEditor}
+
                             updateImmediately
                             onChange={function (event) {
                                 this.courseTitleChange(event);
@@ -155,7 +155,7 @@ export default class EditCourse extends Component {
                             underlineStyle={styles.underlineStyle}
                             multiLine={true}
                             rows={2}
-                            style={styles.chapterTitleEditor}
+
                             updateImmediately
                             onChange={function (event) {
                                 this.courseDescriptionChange(event);
@@ -171,7 +171,7 @@ export default class EditCourse extends Component {
                             floatingLabelText="Plaatje van de cursus"
                             floatingLabelStyle={styles.floatingLabelStyle}
                             underlineFocusStyle={styles.underlineStyle}
-                            style={styles.chapterTitleEditor}
+
                             underlineStyle={styles.underlineStyle}
 
                             updateImmediately
@@ -191,7 +191,7 @@ export default class EditCourse extends Component {
                             underlineFocusStyle={styles.underlineStyle}
                             underlineStyle={styles.underlineStyle}
 
-                            style={styles.chapterTitleEditor}
+
                             updateImmediately
                             onChange={function (event) {
                                 this.courseURLChange(event);
@@ -200,11 +200,11 @@ export default class EditCourse extends Component {
                     </Formsy.Form>
 
 
-                    <div style={styles.editorContainer}>
-                        <RaisedButton onClick={this.saveCourse} primary={true} style={styles.publishCourseButtonEditor}
+                    <div className='editorContainer'>
+                        <RaisedButton onClick={this.saveCourse} primary={true} className='publishCourseButtonEditor'
                                       label='cursus opslaan' disabled={!this.state.canSubmit}/>
                         <RaisedButton label="verwijder cursus" onClick={this.deleteCourse}
-                                      labelStyle={styles.removeChapterButton}/>
+                                      className='removeChapterButton'/>
                     </div>
                 </Paper>
             </div>

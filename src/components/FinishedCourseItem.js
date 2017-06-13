@@ -35,11 +35,11 @@ export default class FinishedCourseItem extends Component {
     render() {
         // TODO change iFrame src from localhost:7000 to whatever domain this is going to be hosted upon
         return (
-            <Card style={styles.finishedCard}>
-                <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
+            <Card className='finishedCard'>
+                <IndexLink to={'/courses/' + this.props.courseData._id} className='cardIndexLink'>
                     <CardMedia
                         overlay={
-                            <div style={styles.cardTitleContainer}>
+                            <div className='cardTitleContainer'>
                                 <CardTitle
                                     titleStyle={styles.cardTitleStyle}
                                     subtitleStyle={styles.cardSubtitleStyle}
@@ -47,12 +47,12 @@ export default class FinishedCourseItem extends Component {
                                     subtitle={this.props.courseData.author}/>
                             </div>
                         }>
-                        <img src={this.props.courseData.imgURL} style={styles.cardImage}/>
+                        <img src={this.props.courseData.imgURL} className='cardImage'/>
                     </CardMedia>
                 </IndexLink>
-                    <CopyToClipboard text={"<iframe src=\"http://localhost:7000/#/iframe/" + this.props.courseData._id + "/" + this.props.userId + "\" width=\"300\" height=\"192\" frameBorder=\"0\"></iframe>"
+                    <CopyToClipboard text={"<iframe src=\"http://localhost:3000/#/iframe/" + this.props.courseData._id + "/" + this.props.userId + "\" width=\"300\" height=\"192\" frameBorder=\"0\"></iframe>"
                     } onCopy={this.handleToastPopup}>
-                        <RaisedButton label='Kopieer iFrame code' primary={true} labelStyle={styles.whiteText} fullWidth={true}/>
+                        <RaisedButton label='Kopieer iFrame code' primary={true} className='whiteText' fullWidth={true}/>
                     </CopyToClipboard>
                 <Snackbar
                     open={this.state.open}

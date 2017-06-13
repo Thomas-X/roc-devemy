@@ -49,14 +49,14 @@ export default class LoggedIn extends React.Component {
         }
 
         return (
-            <div style={styles.appBarContainer}>
-                <IndexLink to="/search" style={styles.appbarSearch}>
-                    <IconButton tooltip="Zoek naar een cursus" style={styles.whiteText}>
-                        <ActionSearch style={styles.whiteText} className="searchButtonNavbar"/>
+            <div className='appBarContainer'>
+                <IndexLink to="/search" className='appbarSearch'>
+                    <IconButton tooltip="Zoek naar een cursus" className='whiteText'>
+                        <ActionSearch className="searchButtonNavbar"/>
                     </IconButton>
                 </IndexLink>
                 <List
-                    style={styles.appbarUserAvatarAndImage2}>
+                    className='appbarUserAvatarAndImage2'>
                     <ListItem
                         leftAvatar={
                             <Avatar
@@ -64,7 +64,7 @@ export default class LoggedIn extends React.Component {
                             />
                         }
                         color={customTheme.alternateTextColor}
-                        style={styles.appbarUserName}
+                        className='whiteText'
                         onTouchTap={this.handleTouchTap}
                     >
                         {this.props.username}

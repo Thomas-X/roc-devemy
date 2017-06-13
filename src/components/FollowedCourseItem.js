@@ -12,11 +12,11 @@ export default class FollowedCourseItem extends Component {
 
     render() {
         return (
-            <Card style={styles.finishedCard}>
-                <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
+            <Card className='finishedCard'>
+                <IndexLink to={'/courses/' + this.props.courseData._id} className='cardIndexLink'>
                     <CardMedia
                         overlay={
-                            <div style={styles.cardTitleContainer}>
+                            <div className='cardTitleContainer'>
                                 <CardTitle
                                     titleStyle={styles.cardTitleStyle}
                                     subtitleStyle={styles.cardSubtitleStyle}
@@ -24,12 +24,12 @@ export default class FollowedCourseItem extends Component {
                                     subtitle={this.props.courseData.author}/>
                             </div>
                         }>
-                        <img src={this.props.courseData.imgURL} style={styles.cardImage}/>
+                        <img src={this.props.courseData.imgURL} className='cardImage'/>
                     </CardMedia>
                 </IndexLink>
                 <RaisedButton
                     label='Ga direct naar cursus'
-                    labelStyle={styles.whiteText}
+                    className='whiteText'
                     fullWidth={true}
                     href={this.props.courseData.URLToCourse}
                     primary={true}/>

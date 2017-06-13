@@ -17,7 +17,7 @@ export default class Me extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/api/getUserProfile').then(function (responseJson) {
+        axios.get('http://localhost:5000/api/getUserProfile').then(function (responseJson) {
 
             console.log(responseJson);
 
@@ -56,8 +56,8 @@ class CircularLoader extends React.Component {
 
     render() {
         return (
-            <div style={styles.circularLoader}>
-                {this.props.isAuthenticated ? <CircularProgress size={80} thickness={5}/> :
+            <div className='circularLoader'>
+                {this.props.isAuthenticated ? <CircularProgress size={80} thickness={5} className='circularLoader'/> :
                     <h1>Please log in before trying to check your profile.</h1>}
             </div>
         )

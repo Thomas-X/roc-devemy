@@ -33,20 +33,29 @@ db.once('open', function () {
 });
 
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'secretysecret'})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+    app.use(function (req, res, next) {
+
+        // todo replace this with http://localhost:3000 for added security
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Header", "*");
+        next();
+    });
+
 app.use('/', index);
 app.use('/api', api);
+
 
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',
         clientSecret: 'zteyUMl3dnk7qnLfB3UeOU2b',
-        callbackURL: "http://localhost:7000/auth/google/callback"
+        callbackURL: "http://localhost:5000/auth/google/callback"
     },
     function (accessToken, refreshToken, profile, cb) {
 

@@ -39,20 +39,20 @@ export default class Comment extends Component {
         }
 
         return (
-            <div style={styles.commentContainer}>
-                <img src={this.props.comment.authorImage} style={styles.commentUserImage}/>
+            <div className='commentContainer'>
+                <img src={this.props.comment.authorImage} className='commentUserImage'/>
 
 
-                <div style={styles.commentDateAndDescriptionContainer}>
-                    <div style={styles.authorAndCommentContentContainer}>
-                        <strong><span style={styles.commentAuthor}>{this.props.comment.author}</span></strong>
-                        <span style={styles.commentContent}>{this.props.comment.comment}</span>
+                <div className='commentDateAndDescriptionContainer'>
+                    <div className='authorAndCommentContentContainer'>
+                        <strong><span className='commentAuthor'>{this.props.comment.author}</span></strong>
+                        <span className='commentContent'>{this.props.comment.comment}</span>
                     </div>
 
 
-                    <div style={styles.commentMoreAndDateContainer}>
-                        <i style={styles.commentDate}><span>Op: {this.props.comment.date}</span></i>
-                        <IconButton tooltip='View more' style={styles.commentViewMore} onClick={this.handleOpen}>
+                    <div className='commentMoreAndDateContainer'>
+                        <i className='commentDate'><span>Op: {this.props.comment.date}</span></i>
+                        <IconButton tooltip='View more' className='commentViewMore' onClick={this.handleOpen}>
                         <NavigationMoreVert/>
                     </IconButton>
                     <Popover
@@ -67,7 +67,7 @@ export default class Comment extends Component {
                                 <MenuItem
                                     primaryText="Delete comment"
                                     leftIcon={<ActionDeleteForever/>}
-                                    style={styles.removeChapterButton}
+                                    className='removeChapterButton'
                                     onClick={this.props.removeComment}
                                 />
                                 :

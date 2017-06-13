@@ -25,7 +25,7 @@ export default class Search extends Component {
         var str = event.target.value;
         if(str !== '') {
             this.setState({loading: true});
-            axios.post('/api/search', {
+            axios.post('http://localhost:5000/api/search', {
                 searchQuery: event.target.value
             }).then(function (response) {
                 if (response.data.success === true) {
@@ -55,43 +55,42 @@ export default class Search extends Component {
 
     render() {
         return (
-            <Paper style={styles.paperEditorContent} zDepth={1} id="minHeight">
+            <Paper className='paperEditorContent' zDepth={1} id="minHeight">
                 <TextField
                     hintText='Type iets ..'
                     floatingLabelText='Zoek naar een cursus'
                     floatingLabelStyle={styles.floatingLabelStyle}
                     underlineFocusStyle={styles.underlineStyle}
                     autoFocus
-                    style={styles.chapterTitleEditor}
                     onChange={function (event) {
                         this.handleSearchInput(event);
                     }.bind(this)}/>
                 <br/>
-                {this.state.loading ? <CircularProgress size={80} thickness={5}/>
+                {this.state.loading ? <CircularProgress size={80} thickness={5} className='circularLoader'/>
                     : <div>
                         {this.state.coursesNotNull
                             ?
-                            <div style={styles.searchCoursesResultContainer}>
+                            <div className='searchCoursesResultContainer'>
                                 {this.state.courses.map(function (course, index) {
                                     return (
                                         <IndexLink to={"/courses/" + course._id} key={index}>
-                                            <Card style={styles.card} className='cardMediaItem'>
+                                            <Card id='card' className='cardMediaItem'>
                                                 <CardMedia
                                                     overlay={
-                                                        <div style={styles.cardOverlayContainer}>
-                                                        <div style={styles.cardTitleContainer}>
+                                                        <div className='cardOverlayContainer'>
+                                                        <div className='cardTitleContainer'>
                                                             <CardTitle
                                                                 titleStyle={styles.cardTitleStyle}
                                                                 subtitleStyle={styles.cardSubtitleStyle}
                                                                 title={course.title}
                                                                 subtitle={course.author}/>
                                                         </div>
-                                                            <span style={styles.cardOverlayAvgRating}>
-                                                                <span style={styles.cardRatingAvg}>{course.ratingAverage}</span> <ToggleStar style={styles.cardStar}/>
+                                                            <span className='cardOverlayAvgRating'>
+                                                                <span className='cardRatingAvg'>{course.ratingAverage}</span> <ToggleStar className='cardStar'/>
                                                             </span>
                                                         </div>
                                                     }>
-                                                    <img src={course.imgURL} style={styles.cardImage}/>
+                                                    <img src={course.imgURL} className='cardImage'/>
                                                 </CardMedia>
                                             </Card>
                                         </IndexLink>

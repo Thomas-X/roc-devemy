@@ -24,9 +24,10 @@ export default class PopUpModalDialog extends Component {
 
     render() {
         return (
+
             <div>
                 <FlatButton label='verwijder cursus'
-                            labelStyle={styles.removeChapterButton}
+                            className='removeChapterButton'
                             onTouchTap={this.handleOpen}/>
                 <Dialog
                     title="Deze actie kan niet ongedaan worden, weet je het zeker?"
@@ -39,7 +40,7 @@ export default class PopUpModalDialog extends Component {
                             />
                             <FlatButton
                                 label="Ja"
-                                style={styles.removeChapterButton}
+                                className='removeChapterButton'
                                 primary={true}
                                 onTouchTap={this.handleClose}
                                 onClick={function () {

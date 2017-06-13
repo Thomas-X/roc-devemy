@@ -5,7 +5,7 @@ export default class Logout extends React.Component {
     render() {
         window.location.replace('/logout');
         return (
-            <CircularProgress size={80} thickness={5} />
+            <CircularProgress size={80} thickness={5} className='circularLoader'/>
         )
     }
 }

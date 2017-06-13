@@ -26,7 +26,7 @@ export default class MyCourses extends Component {
 
 
     componentDidMount() {
-        axios.get('/api/authUser').then(function (response) {
+        axios.get('http://localhost:5000/api/authUser').then(function (response) {
 
             response = JSON.parse(response['data']);
 
@@ -34,7 +34,7 @@ export default class MyCourses extends Component {
                 hashHistory.push('/');
             }
         }.bind(this));
-        axios.get('/api/myCourses').then(function (response) {
+        axios.get('http://localhost:5000/api/myCourses').then(function (response) {
             var data = JSON.parse(response['data']);
             this.setState({
                 data: data,
@@ -46,9 +46,9 @@ export default class MyCourses extends Component {
     render() {
         return (
             <div>
-                <Paper style={styles.paperEditorContent} zDepth={1}>
+                <Paper className='paperEditorContent' zDepth={1}>
                     {this.state.loaded ? <MyCoursesData data={this.state.data}/> :
-                        <CircularProgress size={80} thickness={5}/>}
+                        <CircularProgress size={80} thickness={5} className='circularLoader'/>}
                 </Paper>
             </div>
         )
@@ -77,7 +77,7 @@ class MyCoursesData extends Component {
                 id: id,
             }),
         };
-        fetch('/api/removeCourse', init)
+        fetch('http://localhost:5000/api/removeCourse', init)
             .then(function (response) {
                 console.log(response);
                     if (response.status == 200) {
@@ -119,7 +119,7 @@ class MyCoursesData extends Component {
                                     <TableRowColumn>
 
                                         <IndexLink to={"/teacher/course/" + dataItem._id}>
-                                            <RaisedButton primary={true} label='Naar beheerpagina' labelStyle={styles.whiteText}/>
+                                            <RaisedButton primary={true} label='Naar beheerpagina' className='whiteText'/>
                                         </IndexLink>
 
                                     </TableRowColumn>
@@ -128,7 +128,7 @@ class MyCoursesData extends Component {
                                         <IndexLink to={"/courses/edit/" + dataItem._id}>
                                             <RaisedButton
                                                 secondary={true}
-                                                style={styles.whiteText}
+                                                className='whiteText'
                                                 label='Pas cursus aan'
                                             />
                                         </IndexLink>

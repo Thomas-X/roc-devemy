@@ -39,7 +39,7 @@ export default class CreateComment extends Component {
 
     submitComment() {
         console.log(this.props);
-            axios.post('/api/createComment', {
+            axios.post('http://localhost:5000/api/createComment', {
                 _id: this.props.userId,
                 comment: this.state.textValue,
                 courseId: this.props.courseId,
@@ -74,9 +74,9 @@ export default class CreateComment extends Component {
 
     render() {
         return (
-            <div style={styles.mCreateCommentContainer}>
-                <div style={styles.createCommentContainer}>
-                    <img src={this.props.userImage} style={styles.commentUserImage}/>
+            <div className='mCreateCommentContainer'>
+                <div className='createCommentContainer'>
+                    <img src={this.props.userImage} className='commentUserImage'/>
                     <TextField
                         hintText="Make a comment"
                         multiLine={true}
@@ -88,9 +88,8 @@ export default class CreateComment extends Component {
                         rowsMax={4}
                     />
                 </div>
-                <RaisedButton style={styles.createCommentSubmitButton}
+                <RaisedButton className='createCommentSubmitButton'
                               disabled={this.state.submitButtonDisabled}
-                              labelStyle={styles.whiteText}
                               backgroundColor={this.state.buttonBgColour}
                               onClick={this.submitComment}
                               label={this.state.submitButtonLabel}/>

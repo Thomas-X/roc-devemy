@@ -5,10 +5,6 @@ import {muiTheme, customTheme} from './customMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as styles from './styles';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
-
-// import components
 import NavigationAndDrawer from './components/NavigationAndDrawer';
 import NotLoggedInHomepage from './components/CheckLoggedInOrNotHomePage';
 import NotFound from './components/NotFound';
@@ -25,10 +21,13 @@ import formsyExample from "./formsyExample";
 import TeacherBoardPage from './components/TeacherBoardPage';
 import Iframe from "./components/Iframe";
 
+injectTapEventPlugin();
+
+
 class App extends Component {
 
     // TODO if a course is deleted, remove that specific courseID from all the user's followedCourses, since it doesn't exist anymore
-    // TODO and it'll give an error if React tries to do anything  with it
+    // TODO and it'll give an error if React tries to do anything  with it this is awesome
 
     render() {
         return (
@@ -76,4 +75,4 @@ class Container extends React.Component {
 }
 
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+export default App;

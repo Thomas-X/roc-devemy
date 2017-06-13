@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import * as styles from "../styles";
-import {Paper, RaisedButton, TextField} from "material-ui";
+import {FlatButton, Paper, RaisedButton, TextField} from "material-ui";
 import {hashHistory} from 'react-router';
 import axios from 'axios';
 import {FormsyText} from "formsy-material-ui";

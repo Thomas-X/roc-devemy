@@ -8,7 +8,7 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import axios from 'axios';
-import {Checkbox, CircularProgress, Dialog, FlatButton, Paper, TextField} from "material-ui";
+import {Checkbox, CircularProgress, Dialog, FlatButton, Paper, RaisedButton, TextField} from "material-ui";
 import * as styles from "../styles";
 import {hashHistory} from 'react-router';
 
@@ -30,6 +30,7 @@ export default class TeacherBoardPage extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.removeAllStudents = this.removeAllStudents.bind(this);
+
     }
 
     handleOpen() {
@@ -96,8 +97,8 @@ export default class TeacherBoardPage extends Component {
                         }
                     });
 
-                    if(this.state.searchData[index - 1] != null) this.state.searchData[index - 1].finishedCourse = true;
-                    else this.state.searchData[index].finishedCourse = true;
+
+                    this.state.searchData[index].finishedCourse = true;
                     this.setState(this.state);
                 }
                 if (response.data.success === true && response.data.finishedCourse === false) {
@@ -126,6 +127,8 @@ export default class TeacherBoardPage extends Component {
         this.setState(this.state);
     }
 
+
+
     render() {
         return (
             <Paper style={styles.paperEditorContent} zDepth={1}>
@@ -145,6 +148,7 @@ export default class TeacherBoardPage extends Component {
                                         }}
                                     />
                                 </TableHeaderColumn>
+
                                 <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1" style={styles.tableRemoveStudents}>
                                     <div style={styles.removeStudentsFromCourseButtonContainer}>
                                         <FlatButton label='verwijder studenten'

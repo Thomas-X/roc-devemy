@@ -4,7 +4,7 @@ import {IndexLink} from "react-router";
 import * as styles from "../styles";
 import PropTypes from 'prop-types';
 
-export default class CourseItem extends Component {
+export default class FollowedCourseItem extends Component {
 
     constructor(props) {
         super(props);
@@ -12,7 +12,7 @@ export default class CourseItem extends Component {
 
     render() {
         return (
-            <Card style={styles.card}>
+            <Card style={styles.finishedCard}>
                 <IndexLink to={'/courses/' + this.props.courseData._id} style={styles.cardIndexLink}>
                     <CardMedia
                         overlay={
@@ -37,6 +37,6 @@ export default class CourseItem extends Component {
         )
     }
 }
-CourseItem.propTypes = {
+FollowedCourseItem.propTypes = {
     courseData: PropTypes.object
 }

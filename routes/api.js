@@ -15,6 +15,7 @@ router.get('/getUserData', function (req, res, next) {
             username: req.app.locals.username,
             email: req.app.locals.email,
             displayImage: req.app.locals.displayImage,
+            role: req.app.locals.role,
         }));
     } else if (req.user == null) {
         res.json(JSON.stringify({
@@ -134,6 +135,9 @@ router.post('/saveCourse', function (req, res, next) {
     if (req.app.locals.role == 'teacher' && req.body.delete == false) {
         Course.findById(req.body._id, function (err, doc) {
             if (doc.authorId == req.app.locals._id) {
+                if(req.body.description.indexOf('\n') != -1) {
+                    req.body.description = req.body.description.replace('\n', '<br/>');
+                }
                 doc.title = req.body.title;
                 doc.imgURL = req.body.imgURL;
                 doc.URLToCourse = req.body.URL;
@@ -455,7 +459,7 @@ router.post('/finishCourse', function (req, res, next) {
                             let foundOne = false;
                             user.finishedCourses.forEach((elem, index) => {
 
-                                if(elem.courseId == req.body.courseId) {
+                                if (elem.courseId == req.body.courseId) {
                                     foundOne = true;
                                 }
 
@@ -553,7 +557,7 @@ router.post('/iFrameData', function (req, res, next) {
     // there is no auth here since this data is public and not sensitive
 
     User.findById(req.body.userId, (err, user) => {
-        if (!err) {
+        if (!err && user.finishedCourses != null && user.finishedCourses.length > 0) {
             user.finishedCourses.forEach((elem, index) => {
                 if (elem.courseId == req.body.courseId) {
                     Course.findById(req.body.courseId, (err, course) => {
@@ -576,5 +580,50 @@ router.post('/iFrameData', function (req, res, next) {
         }
     })
 
+});
+
+router.post('/getCourseData', function (req, res, next) {
+    if (req.body.courseId != null) {
+        Course.findById(req.body.courseId, (err, course) => {
+            if (req.app.locals._id == course.authorId) {
+                res.json({
+                    title: course.title,
+                    imgURL: course.imgURL,
+                    URLToCourse: course.URLToCourse,
+                    description: course.description,
+                    success: true,
+                })
+            } else {
+                console.log('invalid author')
+                res.json({success: false});
+            }
+        })
+    } else {
+        console.log('req.body.courseid is null')
+        res.json({success: false});
+    }
+});
+
+router.post('/saveEditCourse', function (req, res, next) {
+    if (req.body.courseId != null) {
+        Course.findById(req.body.courseId, (err, course) => {
+            if (req.app.locals._id == course.authorId) {
+                if(req.body.description.indexOf('\n') != -1) {
+                    req.body.description = req.body.description.replace('\n', '<br/>');
+                }
+                course.title = req.body.title;
+                course.imgURL = req.body.imgURL;
+                course.URLToCourse = req.body.URLToCourse;
+                course.description = req.body.description;
+                course.save((err) => {
+                    if(!err) res.json({success: true});
+                });
+            } else {
+                res.json({success: false});
+            }
+        })
+    } else {
+        res.json({success: false});
+    }
 });
 module.exports = router;

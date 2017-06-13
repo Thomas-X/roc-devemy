@@ -20,6 +20,7 @@ import ViewCourse from './components/ViewCourse';
 import formsyExample from "./formsyExample";
 import TeacherBoardPage from './components/TeacherBoardPage';
 import Iframe from "./components/Iframe";
+import EditCourse from "./components/EditCourse";
 
 injectTapEventPlugin();
 
@@ -47,6 +48,7 @@ class App extends Component {
                         <Route path="/teacher/course/:courseid" component={TeacherBoardPage}/>
                         {/* this should always be the last route, otherwise the router params routes break*/}
                         <Route path="/test" component={formsyExample}/>
+                        <Route path="/courses/edit/:courseid" component={EditCourse}/>
                     </Route>
                     <Route path="/iframe/:courseid/:userid" component={Iframe}/>
                     <Route path="*" component={NotFound}/>

@@ -272,6 +272,7 @@ export const card = {
     cursor: 'pointer',
     margin: 10,
 }
+
 export const finishedCard = {
     width: 250,
     height: 286,

@@ -100,6 +100,7 @@ class MyCoursesData extends Component {
                             <TableHeaderColumn tooltip="De beoordeling">Beoordeling</TableHeaderColumn>
                             <TableHeaderColumn tooltip="Totaal aantal commentaar">Commentaar</TableHeaderColumn>
                             <TableHeaderColumn tooltip="Naar de beheerpagina van de cursus">Beheerpagina</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="De cursus aanpassen">Aanpassen</TableHeaderColumn>
                             <TableHeaderColumn tooltip="Verwijderen">Verwijderen</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
@@ -107,7 +108,6 @@ class MyCoursesData extends Component {
                     <TableBody displayRowCheckbox={false} showRowHover={true}>
                         {this.state.data.map(function (dataItem, index) {
                             var commentLength = dataItem.comments.length
-                            console.log('pre return dataItem id and data item values: ',dataItem._id, dataItem);
 
 
                             return (
@@ -120,6 +120,17 @@ class MyCoursesData extends Component {
 
                                         <IndexLink to={"/teacher/course/" + dataItem._id}>
                                             <RaisedButton primary={true} label='Naar beheerpagina' labelStyle={styles.whiteText}/>
+                                        </IndexLink>
+
+                                    </TableRowColumn>
+                                    <TableRowColumn>
+
+                                        <IndexLink to={"/courses/edit/" + dataItem._id}>
+                                            <RaisedButton
+                                                secondary={true}
+                                                style={styles.whiteText}
+                                                label='Pas cursus aan'
+                                            />
                                         </IndexLink>
 
                                     </TableRowColumn>

@@ -47,7 +47,8 @@ export default class ViewCourse extends Component {
                 userId: response.data.userId,
                 author: response.data.author,
             });
-            if(response.data.firstTime === true) {
+            console.log(response);
+            if (response.data.firstTime === true) {
                 this.followCourse();
             }
 
@@ -86,8 +87,12 @@ export default class ViewCourse extends Component {
 
     deleteComment(courseId, userId, _id) {
 
-        axios.post('http://localhost:5000/api/deleteComment/', {courseId: courseId,_id: _id, userId: userId}).then((responseJson) => {
-            if(responseJson.data.success === true) {
+        axios.post('http://localhost:5000/api/deleteComment/', {
+            courseId: courseId,
+            _id: _id,
+            userId: userId
+        }).then((responseJson) => {
+            if (responseJson.data.success === true) {
                 this.state.course.comments = responseJson.data.newComments
                 this.setState(this.state);
             }
@@ -96,7 +101,10 @@ export default class ViewCourse extends Component {
     }
 
     rateCourse(value) {
-        axios.post('http://localhost:5000/api/rateCourse', {courseId: this.props.params.courseid, rating: value}).then(function (response) {
+        axios.post('http://localhost:5000/api/rateCourse', {
+            courseId: this.props.params.courseid,
+            rating: value
+        }).then(function (response) {
             if (response.data.success) this.setState({
                 rating: value,
                 totalRatingsCallback: response.data.course.totalRatingCount,
@@ -151,49 +159,51 @@ export default class ViewCourse extends Component {
                         </div>
                         <Paper className='paperEditorContent' zDepth={1}>
                             <div className='ViewCourseContent'>
-                                <h1>Description</h1>
-                                <div className='ViewCourseNavigation'>
-                                    <RaisedButton
-                                        labelPosition="before"
-                                        primary={true}
-                                        label='Naar cursus'
-                                        className='ViewCourseGoToCourse'
-                                        href={course.URLToCourse}
-                                        icon={<NavigationArrowForward/>}
-                                    />
-                                    <FlatButton
-                                        secondary={true}
-                                        labelPosition="before"
-                                        label={this.state.errorFollowing ?
-                                            'Error met volgen'
-                                            :
-                                            this.state.followed ?
-                                                'Cursus ontvolgen'
+                                <div className="ViewCourseDescriptionTitleAndButtonsContainer">
+                                    <h1 className="descriptionViewCourse">Beschrijving</h1>
+                                    <div className='ViewCourseNavigation'>
+                                        <RaisedButton
+                                            labelPosition="before"
+                                            primary={true}
+                                            label='Naar cursus'
+                                            className='ViewCourseGoToCourse'
+                                            href={course.URLToCourse}
+                                            icon={<NavigationArrowForward/>}
+                                        />
+                                        <FlatButton
+                                            secondary={true}
+                                            labelPosition="before"
+                                            label={this.state.errorFollowing ?
+                                                'Error met volgen'
                                                 :
-                                                'Cursus volgen'
-                                        }
-                                        onClick={this.state.followed ?
-                                            this.unFollowCourse
-                                            :
-                                            this.followCourse}
+                                                this.state.followed ?
+                                                    'Cursus ontvolgen'
+                                                    :
+                                                    'Cursus volgen'
+                                            }
+                                            onClick={this.state.followed ?
+                                                this.unFollowCourse
+                                                :
+                                                this.followCourse}
 
-                                        className={this.state.errorFollowing ?
-                                            'errorFollowingButton'
-                                            :
-                                            this.state.followed ?
-                                                'followedFollowingButton'
+                                            className={this.state.errorFollowing ?
+                                                'errorFollowingButton'
                                                 :
-                                                null
-                                        }
-                                        icon={this.state.errorFollowing ?
-                                            <AlertErrorOutline/>
-                                            :
-                                            this.state.followed ?
-                                                <ActionBookmark/>
+                                                this.state.followed ?
+                                                    'followedFollowingButton'
+                                                    :
+                                                    null
+                                            }
+                                            icon={this.state.errorFollowing ?
+                                                <AlertErrorOutline/>
                                                 :
-                                                <ActionBookmarkBorder/>
-                                        }
-                                    />
+                                                this.state.followed ?
+                                                    <ActionBookmark className="whiteIcon"/>
+                                                    :
+                                                    <ActionBookmarkBorder/>
+                                            }
+                                        />
+                                    </div>
                                 </div>
 
                                 <Divider className='ViewCourseDivider'/>
@@ -232,9 +242,10 @@ export default class ViewCourse extends Component {
                                 {this.state.course.comments.map((elem, index) => {
                                     console.log(elem);
                                     return (
-                                        <Comment key={index} comment={elem} userId={this.state.userId} removeComment={() => {
-                                            this.deleteComment(this.props.params.courseid, this.state.userId, elem._id)
-                                        }}
+                                        <Comment key={index} comment={elem} userId={this.state.userId}
+                                                 removeComment={() => {
+                                                     this.deleteComment(this.props.params.courseid, this.state.userId, elem._id)
+                                                 }}
                                         />
                                     )
                                 })}

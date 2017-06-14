@@ -9,7 +9,8 @@ router.get('/getUserData', function (req, res, next) {
 
 
     // so user is logged in since there's data.
-    if (req.user != null) {
+
+    if (req.app.locals._id != null) {
         res.json(JSON.stringify({
             loggedIn: true,
             username: req.app.locals.username,
@@ -95,7 +96,7 @@ router.get('/getCourseDataById', function (req, res, next) {
 });
 
 router.get('/loggedIn', function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.app.locals._id != null) {
         res.json(JSON.stringify({
             Authenticated: true,
         }));
@@ -596,6 +597,7 @@ router.post('/getCourseData', function (req, res, next) {
             } else {
                 console.log('invalid author')
                 res.json({success: false});
+
             }
         })
     } else {

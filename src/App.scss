@@ -22,7 +22,7 @@ $amber500: #ffc107;
 $white: #ffffff;
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
-
+@import 'fonts/font-awesome.css';
 
 body {
   font-family: "Roboto" !important;
@@ -227,9 +227,8 @@ a {
 // // // //
 
 .appbarFixed {
-  position: fixed;
-  top: 0;
-  box-shadow: none;
+  position: fixed !important;
+  top: 0 !important;
 }
 
 .drawerLogoh1 {
@@ -260,7 +259,8 @@ a {
 }
 
 .appbarUserAvatarAndImage2 {
-  padding: 0px;
+  align-self:center !important;
+  padding:0 !important;
 }
 
 .container {
@@ -375,7 +375,7 @@ a {
 }
 
 .cardComponentTitle {
-  line-height: 2px;
+  line-height: 2em;
   padding-left: 24px;
   padding-right: 24px;
   margin-bottom: 0px;
@@ -588,14 +588,15 @@ a {
 }
 
 .ViewCourseNavigation {
-  position: absolute;
-  margin-top: 20px;
-  alignself: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .ViewCourseContent {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .ViewCourseGoToCourse {
@@ -784,4 +785,17 @@ a {
 .appbarButtonNotLoggedIn {
   color: $white !important;
   margin-top:6px !important;
+}
+.descriptionViewCourse {
+  width:180px;
+}
+.ViewCourseDescriptionTitleAndButtonsContainer {
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.whiteIcon {
+  fill: $white !important;
 }

@@ -42,15 +42,17 @@ export default class UserHomePage extends Component {
                     for (var o = 0; o < courses.length; o++) {
                         this.state.data.push(courses[o]);
                     }
-                    this.state.loaded = true;
-                    this.state.success = true;
-                    this.state.isEmpty = false;
-                    this.setState(this.state);
+                    this.setState({
+                        loaded: true,
+                        success: true,
+                        isEmpty: false,
+                    });
                 } else if (!success && length <= 0) {
-                    this.state.success = false;
-                    this.state.loaded = false;
-                    this.state.isEmpty = true;
-                    this.setState(this.state);
+                    this.setState({
+                        success: false,
+                        loaded: false,
+                        isEmpty: true,
+                    });
                 }
             }.bind(this))
     };

@@ -41,10 +41,15 @@ export default class NavigationAndDrawer extends React.Component {
 
     componentDidMount() {
 
-        axios.get('http://localhost:5000/api/getUserData')
+        var config = {
+            headers: {'cache-control': 'no-cache'}
+        };
+
+        axios.get('http://localhost:5000/api/getUserData', config)
             .then(function (responseJson) {
                 responseJson = JSON.parse(responseJson['data']);
 
+                console.log(responseJson);
 
                 // since it's false by default
                 if (responseJson.loggedIn == true) {
@@ -64,7 +69,7 @@ export default class NavigationAndDrawer extends React.Component {
             <div>
                 <AppBar title=''
                         onLeftIconButtonTouchTap={this.drawerActivated}
-                        iconElementRight={this.state.loggedIn ?
+                        children={this.state.loggedIn ?
                             <LoggedIn displayImage={this.state.displayImage} role={this.state.role}
                                       username={this.state.username}/> :
                             <Login/>}

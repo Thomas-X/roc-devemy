@@ -4,6 +4,7 @@ import customTheme from '../customMuiTheme';
 import {FlatButton, RaisedButton} from "material-ui";
 import {IndexLink} from 'react-router';
 import PropTypes from 'prop-types';
+import logo from '../images/roc-dev-logo.png';
 
 export default class HomePage extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class Hero extends Component {
             <div className="heroContainer">
 
 
-                <img src="../images/roc-dev-logo.png" className='heroImage'/> <br/>
+                <img src={logo} className='heroImage'/> <br/>
                 <h2 className='heroTitle'>Roc-Devemy</h2>
                 <span className="heroDescription">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
                     blanditiis deserunt ex neque omnis possimus quibusdam?</span>

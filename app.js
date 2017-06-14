@@ -43,8 +43,9 @@ app.use(passport.session()); // persistent login sessions
     app.use(function (req, res, next) {
 
         // todo replace this with http://localhost:3000 for added security
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Header", "*");
+        res.setHeader("Access-Control-Allow-Origin", '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'cache-control, Origin, X-Requested-With, Content-Type, Accept');
         next();
     });
 

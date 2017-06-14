@@ -89,6 +89,7 @@ export default class CreateComment extends Component {
                     />
                 </div>
                 <RaisedButton className='createCommentSubmitButton'
+                              labelColor="#ffffff"
                               disabled={this.state.submitButtonDisabled}
                               backgroundColor={this.state.buttonBgColour}
                               onClick={this.submitComment}

@@ -201,7 +201,7 @@ export default class CreateCourse extends Component {
                         <RaisedButton onClick={this.saveCourse} primary={true} className='publishCourseButtonEditor'
                                       label='cursus opslaan'  disabled={!this.state.canSubmit}/>
                         <RaisedButton label="verwijder cursus" onClick={this.deleteCourse}
-                                      className='removeChapterButton'/>
+                                      className='removeChapterButtonColor'/>
                     </div>
                 </Paper>
             </div>

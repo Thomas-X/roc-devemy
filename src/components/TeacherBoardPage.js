@@ -152,7 +152,7 @@ export default class TeacherBoardPage extends Component {
                                 <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1" className='tableRemoveStudents'>
                                     <div className='removeStudentsFromCourseButtonContainer'>
                                         <FlatButton label='verwijder studenten'
-                                                    className='removeChapterButton'
+                                                    className='removeChapterButtonColor'
                                                     onTouchTap={this.handleOpen}/>
                                         <Dialog
                                             title="Deze actie kan niet ongedaan worden, weet je het zeker?"
@@ -165,7 +165,7 @@ export default class TeacherBoardPage extends Component {
                                                     />
                                                     <FlatButton
                                                         label="Ja"
-                                                        className='removeChapterButton'
+                                                        className='removeChapterButtonColor'
                                                         primary={true}
                                                         onTouchTap={this.handleClose}
                                                         onClick={this.removeAllStudents}

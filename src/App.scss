@@ -511,7 +511,7 @@ a {
   margin: 40px;
 }
 
-.removeChapterButton {
+.removeChapterButtonColor {
   color: $dangerColor !important;
 }
 
@@ -638,6 +638,7 @@ a {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  flex-wrap: wrap;
   justify-content: space-between;
   max-width: 710px;
 }
@@ -685,7 +686,6 @@ a {
 }
 
 .commentMoreAndDateContainer {
-  height: 48px !important;
   display: flex;
   justify-content: space-between;
   flex-direction: column-reverse;
@@ -798,4 +798,16 @@ a {
 }
 .whiteIcon {
   fill: $white !important;
+}
+
+@media (max-width: 650px) {
+  .paperEditorContent {
+    margin: 24px 0px 24px 0px;
+  }
+  .commentContentContainer {
+    margin: 24px 0px 24px 0px;
+  }
+  .finishedCoursesContainer {
+    margin: 24px 0px 24px 0px;
+  }
 }

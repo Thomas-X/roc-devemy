@@ -1,32 +1,32 @@
 # roc-devemy-1.0
 
 
-Run and setup for install:
+#Run and setup for install:
 
 #Windows: 
 
-Install NodeJS
-Install MongoDB
-clone this repo
-cd into repo and run `npm install`
-start mongoDB server
-run `npm run start-backend` and `npm run start-frontend`
-You're all up and running!
+- Install NodeJS 
+- Install MongoDB
+- clone this repo
+- cd into repo and run `npm install`
+- start mongoDB server
+- run `npm run start-backend` and `npm run start-frontend`
+- You're all up and running!
 
 #Mac (OS X):
-Install NodeJS
-(mongodb install):
-in home directory:
-`sudo mkdir -p /data/db`
-don't forget to set permissions of your `/data/db` folder
+- Install NodeJS
+- (mongodb install):
+1. in home directory:
+2. `sudo mkdir -p /data/db`
+3. don't forget to set permissions of your `/data/db` folder
 ---------------------
-clone this repo
-cd into repo and run `npm install`
-start mongoDB server by typing `mongod` in terminal 
-run `npm run start-backend` and `npm run start-frontend`
-You're all up and running!
+- clone this repo
+- cd into repo and run `npm install`
+- start mongoDB server by typing `mongod` in terminal 
+- run `npm run start-backend` and `npm run start-frontend`
+- You're all up and running!
 
-Minimum viable product for roc-devemy
+###Minimum viable product for roc-devemy
 
 
 

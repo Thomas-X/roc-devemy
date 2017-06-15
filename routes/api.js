@@ -4,173 +4,282 @@ var User = require('../models/User').User;
 var Course = require('../models/Course').Course;
 var passport = require('passport');
 
+// for getting course or user, nice and organised
 
-router.get('/getUserData', function (req, res, next) {
+function isStudentLoggedInData() {
+    let auth = false;
 
-
-    // so user is logged in since there's data.
-
-    if (req.app.locals._id != null) {
-        res.json(JSON.stringify({
-            loggedIn: true,
-            username: req.app.locals.username,
-            email: req.app.locals.email,
-            displayImage: req.app.locals.displayImage,
-            role: req.app.locals.role,
-        }));
-    } else if (req.user == null) {
-        res.json(JSON.stringify({
-            loggedIn: false
-        }));
-    }
-});
+}
 
 
-router.get('/getUserProfile', function (req, res, next) {
+function isSameStudentLoggedInData() {
+    let auth = false;
 
-    console.log('HI GET USER PROFILE!!!!');
-
-
-    if (req.isAuthenticated()) {
-
-        var finishedCoursesData = [];
-
-        if (req.user.finishedCourses.length > 0) {
-            req.user.finishedCourses.forEach((elem, index) => {
-                Course.findById(elem.courseId, function (err, course) {
-                    if (!err) finishedCoursesData.push(course);
-                    if ((index) == (req.user.finishedCourses.length - 1)) {
-                        console.log(finishedCoursesData);
-                        res.json(JSON.stringify({
-                            data: req.user,
-                            finishedCoursesData: finishedCoursesData,
-                            Authenticated: true,
-                        }));
-                    }
-                })
-            })
-        } else {
-            res.json(JSON.stringify({
-                data: req.user,
-                finishedCoursesData: finishedCoursesData,
-                Authenticated: true,
-            }))
-        }
+}
 
 
+function isTeacherLoggedIn(req, res, next) {
+    if (req.app.locals.role === 'teacher') {
+        next();
     } else {
-        res.json(JSON.stringify({
-            Authenticated: false,
-        }))
+        res.redirect('http://localhost:3000/');
     }
+}
 
-});
+function isTeacherLoggedInData(req, res, next, callback) {
+    let auth = {};
 
-router.get('/getCourseDataById', function (req, res, next) {
-    if (req.app.locals._id != null) {
-        var courses = [];
-
-        function getCoursesAndPushToArray(callback) {
-            User.findById(req.app.locals._id, function (err, user) {
-
-                user['followedCourses'].forEach(function (elem, index) {
-                    Course.findById(elem, function (err, course) {
-                        courses.push(course);
-                        if ((index + 1) == user['followedCourses'].length) {
-                            callback();
-                        }
-                    });
-                });
-            })
-        }
-
-        getCoursesAndPushToArray(function () {
-            res.json(JSON.stringify({
-                courses: courses,
-                success: true,
-            }))
-        });
-    } else {
-        res.json(JSON.stringify({success: false}));
-    }
-});
-
-router.get('/loggedIn', function (req, res, next) {
-    if (req.app.locals._id != null) {
-        res.json(JSON.stringify({
-            Authenticated: true,
-        }));
-    } else {
-        res.json(JSON.stringify({
-            Authenticated: false,
-        }))
-    }
-});
-
-router.get('/createCourse', function (req, res, next) {
-
-    // if it's set it means user is logged in
-    if (req.app.locals.username != null && req.user.role === 'teacher') {
-
-        Course.create({
-            title: null,
-            imgURL: null,
-            author: req.app.locals.username,
-            authorId: req.user.id,
-            creationDate: Date.now(),
-
-        }, function (err, doc) {
-            if (err) {
-                console.log(err);
-            }
-            res.json(doc._id);
-        })
-    }
-    else {
-        console.log('not authenticated!');
-        res.json({userNotValid: true});
-    }
-});
-
-router.post('/saveCourse', function (req, res, next) {
-    if (req.app.locals.role == 'teacher' && req.body.delete == false) {
-        Course.findById(req.body._id, function (err, doc) {
-            if (doc.authorId == req.app.locals._id) {
-                if(req.body.description.indexOf('\n') != -1) {
-                    req.body.description = req.body.description.replace('\n', '<br/>');
+    if (req.app.locals.role === 'teacher' && req.app.locals._id) {
+        User.findById(req.app.locals._id, (err, user) => {
+            if (!err) {
+                auth = {
+                    user: user,
+                    auth: true,
                 }
-                doc.title = req.body.title;
-                doc.imgURL = req.body.imgURL;
-                doc.URLToCourse = req.body.URL;
-                doc.description = req.body.description;
-
-                doc.save(function (err, updatedDoc) {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    res.status(201)
-                    res.json(JSON.stringify({
-                        success: true
-                    }))
-                });
+                callback(auth);
             } else {
-                res.status(500);
-                res.json(JSON.stringify({
-                    success: false
-                }))
+                auth = {
+                    user: null,
+                    auth: false,
+                }
+                callback(auth);
             }
-        })
-    } else if (req.body.delete == true && req.app.locals.role == 'teacher') {
-        Course.findById(req.body._id, function (err, doc) {
-            console.log(req.body._id, doc);
-            if (doc.authorId == req.app.locals._id) {
-                Course.findByIdAndRemove(req.body._id, function (err, doc) {
-                    res.sendStatus(200);
-                });
-            }
-        })
+        });
     }
+}
+
+function isSameTeacherLoggedIn(req, res, next) {
+    Course.find({
+        $and: [
+            {_id: req.body.courseId},
+            {authorId: req.app.locals._id}
+        ]
+    }, (err, course) => {
+        if (!err) next();
+        else res.redirect('http://localhost:3000/');
+    });
+}
+
+function isSameTeacherLoggedInData(req, res, next, callback) {
+    let auth = {};
+    Course.find({
+        $and: [
+            {_id: req.body.courseId},
+            {authorId: req.app.locals._id}
+        ]
+    }, (err, course) => {
+        if (!err) {
+            auth = {
+                course: course,
+                auth: true,
+            }
+            callback(auth);
+        } else {
+            auth = {
+                course: course,
+                auth: false,
+            }
+            callback(auth);
+        }
+    });
+}
+
+
+// for authentication
+
+function isLoggedIn(req, res, next) {
+    if (req.app.locals._id != null) {
+        next();
+    } else if (req.app.locals._id == null) {
+        res.redirect('http://localhost:3000/');
+    }
+}
+
+// for data
+
+function isLoggedInData(req, res, next, callback) {
+    let auth = {};
+    User.findById(req.app.locals._id, (err, user) => {
+        if (!err) {
+            auth = {
+                user: user,
+                auth: true,
+            }
+            callback(auth);
+        } else {
+            auth = {
+                auth: false,
+                user: null,
+            }
+            callback(auth);
+        }
+    })
+}
+
+router.get('/getUserData', isLoggedIn, function (req, res, next) {
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth
+            ?
+            (() => {
+                res.json({
+                    auth: data.auth,
+                    username: data.user.displayName,
+                    email: data.user.email,
+                    displayImage: data.user.displayImage,
+                    role: data.user.role,
+                });
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                });
+            })()
+    });
 });
+
+router.get('/getUserProfile', isLoggedIn, function (req, res, next) {
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                var finishedCoursesData = [];
+                if (data.user.finishedCourses.length > 0) {
+                    data.user.finishedCourses.forEach((elem, index) => {
+                        Course.findById(elem.courseId, function (err, course) {
+                            if (!err) finishedCoursesData.push(course);
+                            if ((index) == (data.user.finishedCourses.length - 1)) {
+                                res.json({
+                                    data: data.user,
+                                    finishedCoursesData: finishedCoursesData,
+                                    auth: data.auth
+                                });
+                            }
+                        })
+                    })
+                } else {
+                    res.json({
+                        data: data.user,
+                        finishedCoursesData: finishedCoursesData,
+                        auth: data.auth
+
+                    });
+                }
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth
+                });
+            })()
+    })
+});
+
+router.get('/getCourseDataById', isLoggedIn, function (req, res, next) {
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                let courses = [];
+
+                user.followedCourses.forEach((elem, index) => {
+                    Course.findById(elem, (err, course) => {
+                        courses.push(course);
+                        if ((index + 1) == user.followedCourses.length) {
+                            res.json({
+                                courses: courses,
+                                auth: data.auth,
+                            });
+                        }
+                    })
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth
+                });
+            })()
+    })
+});
+
+// TODO
+// /loggedIn was deleted here since it's not needed anymore, but do check for it later when fixing react
+// components
+
+router.get('/createCourse', isTeacherLoggedIn, function (req, res, next) {
+
+    isTeacherLoggedInData((data) => {
+        console.log(data.auth, data);
+        data.auth ?
+            (() => {
+                Course.create({
+                    title: null,
+                    imgURL: null,
+                    author: data.user.displayName,
+                    authorId: data.user._id,
+                    creationDate: Date.now(),
+
+                }, (err, doc) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.json(doc._id);
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth
+                })
+            })()
+    })
+});
+router.get('/test', function (req, res, next) {
+    (() => {
+        console.log('Ok');
+        res.json({hi: 'hi'});
+
+    })()
+
+});
+
+// deleted the req.body.delete option and moved the deleting part to /deleteCourse
+router.post('/saveCourse', isSameTeacherLoggedIn, function (req, res, next) {
+
+    isSameTeacherLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                Course.findById(data.course._id, (err, course) => {
+                    course.title = req.body.title;
+                    course.imgURL = req.body.imgURL;
+                    course.URLToCourse = req.body.URL;
+                    course.description = req.body.description;
+                    // this might create errors
+
+
+                    course.save((err, updatedCourse) => {
+                        if (!err) {
+                            res.json({
+                                auth: data.auth,
+                            })
+                        }
+                    })
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    })
+});
+
+router.post('/deleteCourse', isSameTeacherLoggedIn, function (req, res, next) {
+
+})
 
 router.get('/getUserId', function (req, res, next) {
     if (req.app.locals._id != null) {
@@ -610,7 +719,7 @@ router.post('/saveEditCourse', function (req, res, next) {
     if (req.body.courseId != null) {
         Course.findById(req.body.courseId, (err, course) => {
             if (req.app.locals._id == course.authorId) {
-                if(req.body.description.indexOf('\n') != -1) {
+                if (req.body.description.indexOf('\n') != -1) {
                     req.body.description = req.body.description.replace('\n', '<br/>');
                 }
                 course.title = req.body.title;
@@ -618,7 +727,7 @@ router.post('/saveEditCourse', function (req, res, next) {
                 course.URLToCourse = req.body.URLToCourse;
                 course.description = req.body.description;
                 course.save((err) => {
-                    if(!err) res.json({success: true});
+                    if (!err) res.json({success: true});
                 });
             } else {
                 res.json({success: false});

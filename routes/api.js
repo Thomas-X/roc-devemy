@@ -31,7 +31,7 @@ function isTeacherLoggedInData(req, res, next, callback) {
 
     if (req.app.locals.role === 'teacher' && req.app.locals._id) {
         User.findById(req.app.locals._id, (err, user) => {
-            if (!err) {
+            if (!err && user.length > 0) {
                 auth = {
                     user: user,
                     auth: true,
@@ -55,7 +55,10 @@ function isSameTeacherLoggedIn(req, res, next) {
             {authorId: req.app.locals._id}
         ]
     }, (err, course) => {
-        if (!err) next();
+        if (!err && course.length > 0) {
+            console.log('user is OK');
+            next();
+        }
         else res.redirect('http://localhost:3000/');
     });
 }
@@ -68,7 +71,7 @@ function isSameTeacherLoggedInData(req, res, next, callback) {
             {authorId: req.app.locals._id}
         ]
     }, (err, course) => {
-        if (!err) {
+        if (!err && course.length > 0) {
             auth = {
                 course: course,
                 auth: true,
@@ -100,7 +103,7 @@ function isLoggedIn(req, res, next) {
 function isLoggedInData(req, res, next, callback) {
     let auth = {};
     User.findById(req.app.locals._id, (err, user) => {
-        if (!err) {
+        if (!err && user.length > 0) {
             auth = {
                 user: user,
                 auth: true,
@@ -211,7 +214,6 @@ router.get('/getCourseDataById', isLoggedIn, function (req, res, next) {
 router.get('/createCourse', isTeacherLoggedIn, function (req, res, next) {
 
     isTeacherLoggedInData((data) => {
-        console.log(data.auth, data);
         data.auth ?
             (() => {
                 Course.create({
@@ -277,146 +279,241 @@ router.post('/saveCourse', isSameTeacherLoggedIn, function (req, res, next) {
     })
 });
 
+
 router.post('/deleteCourse', isSameTeacherLoggedIn, function (req, res, next) {
-
-})
-
-router.get('/getUserId', function (req, res, next) {
-    if (req.app.locals._id != null) {
-        res.json(JSON.stringify({
-            id: req.app.locals._id,
-            success: true
-        }));
-    } else if (req.app.locals._id == null) {
-        res.json(JSON.stringify({
-            success: false,
-        }))
-    }
-});
-
-router.get('/authUser', function (req, res, next) {
-    if (req.app.locals._id != null) {
-        res.json(JSON.stringify({
-            success: true
-        }));
-    } else if (req.app.locals._id == null) {
-        res.json(JSON.stringify({
-            success: false,
-        }))
-    }
-})
-
-
-router.get('/myCourses', function (req, res, next) {
-    if (req.app.locals.role == 'teacher') {
-        Course.find({'authorId': req.app.locals._id}, function (err, docs) {
-            console.log(docs);
-            res.json(JSON.stringify({
-                data: docs,
-            }))
-        });
-    }
-})
-
-router.post('/removeCourse', function (req, res, next) {
-    if (req.app.locals.role == 'teacher') {
-        Course.find({'authorId': req.app.locals._id}, function (err, docs) {
-            docs.forEach(function (elem) {
-                if (elem._id == req.body.id && !err) {
-                    console.log(req.body.id);
-                    Course.findByIdAndRemove(req.body.id, function (err, doc) {
-                        var response = {
-                            success: true,
-                            id: doc._id,
-                        }
-                        res.status(200)
-                        res.send(response);
+    isSameTeacherLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                Course.findByIdAndRemove(data.user._id, function (err, doc) {
+                    if (!err) res.json({
+                        auth: data.auth,
                     });
-                } else if (err) {
-                    res.status(500);
-                    res.send({
-                        success: false
-                    })
-                }
-            });
-        })
-    }
-});
+                });
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    })
+})
 
-router.post('/search', function (req, res, next) {
-    var regex = new RegExp(req.body.searchQuery, 'i');
-    Course.find({title: regex}, function (err, courses) {
-        console.log(req.body.searchQuery, courses);
-        if (!err) res.send({courses: courses, success: true});
-        if (err) res.send({success: false});
+router.get('/getUserId', isLoggedIn, function (req, res, next) {
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                res.json({
+                    id: data.user._id,
+                    auth: data.auth,
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
     });
 });
 
-router.post('/getCourseById', function (req, res, next) {
-    let firstTime = false;
+// auth user GET method was here but deleted since it's not needed any more,
+// check for it when fixing react components
 
-    Course.findById(req.body._id, function (err, course) {
-            User.findById(req.app.locals._id, function (err2, user) {
-                if (user != null) {
-                    let followedCourses;
-                    let foundItem;
+
+router.get('/myCourses', isTeacherLoggedIn, function (req, res, next) {
+    Course.find({authorId: req.app.locals._id}, function (err, docs) {
+        res.json({
+            data: docs,
+        })
+    });
+});
+
+// remove course is deleted, use deleteCourse
+
+router.post('/search', isLoggedIn, function (req, res, next) {
+    var regex = new RegExp(req.body.searchQuery, 'i');
+    Course.find({title: regex}, (err, courses) => {
+        if (!err) res.json({
+            courses: courses, success: true
+        });
+        if (err) res.json({
+            success: false
+        });
+    });
+});
+
+router.post('/getCourseById', isLoggedIn, function (req, res, next) {
+    let firstTime = false;
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                let followedCourses;
+                let foundItem;
+
+                Course.findById(req.body.courseId, (err, course) => {
                     if (user.followedCourses != null) followedCourses = user.followedCourses;
                     if (followedCourses.length > 0) {
                         followedCourses.forEach((elem, index) => {
                             if (elem == course._id) {
                                 foundItem = true;
                             }
-                            if (index == followedCourses[followedCourses.length - 1] && foundItem === false) {
+                            if ((index - 1 ) == followedCourses.length && foundItem === false) {
                                 firstTime = true;
                             }
-
                         });
                     } else {
                         firstTime = true;
                     }
-                }
-                if (!err) res.send({
-                    course: course,
-                    success: true,
-                    userImage: req.app.locals.displayImage,
-                    userId: req.app.locals._id,
-                    author: req.app.locals.username,
-                    firstTime: firstTime,
+                    if (!err) {
+                        res.json({
+                            course: course,
+                            auth: data.auth,
+                            displayImage: data.user.displayImage,
+                            userId: data.user._id,
+                            author: data.user.displayName,
+                            firstTime: firstTime,
+                        })
+                    } else {
+                        res.json({
+                            course: course,
+                            auth: data.auth,
+                        })
+                    }
+
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    })
+});
+
+/*
+ *
+ *       POST /followCourse route
+ *       @params
+ *       courseId: Number or String containing courseId,
+ *
+ *
+ *
+ * */
+
+
+router.post('/followCourse', isLoggedIn, function (req, res, next) {
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                Course.findById(req.body.courseId, (err, course) => {
+                    if (!err) {
+                        User.update(
+                            {_id: data.user._id},
+                            {$addToSet: {followedCourses: req.body.courseId}},
+                            (err, user) => {
+                                if (!err) res.json({
+                                    auth: data.auth,
+                                    user: user,
+                                })
+                            })
+                    }
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    });
+});
+
+router.get('/getFollowedCourses', isLoggedIn, function (req, res, next) {
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                res.json({
+                    followedCourses: data.user.followedCourses,
+                    auth: data.auth,
+                })
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    })
+})
+
+router.post('/unFollowCourse', isLoggedIn, function (req, res, next) {
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                User.update(data.user._id, {$pull: {followedCourses: req.body.courseId}},
+                    (err, user) => {
+                        if (!err) res.json({
+                            auth: data.auth,
+                            user: user,
+                        });
+                    });
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth
                 });
-                if (err) res.send({course: course, success: false});
-            });
-        }
-    )
-});
-
-router.post('/followCourse', function (req, res, next) {
-    Course.findById(req.body._id, function (err, course) {
-        if (err) res.send({success: false});
-        if (req.app.locals._id != null && !err) {
-            User.update({_id: req.app.locals._id}, {$addToSet: {followedCourses: req.body._id}}, function (err, user) {
-                res.send({success: true});
-                if (err) res.send({success: false});
-            })
-        }
-    })
-});
-
-router.get('/getFollowedCourses', function (req, res, next) {
-    User.findById(req.app.locals._id, function (err, user) {
-        if (!err && req.app.locals._id != null) res.send({followedCourses: user.followedCourses, success: true});
-        else res.send({success: false});
+            })()
     })
 })
 
-router.post('/unFollowCourse', function (req, res, next) {
-    User.update({_id: req.app.locals._id}, {$pull: {followedCourses: req.body._id}}, function (err, user) {
-        if (!err && req.app.locals._id != null) res.send({success: true});
-        else res.send({success: false});
-        console.log(user);
-    })
-})
+/*
+ *
+ *   POST /rateCourse
+ *   @params:
+ *   rating: (a rating from 1-5, Number)
+ *
+ *
+ * */
 
-router.post('/rateCourse', function (req, res, next) {
+router.post('/rateCourse', isLoggedIn, function (req, res, next) {
+
+
+    isLoggedInData(req, res, next, (data) => {
+        data.auth ?
+            (() => {
+                if (req.body.rating <= 5 && req.body.rating >= 1) {
+                    Course.findById(req.body.courseId, (err, course) => {
+
+                        if (!err) {
+                            let sum = 0;
+                            let allRatingValues = course.allRatingValues;
+
+                            if (allRatingValues.length > 0) {
+                                allRatingValues.forEach((elem, index) => {
+                                    if (elem.authorId.equals(data.user._id)) {
+                                        elem.rating = req.body.rating;
+                                        // continue from line 528
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            })()
+            :
+            (() => {
+                res.json({
+                    auth: data.auth,
+                })
+            })()
+    })
+
+
     if (req.app.locals._id != null && req.body.rating <= 5 && req.body.rating >= 1) {
         Course.findById(req.body.courseId, function (err, course) {
             let sum = 0;

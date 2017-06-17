@@ -22,37 +22,29 @@ import TeacherBoardPage from './components/TeacherBoardPage';
 import Iframe from "./components/Iframe";
 import EditCourse from "./components/EditCourse";
 import './App.css';
+import axios from 'axios';
 
 injectTapEventPlugin();
 
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+
+    }
 
     // TODO if a course is deleted, remove that specific courseID from all the user's followedCourses, since it doesn't exist anymore
     // TODO and it'll give an error if React tries to do anything  with it this is awesome
+
 
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <Router history={hashHistory}>
                     <Route path="/" component={Container}>
-                        <IndexRoute component={NotLoggedInHomepage}/>
-                        <Route path="/logout" component={Logout}/>
-                        <Route path="/courses/createCourse" component={CreateCourseAndRedirect}/>
-                        <Route path="/courses/editor/:courseid" component={CreateCourse}/>
-                        <Route path="/courses/:courseid" component={ViewCourse}/>
-
-                        <Route path="/about/me" component={Me}/>
-                        <Route path="/about/me/mycourses" component={MyCourses}/>
-
-                        <Route path="/search" component={Search}/>
-                        <Route path="/teacher/course/:courseid" component={TeacherBoardPage}/>
-                        {/* this should always be the last route, otherwise the router params routes break*/}
-                        <Route path="/test" component={formsyExample}/>
-                        <Route path="/courses/edit/:courseid" component={EditCourse}/>
+                        <Route path="/teacher" component={TeacherContainer}/>
                     </Route>
-                    <Route path="/iframe/:courseid/:userid" component={Iframe}/>
-                    <Route path="*" component={NotFound}/>
                 </Router>
             </MuiThemeProvider>
         )
@@ -62,16 +54,42 @@ class App extends Component {
 class Container extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            userData: null
+        }
+
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:5000/api/getUserData')
+            .then((response) => {
+                this.setState({
+                    userData: response
+                })
+            })
     }
 
     render() {
         return (
             <div>
-                <NavigationAndDrawer/>
-                <div className='container'>
-                    {this.props.children}
-                </div>
-                <Footer/>
+                {React.cloneElement(this.props.children, {userData: this.state.userData})}
+            </div>
+        )
+    }
+}
+class TeacherContainer extends React.Component {
+    constructor(props) {
+        super(props);
+
+
+    }
+
+    render() {
+        console.log(this.props.userData)
+        return (
+            <div>
+                hi
             </div>
         )
     }

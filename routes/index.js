@@ -10,30 +10,14 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/logout', isLoggedIn, function (req, res, next) {
-    // resetting user locals aswell
 
-    req.app.locals.username = null;
-    req.app.locals.email = null;
-    req.app.locals.displayImage = null;
-    req.app.locals._id = null;
-    req.app.locals.role = null;
     req.logout();
     res.redirect('http://localhost:3000/');
 });
 
-router.get('/#/logout', isLoggedIn, function (req, res, next) {
-    // resetting user locals aswell
-    req.app.locals.username = null;
-    req.app.locals.email = null;
-    req.app.locals.displayImage = null;
-    req.app.locals._id = null
-    req.app.locals.role = null;
-    req.logout();
-    res.redirect('http://localhost:3000/');
-});
 
-router.get('/test', function (req, res, next) {
-    res.json(req.user);
+router.get('/test2', function (req, res, next) {
+    res.json(req.session);
 });
 
 // GET /auth/google
@@ -63,12 +47,12 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        req.app.locals.username = req.user.displayName;
-        req.app.locals.email = req.user.email;
-        req.app.locals.displayImage = req.user.displayImage;
-        req.app.locals._id = req.user._id;
-        req.app.locals.role = req.user.role;
-        res.redirect('http://localhost:3000/');
+        req.session.username = req.user.displayName;
+        req.session.email = req.user.email;
+        req.session.displayImage = req.user.displayImage;
+        req.session._id = req.user._id;
+        req.session.role = req.user.role;
+        res.redirect('http://localhost:5000/');
 });
 
 // route middleware to make sure a user is logged in
@@ -79,18 +63,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     // if user isn't logged in redirect them to the home page
-    res.redirect('http://localhost:3000/');
-}
-
-function isTeacherLoggedIn(req, res, next) {
-
-    if (req.isAuthenticated()) {
-        if (req.user.isTeacher === true) {
-            return next();
-        }
-    }
-    res.redirect('http://localhost:3000/');
-
+    res.redirect('http://localhost:5000/');
 }
 
 module.exports = router;

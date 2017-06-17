@@ -90,8 +90,8 @@ export default class LoggedIn extends React.Component {
                                 null
                             }
                             <Divider/>
-                            <IndexLink activeClassName="active" to="/logout"><MenuItem primaryText="Sign out"
-                                                                                       leftIcon={<Input/>}/></IndexLink>
+                            <a href="http://localhost:5000/logout"><MenuItem primaryText="Sign out"
+                                                                                       leftIcon={<Input/>}/></a>
                         </Menu>
                     </Popover>
                 </List>

@@ -472,6 +472,7 @@ a {
   justify-content: space-between; }
 
 .ViewCourseGoToCourse {
+  height: 36px !important;
   margin-right: 5px; }
 
 .errorFollowingButton {

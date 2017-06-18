@@ -209,7 +209,7 @@ router.get('/getCourseDataById', isLoggedIn, function (req, res, next) {
 
 // TODO
 // /loggedIn was deleted here since it's not needed anymore, but do check for it later when fixing react
-// components
+// components-old
 
 router.get('/createCourse', isTeacherLoggedIn, function (req, res, next) {
 
@@ -319,7 +319,7 @@ router.get('/getUserId', isLoggedIn, function (req, res, next) {
 });
 
 // auth user GET method was here but deleted since it's not needed any more,
-// check for it when fixing react components
+// check for it when fixing react components-old
 
 
 router.get('/myCourses', isTeacherLoggedIn, function (req, res, next) {

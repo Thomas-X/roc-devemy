@@ -42,60 +42,10 @@ export default class LoggedIn extends React.Component {
     }
 
     render() {
-        let isTeacher = false
-        console.log(this.props.role);
-        if (this.props.role == 'teacher') {
-            isTeacher = true;
-        }
-
         return (
-            <div className='appBarContainer'>
-                <IndexLink to="/search" className='appbarSearch'>
-                    <IconButton tooltip="Zoek naar een cursus" className='whiteText'>
-                        <ActionSearch className="searchButtonNavbar"/>
-                    </IconButton>
-                </IndexLink>
-                <List
-                    className='appbarUserAvatarAndImage2'>
-                    <ListItem
-                        leftAvatar={
-                            <Avatar
-                                src={this.props.displayImage}
-                            />
-                        }
-                        color={customTheme.alternateTextColor}
-                        className='whiteText'
-                        onTouchTap={this.handleTouchTap}
-                    >
-                        {this.props.username}
-                    </ListItem>
+    <div>
 
-                    <Popover
-                        open={this.state.open}
-                        anchorEl={this.state.anchorEl}
-                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                        onRequestClose={this.handleRequestClose}
-                        canAutoPosition={true}
-                    >
-                        <Menu>
-                            <MePopoverAppbar username={this.props.username}/>
-                            {isTeacher
-                                ?
-                                <div>
-                                    <NewCoursePopoverAppbar/>
-                                    <MyCoursesPopOverAppbar/>
-                                </div>
-                                :
-                                null
-                            }
-                            <Divider/>
-                            <a href="http://localhost:5000/logout"><MenuItem primaryText="Sign out"
-                                                                                       leftIcon={<Input/>}/></a>
-                        </Menu>
-                    </Popover>
-                </List>
-            </div>
+    </div>
         )
     }
 }

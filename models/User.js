@@ -16,6 +16,8 @@ var UserSchema = new Schema({
     role: {type: String, default: 'student'},
     followedCourses: {type: [], default: null},
     finishedCourses: {type: [finishedCoursesSchema], default: null},
+    token: {type: String, default: null, required: true, unique: true},
+    isTeacher: {type: Boolean, default: null, required: true},
 });
 
 var User = mongoose.model('User', UserSchema);

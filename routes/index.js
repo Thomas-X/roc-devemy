@@ -6,18 +6,13 @@ var passport = require('passport');
 var request = require('request');
 
 router.get('/', function (req, res, next) {
-    res.render('index');
+    res.render('index', {token: req.user.token});
 });
 
 router.get('/logout', isLoggedIn, function (req, res, next) {
 
     req.logout();
-    res.redirect('http://localhost:3000/');
-});
-
-
-router.get('/test2', function (req, res, next) {
-    res.json(req.session);
+    res.redirect('/');
 });
 
 // GET /auth/google
@@ -47,12 +42,7 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        req.session.username = req.user.displayName;
-        req.session.email = req.user.email;
-        req.session.displayImage = req.user.displayImage;
-        req.session._id = req.user._id;
-        req.session.role = req.user.role;
-        res.redirect('http://localhost:5000/');
+        res.redirect('/');
 });
 
 // route middleware to make sure a user is logged in
@@ -63,7 +53,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     // if user isn't logged in redirect them to the home page
-    res.redirect('http://localhost:5000/');
+    res.redirect('/');
 }
 
 module.exports = router;

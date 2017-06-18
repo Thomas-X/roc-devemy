@@ -65,6 +65,7 @@ passport.use(new GoogleStrategy({
             //check if we found a doc, if doc is null we create a new user, if doc isn't null we compare id's, for double safety :)
             if (doc != null) {
                 if (doc.googleId == profile.id) {
+                    doc.token = accessToken;
                     return cb(err, doc);
                 }
             } else if (doc == null) {
@@ -75,7 +76,10 @@ passport.use(new GoogleStrategy({
                     email: String(profile.emails[0]['value']),
                     role: 'student',
                     followedCourses: [],
+                    token: accessToken,
+                    isTeacher: false,
                 }, function (err, val) {
+                    val.token = accessToken;
                     return cb(err, val);
                 });
             }

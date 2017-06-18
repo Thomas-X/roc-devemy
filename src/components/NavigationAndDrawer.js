@@ -57,7 +57,7 @@ export default class NavigationAndDrawer extends Component {
                         onLeftIconButtonTouchTap={this.drawerActivated}
                         children={
                             <div className='appBarContainer'>
-                                <IndexLink to="/search" className='appbarSearch'>
+                                <IndexLink to="/student/search" className='appbarSearch'>
                                     <IconButton tooltip="Zoek naar een cursus" className='whiteText'>
                                         <ActionSearch className="searchButtonNavbar"/>
                                     </IconButton>
@@ -110,10 +110,10 @@ export default class NavigationAndDrawer extends Component {
                     children={
                         <div>
                             <div>
-                                <IndexLink className='drawerLogoContainer' to="/">
+                                <IndexLink className='drawerLogoContainer' to={"/" + this.props.siteData.role}>
                                     <h1 id='drawer-logo' className='drawerLogoh1'>roc-dev</h1>
                                 </IndexLink>
-                                <IndexLink to="/">
+                                <IndexLink to={"/" + this.props.siteData.role}>
                                     <MenuItem leftIcon={<ActionHome/>}>
                                         Thuispagina
                                     </MenuItem>

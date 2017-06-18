@@ -10,6 +10,8 @@ import axios from 'axios';
 import {CircularProgress} from "material-ui";
 import StudentHome from "./components/StudentHome";
 import NavigationAndDrawer from "./components/NavigationAndDrawer";
+import Search from "./components/Search";
+import TeacherHome from "./components/TeacherHome";
 
 injectTapEventPlugin();
 
@@ -24,11 +26,12 @@ class App extends Component {
                 token: "ya29.GlttBKOeiY7z4bfvsZkXT3s_YGUsq_K8EtP4STo0qc4c7OTw2iFt1KyR7yHSWgu12-Yq7IRdqMBuHw1MtG_G8cLNepzGepyzgjGGU6Mw6q86AF3Eg9XnZtlFXArt",
                 finishedCourses: [],
                 followedCourses: [],
-                role: "student",
+                role: "teacher",
                 email: "thomaszwarts@gmail.com",
                 displayImage: "https://lh4.googleusercontent.com/-2CWZ00hNXvs/AAAAAAAAAAI/AAAAAAAACV0/7doIgC3haEk/photo.jpg?sz=50",
                 displayName: "Thomas X",
                 googleId: "113410351108501075458",
+                isTeacher: true,
                 __v: 0
             }
         }
@@ -51,9 +54,11 @@ class App extends Component {
                     <Router history={hashHistory}>
                         <Route path="/" component={Container} siteData={this.state.siteData}>
                             <Route path="/teacher" component={TeacherContainer} siteData={this.state.siteData}>
+                                <Route path="/teacher/home" component={TeacherHome} siteData={this.state.siteData}/>
                             </Route>
                             <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                                 <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
+                                <Route path="/student/search" component={Search} siteData={this.state.siteData}/>
                             </Route>
                         </Route>
                     </Router>
@@ -76,6 +81,15 @@ class Container extends React.Component {
         super(props);
     }
 
+    componentWillMount() {
+        if(this.props.route.siteData.role == "teacher") {
+            hashHistory.push('/teacher/home');
+        }
+        if(this.props.route.siteData.role == "student") {
+            hashHistory.push('/student/home');
+        }
+    }
+
     render() {
         return (
             <div>
@@ -93,6 +107,7 @@ class TeacherContainer extends React.Component {
 
     componentWillMount() {
         if (this.props.route.siteData.role != "teacher") {
+            hashHistory.push('/teacher/home');
             hashHistory.push('/');
         }
     }
@@ -115,6 +130,7 @@ class StudentContainer extends React.Component {
     componentWillMount() {
 
         if (this.props.route.siteData.role == "teacher" || this.props.route.siteData.role == "student") {
+            hashHistory.push('/student/home');
         } else {
             hashHistory.push('/');
         }

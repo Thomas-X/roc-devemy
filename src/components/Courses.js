@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider} from "material-ui";
+import {Divider, Paper} from "material-ui";
 
 
 export default class Courses extends Component {
@@ -12,7 +12,7 @@ export default class Courses extends Component {
 
         if (this.props.siteData.followedCourses.length > 0) {
             return (
-                <div className="StudentHomeCourses">
+                <Paper zDepth={1} className="StudentHomeCourses">
                     {this.props.siteData.followedCourses.map((elem, index) => {
                         return (
                             <div className="StudentHomeCoursesCard">
@@ -23,13 +23,13 @@ export default class Courses extends Component {
                         )
                     })}
 
-                </div>
+                </Paper>
             )
         } else {
             return (
-                <div className="StudentHomeCourses">
+                <Paper zDepth={1} className="StudentHomeCourses">
                     <h1>JE VOLGT NOG NIETS</h1>
-                </div>
+                </Paper>
             )
         }
     }

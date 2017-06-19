@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FontIcon, Paper, Tab, Tabs} from "material-ui";
 import {ActionDashboard, AvEqualizer, MapsPersonPin} from "material-ui/svg-icons/index";
 import RaisedButton from 'material-ui/RaisedButton';
+import {IndexLink} from "react-router";
 
 export default class TeacherHome extends Component {
     constructor(props) {
@@ -32,10 +33,12 @@ export default class TeacherHome extends Component {
                                         Je hebt nog geen cursussen aangemaakt
                                     </span>
                                     <br/>
-                                    <RaisedButton
-                                        label="Maak cursus"
-                                        primary={true}
-                                        className='TeacherHomeCreateCourseButton'/>
+                                    <IndexLink to="/teacher/home/createCourse">
+                                        <RaisedButton
+                                            label="Maak cursus"
+                                            primary={true}
+                                            className='TeacherHomeCreateCourseButton'/>
+                                    </IndexLink>
                                 </div>
                             }
                         </div>
@@ -55,10 +58,12 @@ export default class TeacherHome extends Component {
                                         Je hebt nog geen cursussen aangemaakt
                                     </span>
                                     <br/>
-                                    <RaisedButton
-                                        label="Maak cursus"
-                                        primary={true}
-                                        className='TeacherHomeCreateCourseButton'/>
+                                    <IndexLink to="/teacher/home/createCourse">
+                                        <RaisedButton
+                                            label="Maak cursus"
+                                            primary={true}
+                                            className='TeacherHomeCreateCourseButton'/>
+                                    </IndexLink>
                                 </div>
                             }
                         </div>

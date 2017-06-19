@@ -891,3 +891,23 @@ a {
 .TeacherHomeCreateCourseButton {
   margin:10px;
 }
+.CreateCourseTitleAndImageURLContainer {
+  width:100%;
+  display:flex;
+  flex-direction: row;
+  padding-bottom:10px;
+}
+.CreateCourseTitleTextField, .CreateCourseImgURLTextField {
+  width:50% !important;
+}
+.CreateCourseTitleTextField {
+  align-self: center;
+  margin-right:20px;
+
+}
+.CreateCourseImgURLTextField {
+  align-self: center;
+}
+.CreateCourseSlideContainer {
+  padding:10px;
+}

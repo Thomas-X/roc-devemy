@@ -6,10 +6,18 @@ var passport = require('passport');
 var axios = require('axios');
 
 
-// for now till production, dont use the checkToken function on api routes
+// for now till production, dont use the checkToken function on ALL api routes
 const checkToken = (req, res, next) => {
     if (req.body.token != null && req.body.token == req.user.token) {
         console.log(req.body.token, req.user.token);
+        next();
+    } else {
+        res.status(405).send();
+    }
+}
+// add this method to POST /createCourse on production
+const teacherLoggedIn = (req,res,next) => {
+    if(req.user.role == 'teacher') {
         next();
     } else {
         res.status(405).send();
@@ -33,6 +41,20 @@ router.post('/search', function (req, res, next) {
             success: false
         });
     });
+});
+
+router.post('/createCourse', (req,res,next) => {
+     Course.create({
+         title: req.body.title,
+         imgURL: req.body.imgURL,
+         authorId: req.user._id,
+         author: req.user.displayName,
+         URLToCourse: req.body.URLToCourse,
+         description: req.body.description,
+     },  (err, newCourse) => {
+             if(!err) res.json({createCourse: newCourse});
+             else res.status(500).send();
+     });
 });
 
 

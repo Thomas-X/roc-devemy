@@ -12,6 +12,7 @@ import StudentHome from "./components/StudentHome";
 import NavigationAndDrawer from "./components/NavigationAndDrawer";
 import Search from "./components/Search";
 import TeacherHome from "./components/TeacherHome";
+import CreateCourse from "./components/CreateCourse";
 
 injectTapEventPlugin();
 
@@ -36,8 +37,11 @@ class App extends Component {
                 ownedData: [],
             }
         }
+        this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
 
     }
+
+    // add this in production
 
     // componentWillMount() {
     //     axios.post('/api/getUserData', {token: window.token}).then((response) => {
@@ -46,6 +50,12 @@ class App extends Component {
     //         })
     //     })
     // }
+
+    createCourseUpdateState(course) {
+        this.setState({
+            ownedData: this.state.siteData.ownedData.push(course)
+        })
+    }
 
 
     render() {
@@ -56,6 +66,10 @@ class App extends Component {
                         <Route path="/" component={Container} siteData={this.state.siteData}>
                             <Route path="/teacher" component={TeacherContainer} siteData={this.state.siteData}>
                                 <Route path="/teacher/home" component={TeacherHome} siteData={this.state.siteData}/>
+                                <Route path="/teacher/home/createCourse"
+                                       component={CreateCourse}
+                                       siteData={this.state.siteData}
+                                       createCourse={this.createCourseUpdateState}/>
                             </Route>
                             <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                                 <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>

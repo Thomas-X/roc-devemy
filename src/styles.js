@@ -13,6 +13,7 @@ export const floatingLabelStyle = {
 }
 export const underlineStyle = {
     borderColor: colors.blue500,
+    color: colors.blue500,
 }
 export const courseListItem = {
     marginLeft: 18,

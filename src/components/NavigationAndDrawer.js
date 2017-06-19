@@ -8,7 +8,7 @@ import {
     Subheader
 } from "material-ui";
 import {IndexLink} from "react-router";
-import {ActionHome, ActionPermMedia, ActionSearch, ContentAdd, ActionInput, SocialPersonOutline} from "material-ui/svg-icons/index";
+import {ActionHome, ActionPermMedia, ActionSearch, ContentAdd, ActionInput, SocialPersonOutline, ActionFace} from "material-ui/svg-icons/index";
 import {customTheme} from "../customMuiTheme";
 
 
@@ -91,6 +91,7 @@ export default class NavigationAndDrawer extends Component {
                                                 <div>
                                                     <NewCoursePopoverAppbar/>
                                                     <MyCoursesPopOverAppbar/>
+                                                    <ToStudentArea/>
                                                 </div> : null
                                             }
                                             <Divider/>
@@ -145,7 +146,7 @@ export class MePopoverAppbar extends React.Component {
 
     render() {
         return (
-            <IndexLink activeClassName='active' to='/about/me'><MenuItem primaryText={this.props.username}
+            <IndexLink activeClassName='active' to='/teacher/home/me/'><MenuItem primaryText={this.props.username}
                                                                          leftIcon={<SocialPersonOutline/>}/></IndexLink>
         )
     }
@@ -153,7 +154,7 @@ export class MePopoverAppbar extends React.Component {
 export class NewCoursePopoverAppbar extends React.Component {
     render() {
         return (
-            <IndexLink activeClassName="active" to="/courses/createCourse/"><MenuItem primaryText='Nieuwe cursus'
+            <IndexLink activeClassName="active" to="/teacher/home/createCourse"><MenuItem primaryText='Nieuwe cursus'
                                                                                       leftIcon={
                                                                                           <ContentAdd/>}/></IndexLink>
         )
@@ -162,8 +163,17 @@ export class NewCoursePopoverAppbar extends React.Component {
 export class MyCoursesPopOverAppbar extends React.Component {
     render() {
         return (
-            <IndexLink activeClassName="active" to="/about/me/mycourses"><MenuItem primaryText='Mijn cursussen' leftIcon={
+            <IndexLink activeClassName="active" to="/teacher/home/"><MenuItem primaryText='Mijn cursussen' leftIcon={
                 <ActionPermMedia/>}/></IndexLink>
         )
+    }
+}
+export class ToStudentArea extends React.Component {
+    render() {
+        return (
+            <IndexLink to="/student/home/">
+                <MenuItem primaryText='Naar student thuispagina' leftIcon={<ActionFace/>}/>
+            </IndexLink>
+                )
     }
 }

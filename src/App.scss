@@ -28,12 +28,12 @@ body {
   font-family: "Roboto" !important;
   background-image: url("images/backgroundpattern.png");
   min-width: 368px;
-  margin:0;
-  position:relative;
-  height:100%;
+  margin: 0;
+  position: relative;
+  height: 100%;
   /* Height of the footer */
   padding: 60px 0 60px;
-  height:100%;
+  height: 100%;
 }
 
 /*
@@ -259,8 +259,8 @@ a {
 }
 
 .appbarUserAvatarAndImage2 {
-  align-self:center !important;
-  padding:0 !important;
+  align-self: center !important;
+  padding: 0 !important;
 }
 
 .container {
@@ -510,13 +510,14 @@ a {
   padding: 10px;
   margin: 40px;
 }
+
 .paperEditorContentTeacher {
-  margin:40px;
-}
-.slideContainer {
-  padding:10px;
+  margin: 40px;
 }
 
+.slideContainer {
+  padding: 10px;
+}
 
 .removeChapterButtonColor {
   color: $dangerColor !important;
@@ -793,18 +794,21 @@ a {
 
 .appbarButtonNotLoggedIn {
   color: $white !important;
-  margin-top:6px !important;
+  margin-top: 6px !important;
 }
+
 .descriptionViewCourse {
-  width:180px;
+  width: 180px;
 }
+
 .ViewCourseDescriptionTitleAndButtonsContainer {
-  display:flex;
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
+
 .whiteIcon {
   fill: $white !important;
 }
@@ -820,94 +824,188 @@ a {
     margin: 24px 0px 24px 0px;
   }
 }
+
 .loaderCenterContainer {
-  width:100%;
-  height:100%;
-  display:flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
   justify-content: center;
 }
+
 .StudentHomePageHeader {
-  display:flex;
-  height:170px;
-  width:100%;
+  display: flex;
+  height: 170px;
+  width: 100%;
   justify-content: center;
   align-items: center;
 }
+
 .StudentHomePageHeaderContent {
   display: flex;
   flex-direction: column;
   font-weight: 300;
-  font-size:35px;
-  z-index:2;
+  font-size: 35px;
+  z-index: 2;
 }
+
 .StudentHomePageContentLogo {
-  width:250px;
+  width: 250px;
   align-self: center;
-  padding:5px;
+  padding: 5px;
 }
+
 .StudentHomePageSubText {
-  height:75px;
-  display:flex;
+  height: 75px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width:100%;
+  width: 100%;
   background-color: $accent2Color;
 }
+
 .StudentHomePageSubTextText {
-  width:50%;
+  width: 50%;
 }
+
 .StudentHomeCourses {
-  display:flex;
-  flex-wrap:wrap;
-  padding:10px;
-  background-color:$canvasColor;
-  width:80%;
-  margin:auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: $canvasColor;
+  width: 80%;
+  margin: auto;
 }
+
 .StudentHomeCoursesCard {
-  width:250px;
-  height:286px;
-  display:flex;
+  width: 250px;
+  height: 286px;
+  display: flex;
   flex-direction: column;
-  margin:5px;
+  margin: 5px;
 }
+
 .StudentHomeCoursesCardImage {
-  width:250px;
-  height:286px;
+  width: 250px;
+  height: 286px;
 }
+
 .StudentHomeCoursesCardTitle {
   background-color: $primary3Color;
   line-height: 61px;
 }
+
 .TeacherHomegreyedOutTextNoOwnedCourses {
-    font-size:2em;
-    color: $accent3Color;
+  font-size: 2em;
+  color: $accent3Color;
 
 }
+
 .TeacherHomegreyedOutTextNoOwnedCoursesContainer {
-  width:100%;
-  text-align:center;
+  width: 100%;
+  text-align: center;
 }
+
 .TeacherHomeCreateCourseButton {
-  margin:10px;
+  margin: 10px;
 }
+
 .CreateCourseTitleAndImageURLContainer {
-  width:100%;
-  display:flex;
+  width: 100%;
+  display: flex;
   flex-direction: row;
-  padding-bottom:10px;
+  padding-bottom: 10px;
 }
+
 .CreateCourseTitleTextField, .CreateCourseImgURLTextField {
-  width:50% !important;
+  width: 50% !important;
 }
+
 .CreateCourseTitleTextField {
   align-self: center;
-  margin-right:20px;
+  margin-right: 20px;
 
 }
+
 .CreateCourseImgURLTextField {
   align-self: center;
 }
+
 .CreateCourseSlideContainer {
-  padding:10px;
+  padding: 10px;
 }
+
+.AboutMeHeader {
+  width: 100%;
+  height: 270px;
+  background-size: cover;
+  background-image: url("./images/students-bg.jpg");
+}
+
+.AboutMeDisplayImage {
+  height: 100px;
+}
+
+.AboutMeDisplayImageContainer {
+  padding: 15px;
+  background-color: $alternateTextColor;
+  position: absolute;
+  left: 25px;
+  top: -80px;
+
+}
+
+.paperEditorContentAboutMe {
+  width: 80%;
+  margin: auto;
+  max-width: 934px;
+  position: relative;
+}
+
+.AboutMeUserNameContainer {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 200px;
+}
+
+.AboutMeUserName {
+  font-size: 2em;
+}
+
+.TabsContainer {
+  width: 80%;
+  max-width: 934px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  height: 270px;
+  align-items:flex-end;
+  justify-content: flex-end;
+}
+
+.AboutMeTabsContainer {
+  align-self: flex-end;
+  width:35%;
+  min-width:380px;
+}
+
+@media (max-width: 1170px) {
+  .paperEditorContentAboutMe, .TabsContainer {
+    width: 95%;
+  }
+}
+
+@media (max-width: 575px) {
+  .AboutMeDisplayImageContainer {
+    position: initial;
+    left: 0px;
+    top: 0px;
+  }
+  .AboutMeUserNameContainer {
+    text-align: left;
+    padding-left: 15px;
+  }
+  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer {
+    width: 100%;
+  }
+}
+

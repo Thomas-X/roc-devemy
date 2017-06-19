@@ -745,4 +745,65 @@ a {
 .CreateCourseSlideContainer {
   padding: 10px; }
 
+.AboutMeHeader {
+  width: 100%;
+  height: 270px;
+  background-size: cover;
+  background-image: url("./images/students-bg.jpg"); }
+
+.AboutMeDisplayImage {
+  height: 100px; }
+
+.AboutMeDisplayImageContainer {
+  padding: 15px;
+  background-color: #ffffff;
+  position: absolute;
+  left: 25px;
+  top: -80px; }
+
+.paperEditorContentAboutMe {
+  width: 80%;
+  margin: auto;
+  max-width: 934px;
+  position: relative; }
+
+.AboutMeUserNameContainer {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 200px; }
+
+.AboutMeUserName {
+  font-size: 2em; }
+
+.TabsContainer {
+  width: 80%;
+  max-width: 934px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  height: 270px;
+  align-items: flex-end;
+  justify-content: flex-end; }
+
+.AboutMeTabsContainer {
+  align-self: flex-end;
+  width: 35%;
+  min-width: 380px; }
+
+@media (max-width: 1170px) {
+  .paperEditorContentAboutMe, .TabsContainer {
+    width: 95%; } }
+@media (max-width: 575px) {
+  .AboutMeDisplayImageContainer {
+    position: initial;
+    left: 0px;
+    top: 0px; }
+
+  .AboutMeUserNameContainer {
+    text-align: left;
+    padding-left: 15px; }
+
+  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer {
+    width: 100%; } }
+
 /*# sourceMappingURL=App.css.map */

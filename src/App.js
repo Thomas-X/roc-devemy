@@ -13,6 +13,7 @@ import NavigationAndDrawer from "./components/NavigationAndDrawer";
 import Search from "./components/Search";
 import TeacherHome from "./components/TeacherHome";
 import CreateCourse from "./components/CreateCourse";
+import AboutMe from "./components/AboutMe";
 
 injectTapEventPlugin();
 
@@ -70,6 +71,7 @@ class App extends Component {
                                        component={CreateCourse}
                                        siteData={this.state.siteData}
                                        createCourse={this.createCourseUpdateState}/>
+                                <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
                             </Route>
                             <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                                 <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
@@ -98,7 +100,7 @@ class Container extends React.Component {
 
     componentWillMount() {
         if(this.props.route.siteData.role == "teacher") {
-            hashHistory.push('/teacher/home');
+            hashHistory.push('/teacher/home/me');
         }
         if(this.props.route.siteData.role == "student") {
             hashHistory.push('/student/home');

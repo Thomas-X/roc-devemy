@@ -32,7 +32,8 @@ class App extends Component {
                 displayName: "Thomas X",
                 googleId: "113410351108501075458",
                 isTeacher: true,
-                __v: 0
+                __v: 0,
+                ownedData: [],
             }
         }
 

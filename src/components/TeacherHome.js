@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {FontIcon, Paper, Tab, Tabs} from "material-ui";
 import {ActionDashboard, AvEqualizer, MapsPersonPin} from "material-ui/svg-icons/index";
-
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class TeacherHome extends Component {
     constructor(props) {
@@ -10,11 +10,11 @@ export default class TeacherHome extends Component {
 
     render() {
         let hasCourses = false;
-        if(this.props.route.siteData.ownedData.length > 0) {
+        if (this.props.route.siteData.ownedData.length > 0) {
             hasCourses = true;
         }
 
-         return (
+        return (
             <Paper className='paperEditorContentTeacher' zDepth={1}>
                 <Tabs>
                     <Tab
@@ -24,11 +24,18 @@ export default class TeacherHome extends Component {
                         <div className="slideContainer">
                             {hasCourses ?
                                 <div>
-                                    {/*return the teacher's own users*/}
+                                    {/*return the teacher's own courses*/}
                                 </div>
                                 :
-                                <div>
-                                    {/*return greyed out text with 'you have no courses a blue <button> add course </button>'*/}
+                                <div className="TeacherHomegreyedOutTextNoOwnedCoursesContainer">
+                                    <span className="TeacherHomegreyedOutTextNoOwnedCourses">
+                                        Je hebt nog geen cursussen aangemaakt
+                                    </span>
+                                    <br/>
+                                    <RaisedButton
+                                        label="Maak cursus"
+                                        primary={true}
+                                        className='TeacherHomeCreateCourseButton'/>
                                 </div>
                             }
                         </div>
@@ -38,7 +45,22 @@ export default class TeacherHome extends Component {
                         label="statistieken"
                     >
                         <div className="slideContainer">
-                            // add stats here
+                            {hasCourses ?
+                                <div>
+                                    {/*return the teacher's courses' stats */}
+                                </div>
+                                :
+                                <div className="TeacherHomegreyedOutTextNoOwnedCoursesContainer">
+                                    <span className="TeacherHomegreyedOutTextNoOwnedCourses">
+                                        Je hebt nog geen cursussen aangemaakt
+                                    </span>
+                                    <br/>
+                                    <RaisedButton
+                                        label="Maak cursus"
+                                        primary={true}
+                                        className='TeacherHomeCreateCourseButton'/>
+                                </div>
+                            }
                         </div>
                     </Tab>
                 </Tabs>

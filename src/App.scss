@@ -879,3 +879,15 @@ a {
   background-color: $primary3Color;
   line-height: 61px;
 }
+.TeacherHomegreyedOutTextNoOwnedCourses {
+    font-size:2em;
+    color: $accent3Color;
+
+}
+.TeacherHomegreyedOutTextNoOwnedCoursesContainer {
+  width:100%;
+  text-align:center;
+}
+.TeacherHomeCreateCourseButton {
+  margin:10px;
+}

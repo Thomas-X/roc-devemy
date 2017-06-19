@@ -715,4 +715,15 @@ a {
   background-color: #bdbdbd;
   line-height: 61px; }
 
+.TeacherHomegreyedOutTextNoOwnedCourses {
+  font-size: 2em;
+  color: #9e9e9e; }
+
+.TeacherHomegreyedOutTextNoOwnedCoursesContainer {
+  width: 100%;
+  text-align: center; }
+
+.TeacherHomeCreateCourseButton {
+  margin: 10px; }
+
 /*# sourceMappingURL=App.css.map */

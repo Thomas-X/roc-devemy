@@ -110,10 +110,10 @@ export default class NavigationAndDrawer extends Component {
                     children={
                         <div>
                             <div>
-                                <IndexLink className='drawerLogoContainer' to={"/" + this.props.siteData.role}>
+                                <IndexLink className='drawerLogoContainer' to={"/" + this.props.siteData.role + '/home'}>
                                     <h1 id='drawer-logo' className='drawerLogoh1'>roc-dev</h1>
                                 </IndexLink>
-                                <IndexLink to={"/" + this.props.siteData.role}>
+                                <IndexLink to={"/" + this.props.siteData.role + '/home'}>
                                     <MenuItem leftIcon={<ActionHome/>}>
                                         Thuispagina
                                     </MenuItem>

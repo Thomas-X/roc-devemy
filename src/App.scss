@@ -290,7 +290,7 @@ a {
 
 .userProfileAboutLeftIconEmail {
   align-self: center;
-  fill: 'rgb(117, 117, 117)';
+  fill: rgb(117, 117, 117) !important;
 }
 
 .userProfileAboutEmail {
@@ -562,56 +562,6 @@ a {
   left: -13px;
 }
 
-.ViewCourseFullWidthHeader {
-  width: 100%;
-  height: 200px;
-  background-color: $footerColor !important;
-  display: flex;
-  flex-direction: row;
-}
-
-.ViewCourseFullWidthContainer {
-  padding-bottom: 10px;
-  align-self: flex-end;
-  display: flex;
-  margin-left: 40px;
-  margin-right: 40px;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.ViewCourseFullWidthTitle {
-  color: $alternateTextColor !important;
-  align-self: flex-start;
-}
-
-.ViewCourseFullWidthAuthor {
-  color: $alternateTextColor !important;
-  align--self: flex-end;
-  font-weight: 300;
-}
-
-.ViewCourseDivider {
-  margin-bottom: 10px;
-}
-
-.ViewCourseNavigation {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.ViewCourseContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.ViewCourseGoToCourse {
-  height: 36px !important;
-  margin-right: 5px;
-}
-
 .errorFollowingButton {
   background-color: $dangerColor !important;
   color: $alternateTextColor !important;
@@ -796,19 +746,6 @@ a {
   color: $white !important;
   margin-top: 6px !important;
 }
-
-.descriptionViewCourse {
-  width: 180px;
-}
-
-.ViewCourseDescriptionTitleAndButtonsContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .whiteIcon {
   fill: $white !important;
 }
@@ -959,6 +896,7 @@ a {
   margin: auto;
   max-width: 934px;
   position: relative;
+  overflow: visible !important;
 }
 
 .AboutMeUserNameContainer {
@@ -978,18 +916,154 @@ a {
   display: flex;
   flex-direction: row;
   height: 270px;
-  align-items:flex-end;
+  align-items: flex-end;
   justify-content: flex-end;
 }
 
 .AboutMeTabsContainer {
   align-self: flex-end;
-  width:35%;
-  min-width:380px;
+  width: 35%;
+  min-width: 380px;
 }
 
+.AboutMeUserDataContainer {
+  padding-left: 25px;
+}
+
+.AboutMegreyedOutTextNoFinishedCoursesContainer {
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.AboutMegreyedOutTextNoFinishedCoursesContent {
+  font-size: 2em;
+  color: $accent3Color;
+}
+
+.AboutMeSmallText {
+  font-size: 1em;
+  color: $accent3Color;
+}
+
+.AboutMeFinishedCourseItemImage {
+  width: 350px;
+  height: 150px;
+}
+
+.AboutMeFinishedCourseItemContainer {
+  width: 350px;
+  padding:10px;
+  display:flex;
+  flex-direction: column;
+}
+
+.AboutFinishedCourseItemContentContainer {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+
+
+}
+
+.AboutFinishedCourseItemContentTitle {
+  font-size: 1.5em;
+  align-self: flex-start;
+}
+
+.AboutFinishedCourseItemContentAuthor {
+  align-self: flex-end;
+}
+.AboutMeFinishedCourseItemsContainer {
+  padding:10px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content: center;
+}
+.AboutMeSwipeTabs {
+  overflow-x: visible !important;
+}
+.ViewCourseHeaderContainer {
+  height:270px;
+  background-color: $footerColor;
+  width:100%;
+}
+.ViewCourseCourseTitle {
+  font-size:2em;
+  color:$alternateTextColor;
+  position:absolute;
+  top:-50px;
+}
+.ViewCourseCourseAuthor {
+  font-size:1.5em;
+
+}
+.paperViewCourseContainer {
+  width: 80%;
+  margin: auto;
+  max-width: 934px;
+  position: relative;
+  padding:20px;
+  overflow: visible !important;
+  min-height:200px;
+}
+.ViewCourseCourseAuthorSmallText {
+  font-size: 1em;
+  color: $accent3Color;
+}
+
+.ViewCourseImageContainer {
+  width: 80%;
+  max-width: 934px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  height: 270px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.ViewCourseImage {
+  height:150px;
+  max-width: 260px;
+  background-color:$alternateTextColor;
+  padding:7px;
+  border-radius:7px;
+}
+.paperViewCourseCommentContainer {
+  width: 80%;
+  margin: auto;
+  max-width: 934px;
+  position: relative;
+  padding:20px;
+  overflow: visible !important;
+  min-height:200px;
+  margin-top:20px;
+}
+.ViewCourseCreateCommentImage {
+  max-height: 50px;
+  max-width: 50px;
+  margin-right:10px;
+}
+.ViewCourseCreateCommentImageAndTextField {
+  display:flex;
+  max-height:50px;
+  flex-direction: row;
+  flex:3;
+}
+.ViewCourseCreateCommentTextfield {
+  height:45px;
+  width:100%;
+}
+.ViewCourseCreateCommentContainer {
+  display:flex;
+  flex-direction: row;
+
+}
 @media (max-width: 1170px) {
-  .paperEditorContentAboutMe, .TabsContainer {
+  .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer {
     width: 95%;
   }
 }
@@ -1004,8 +1078,16 @@ a {
     text-align: left;
     padding-left: 15px;
   }
-  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer {
+  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer {
     width: 100%;
   }
+  .ViewCourseImageContainer {
+    justify-content:center;
+  }
+  .AboutMeUserDataContainer {
+    padding: 8px 0px;
+  }
+  .AboutMeFinishedCourseItemContainer, .AboutMeFinishedCourseItemImage {
+    width:100%;
+  }
 }
-

@@ -32,27 +32,29 @@ export default class Comment extends Component {
     }
 
     render() {
+        let data = this.props.siteData;
+        let commentData = this.props.commentData
         var removeAuth = false;
 
-        if (this.props.userId == this.props.comment.authorId) {
+        if (data._id == commentData.authorId) {
             removeAuth = true;
         }
 
         return (
             <div>
                 <div className='commentContainer'>
-                    <img src={this.props.comment.authorImage} className='commentUserImage'/>
+                    <img src={commentData.authorImage} className='commentUserImage'/>
 
 
                     <div className='commentDateAndDescriptionContainer'>
                         <div className='authorAndCommentContentContainer'>
-                            <strong><span className='commentAuthor'>{this.props.comment.author}</span></strong>
-                            <span className='commentContent'>{this.props.comment.comment}</span>
+                            <strong><span className='commentAuthor'>{commentData.author}</span></strong>
+                            <span className='commentContent'>{commentData.comment}</span>
                         </div>
 
 
                         <div className='commentMoreAndDateContainer'>
-                            <i className='commentDate'><span>Op: {this.props.comment.date}</span></i>
+                            <i className='commentDate'><span>Op: {commentData.date}</span></i>
                             <IconButton tooltip='View more' className='commentViewMore' onClick={this.handleOpen}>
                                 <NavigationMoreVert/>
                             </IconButton>
@@ -72,19 +74,25 @@ export default class Comment extends Component {
                     <Menu>
                         {removeAuth ?
                             <MenuItem
-                                primaryText="Verwijder comment"
+                                primaryText="Delete comment"
                                 leftIcon={<ActionDeleteForever/>}
                                 className='removeChapterButtonColor'
-                                onClick={this.props.removeComment}
+                                onClick={() => {
+                                    this.props.removeComment(commentData._id)
+                                }}
                             />
                             :
                             null
                         }
-                        <MenuItem primaryText="Raporteer comment" leftIcon={<ActionReportProblem/>}/>
+                        <MenuItem primaryText="Report comment" leftIcon={<ActionReportProblem/>}/>
                     </Menu>
                 </Popover>
             </div>
 
         )
     }
+}
+Comment.propTypes = {
+    comment: PropTypes.object,
+    removeComment: PropTypes.func,
 }

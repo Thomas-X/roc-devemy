@@ -14,6 +14,7 @@ import Search from "./components/Search";
 import TeacherHome from "./components/TeacherHome";
 import CreateCourse from "./components/CreateCourse";
 import AboutMe from "./components/AboutMe";
+import ViewCourse from "./components/ViewCourse";
 
 injectTapEventPlugin();
 
@@ -26,7 +27,27 @@ class App extends Component {
             siteData: {
                 _id: "5946815c213d312034889f0d",
                 token: "ya29.GlttBKOeiY7z4bfvsZkXT3s_YGUsq_K8EtP4STo0qc4c7OTw2iFt1KyR7yHSWgu12-Yq7IRdqMBuHw1MtG_G8cLNepzGepyzgjGGU6Mw6q86AF3Eg9XnZtlFXArt",
-                finishedCourses: [],
+                finishedCourses: [{
+                    title: "some title",
+                    imgURL: "https://placekitten.com/640/380",
+                    URLToCourse: "https://placekitten.com/640/380",
+                    author: "Thomas-X",
+                }, {
+                    title: "some title",
+                    imgURL: "https://placekitten.com/640/380",
+                    URLToCourse: "https://placekitten.com/640/380",
+                    author: "Thomas-X",
+                }, {
+                    title: "some title",
+                    imgURL: "https://placekitten.com/640/380",
+                    URLToCourse: "https://placekitten.com/640/380",
+                    author: "Thomas-X",
+                }, {
+                    title: "some title",
+                    imgURL: "https://placekitten.com/640/380",
+                    URLToCourse: "https://placekitten.com/640/380",
+                    author: "Thomas-X",
+                }],
                 followedCourses: [],
                 role: "teacher",
                 email: "thomaszwarts@gmail.com",
@@ -76,6 +97,8 @@ class App extends Component {
                             <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                                 <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
                                 <Route path="/student/search" component={Search} siteData={this.state.siteData}/>
+                                <Route path="/student/home/course/:courseid" component={ViewCourse}
+                                       siteData={this.state.siteData}/>
                             </Route>
                         </Route>
                     </Router>
@@ -96,15 +119,12 @@ class App extends Component {
 class Container extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pushedUserToCorrectHome: false
+        }
     }
 
     componentWillMount() {
-        if(this.props.route.siteData.role == "teacher") {
-            hashHistory.push('/teacher/home/me');
-        }
-        if(this.props.route.siteData.role == "student") {
-            hashHistory.push('/student/home');
-        }
     }
 
     render() {
@@ -123,13 +143,16 @@ class TeacherContainer extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.route.siteData.role != "teacher") {
-            hashHistory.push('/teacher/home');
+        let data = this.props.route.siteData;
+        if (data.role == null) {
             hashHistory.push('/');
+        } else if (data.role == "student") {
+            hashHistory.push('/student/home');
         }
     }
 
     render() {
+        console.log(hashHistory);
         return (
             <div>
                 <NavigationAndDrawer siteData={this.props.route.siteData}/>
@@ -145,10 +168,8 @@ class StudentContainer extends React.Component {
     }
 
     componentWillMount() {
-
-        if (this.props.route.siteData.role == "teacher" || this.props.route.siteData.role == "student") {
-            hashHistory.push('/student/home');
-        } else {
+        let data = this.props.route.siteData;
+        if (data.role == null) {
             hashHistory.push('/');
         }
     }

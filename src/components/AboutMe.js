@@ -7,7 +7,7 @@ import {
 } from "material-ui/svg-icons/index";
 import * as styles from "../styles";
 import {IndexLink} from "react-router";
-import SwipeableViews from 'react-swipeable-views';
+
 
 export default class AboutMe extends Component {
     constructor(props) {

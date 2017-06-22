@@ -15,6 +15,8 @@ import TeacherHome from "./components/TeacherHome";
 import CreateCourse from "./components/CreateCourse";
 import AboutMe from "./components/AboutMe";
 import ViewCourse from "./components/ViewCourse";
+import Home from "./components/Home";
+import NotFound from "./components/NotFound";
 
 injectTapEventPlugin();
 
@@ -22,6 +24,11 @@ injectTapEventPlugin();
 class App extends Component {
     constructor(props) {
         super(props);
+
+        // TODO default state of siteData should be
+        // siteData: {
+        //     role: "guest",
+        // }
 
         this.state = {
             siteData: {
@@ -49,7 +56,7 @@ class App extends Component {
                     author: "Thomas-X",
                 }],
                 followedCourses: [],
-                role: "teacher",
+                role: "guest",
                 email: "thomaszwarts@gmail.com",
                 displayImage: "https://lh4.googleusercontent.com/-2CWZ00hNXvs/AAAAAAAAAAI/AAAAAAAACV0/7doIgC3haEk/photo.jpg?sz=50",
                 displayName: "Thomas X",
@@ -58,18 +65,24 @@ class App extends Component {
                 __v: 0,
                 ownedData: [],
             }
-        }
+        };
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
 
     }
+
 
     // add this in production
 
     // componentWillMount() {
     //     axios.post('/api/getUserData', {token: window.token}).then((response) => {
+    //             if(response.data.siteData) {
+//
     //         this.setState({
     //             siteData: response.data
     //         })
+//                  } else {
+    //              hashHistory.push('/errorwedontknowwhathappened');
+    // }
     //     })
     // }
 
@@ -85,22 +98,26 @@ class App extends Component {
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <Router history={hashHistory}>
-                        <Route path="/" component={Container} siteData={this.state.siteData}>
-                            <Route path="/teacher" component={TeacherContainer} siteData={this.state.siteData}>
-                                <Route path="/teacher/home" component={TeacherHome} siteData={this.state.siteData}/>
-                                <Route path="/teacher/home/createCourse"
-                                       component={CreateCourse}
-                                       siteData={this.state.siteData}
-                                       createCourse={this.createCourseUpdateState}/>
-                                <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
-                            </Route>
-                            <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
-                                <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
-                                <Route path="/student/search" component={Search} siteData={this.state.siteData}/>
-                                <Route path="/student/home/course/:courseid" component={ViewCourse}
-                                       siteData={this.state.siteData}/>
-                            </Route>
+                        <Route path="/" component={Home} siteData={this.state.siteData}/>
+
+                        <Route path="/guest/home" component={Home2} siteData={this.state.siteData}/>
+
+                        <Route path="/teacher" component={TeacherContainer} siteData={this.state.siteData}>
+                            <Route path="/teacher/home" component={TeacherHome} siteData={this.state.siteData}/>
+                            <Route path="/teacher/home/createCourse"
+                                   component={CreateCourse}
+                                   siteData={this.state.siteData}
+                                   createCourse={this.createCourseUpdateState}/>
+                            <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
                         </Route>
+                        <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
+                            <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
+                            <Route path="/student/search" component={Search} siteData={this.state.siteData}/>
+                            <Route path="/student/home/course/:courseid" component={ViewCourse}
+                                   siteData={this.state.siteData}/>
+                        </Route>
+
+                        <Route path="*" component={NotFound} siteData={this.state.siteData}/>
                     </Router>
                 </MuiThemeProvider>
             )
@@ -116,21 +133,26 @@ class App extends Component {
     }
 }
 
-class Container extends React.Component {
+// this class is here so if the user get's redirected with siteData.role + '/home' when he's not logged in
+class Home2 extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            pushedUserToCorrectHome: false
-        }
     }
 
     componentWillMount() {
+        if (this.props.route.siteData.role == "teacher") {
+            hashHistory.push('/teacher/home');
+        } else if (this.props.route.siteData.role == "student") {
+            hashHistory.push('/student/home');
+        } else {
+            hashHistory.push('/');
+        }
     }
 
     render() {
         return (
             <div>
-                {this.props.children}
+
             </div>
         )
     }
@@ -144,7 +166,7 @@ class TeacherContainer extends React.Component {
 
     componentWillMount() {
         let data = this.props.route.siteData;
-        if (data.role == null) {
+        if (data.role == null || data.role == "guest") {
             hashHistory.push('/');
         } else if (data.role == "student") {
             hashHistory.push('/student/home');
@@ -152,7 +174,6 @@ class TeacherContainer extends React.Component {
     }
 
     render() {
-        console.log(hashHistory);
         return (
             <div>
                 <NavigationAndDrawer siteData={this.props.route.siteData}/>
@@ -169,7 +190,7 @@ class StudentContainer extends React.Component {
 
     componentWillMount() {
         let data = this.props.route.siteData;
-        if (data.role == null) {
+        if (data.role == null || data.role == "guest") {
             hashHistory.push('/');
         }
     }

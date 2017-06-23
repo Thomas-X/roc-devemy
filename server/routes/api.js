@@ -15,7 +15,7 @@ const checkToken = (req, res, next) => {
         res.status(405).send();
     }
 }
-// add this method to POST /createCourse on production
+// add this method to POST /createCourse and /removeCourse on production
 const teacherLoggedIn = (req, res, next) => {
     if (req.user.role == 'teacher') {
         next();
@@ -128,5 +128,17 @@ router.post('/getCourse', (req, res, next) => {
     })
 });
 
+router.post('/removeCourse', (req,res,next) => {
+     Course.findByIdAndRemove(req.body.courseId, (err, course) => {
+         if(!err) {
+             User.update({}, {$pull: {followedCourses: req.body.courseId}}, (err, user) => {
+                 User.update({}, {$pull: {finishedCourses: req.body.courseId}}, (err, user) => {
+                     if (!err) res.status(200).send();
+                     else res.status(500).send();
+                 });
+             })
+         }
+     })
+});
 
 module.exports = router;

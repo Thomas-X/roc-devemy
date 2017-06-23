@@ -37,6 +37,7 @@ class App extends Component {
                     imgURL: "https://placekitten.com/640/380",
                     URLToCourse: "https://placekitten.com/640/380",
                     author: "Thomas-X",
+                    _id: "594bce5ed119d42370d42f6a"
                 }, {
                     title: "some title",
                     imgURL: "https://placekitten.com/640/380",
@@ -61,25 +62,80 @@ class App extends Component {
                 googleId: "113410351108501075458",
                 isTeacher: true,
                 __v: 0,
-                ownedData: [{
-                    _id: "594bce5ed119d42370d42f6a",
-                    comments: [],
-                    allRatingValues: [],
-                    totalRatingCount: 0,
-                    ratingAverag: 0,
-                    description: "[object Object]",
-                    URLToCourse: "https://placekitten.com/640/380",
-                    authorEmail: "",
-                    author: "",
-                    authorId: "",
-                    imgURL: "https://placekitten.com/640/380",
-                    title: "sadsad",
-                    __v: 0,
-                }],
+                ownedData: [
+                    {
+                        _id: "594bce5ed119d42370d42f6a",
+                        comments: [],
+                        allRatingValues: [],
+                        totalRatingCount: 0,
+                        ratingAverage: 0,
+                        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
+                        "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
+                        "re vero voluptatibus. Culpa harum hic quasi.",
+                        URLToCourse: "https://placekitten.com/640/380",
+                        authorEmail: "",
+                        author: "Thomas-X",
+                        authorId: "",
+                        imgURL: "https://placekitten.com/640/380",
+                        title: "PHP",
+                        __v: 0,
+                    },
+                    {
+                        _id: "594bce5ed119d442370d42f6a",
+                        comments: [],
+                        allRatingValues: [],
+                        totalRatingCount: 0,
+                        ratingAverage: 0,
+                        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
+                        "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
+                        "re vero voluptatibus. Culpa harum hic quasi.",
+                        URLToCourse: "https://placekitten.com/640/380",
+                        authorEmail: "",
+                        author: "Thomas-X",
+                        authorId: "",
+                        imgURL: "https://placekitten.com/640/380",
+                        title: "JAVA",
+                        __v: 0,
+                    },
+                    {
+                        _id: "594bce5ed119d423730d42f6a",
+                        comments: [],
+                        allRatingValues: [],
+                        totalRatingCount: 0,
+                        ratingAverage: 0,
+                        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
+                        "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
+                        "re vero voluptatibus. Culpa harum hic quasi.",
+                        URLToCourse: "https://placekitten.com/640/380",
+                        authorEmail: "",
+                        author: "Thomas-X",
+                        authorId: "",
+                        imgURL: "https://placekitten.com/640/380",
+                        title: "SQL",
+                        __v: 0,
+                    },
+                    {
+                        _id: "594bce5ed119d42370d42f62a",
+                        comments: [],
+                        allRatingValues: [],
+                        totalRatingCount: 0,
+                        ratingAverage: 0,
+                        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
+                        "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
+                        "re vero voluptatibus. Culpa harum hic quasi.",
+                        URLToCourse: "https://placekitten.com/640/380",
+                        authorEmail: "",
+                        author: "Thomas-X",
+                        authorId: "",
+                        imgURL: "https://placekitten.com/640/380",
+                        title: "HTML",
+                        __v: 0,
+                    }
+                ],
             }
         };
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
-
+        this.removeCourseUpdateState = this.removeCourseUpdateState.bind(this);
     }
 
 
@@ -104,6 +160,30 @@ class App extends Component {
         })
     }
 
+    removeCourseUpdateState(courseId) {
+
+        let data = this.state.siteData;
+        if (data.followedCourses.includes(courseId)) {
+            this.setState({
+                followedCourses: data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1)
+            })
+        }
+        data.finishedCourses.forEach((elem, index) => {
+            if (elem._id == courseId) {
+                this.setState({
+                    finishedCourses: data.finishedCourses.splice(index, 1)
+                })
+            }
+        })
+        data.ownedData.forEach((elem, index) => {
+            if (elem._id == courseId) {
+                data.ownedData = data.ownedData.splice(index, 1);
+                this.setState(this.state);
+            }
+        })
+
+    }
+
 
     render() {
         if (this.state.siteData != null) {
@@ -115,7 +195,10 @@ class App extends Component {
                         <Route path="/guest/home" component={Home2} siteData={this.state.siteData}/>
 
                         <Route path="/teacher" component={TeacherContainer} siteData={this.state.siteData}>
-                            <Route path="/teacher/home" component={TeacherHome} siteData={this.state.siteData}/>
+                            <Route path="/teacher/home"
+                                   component={TeacherHome}
+                                   siteData={this.state.siteData}
+                                   removeCourseUpdateState={this.removeCourseUpdateState}/>
                             <Route path="/teacher/home/createCourse"
                                    component={CreateCourse}
                                    siteData={this.state.siteData}

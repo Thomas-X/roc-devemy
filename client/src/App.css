@@ -3,7 +3,6 @@
 body {
   font-family: "Roboto" !important;
   background-image: url("images/backgroundpattern.png");
-  min-width: 368px;
   margin: 0;
   position: relative;
   height: 100%;
@@ -395,9 +394,6 @@ a {
 
 .paperEditorContent {
   padding: 10px;
-  margin: 40px; }
-
-.paperEditorContentTeacher {
   margin: 40px; }
 
 .slideContainer {
@@ -878,10 +874,77 @@ a {
 .TeacherHomeMyCourseContainer {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  height: 133px; }
+
+.MyCourseImage {
+  width: 200px; }
+
+.MyCourseTitle {
+  font-size: 1.5em; }
+
+.paperEditorContentTeacher {
+  width: 80%;
+  margin: auto;
+  max-width: 934px;
+  position: relative;
+  overflow: visible !important;
+  margin-top: 40px; }
+
+.MyCourseTitleAndDescriptionAndImageContainer {
+  display: flex;
+  align-items: center; }
+
+.MyCourseTitleAndDescriptionContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 10px; }
+
+.MyCourseButtonsContainer {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between; }
 
+.EditCourseButton {
+  margin-right: 5px;
+  height: 36px; }
+
+.StudentButton {
+  height: 36px; }
+
+.removeCourseButton {
+  align-self: flex-end; }
+
+.MyCoursesDivider {
+  margin-top: 15px !important;
+  margin-bottom: 15px !important; }
+
+@media (max-width: 670px) {
+  .MyCourseTitleAndDescriptionAndImageContainer {
+    flex-direction: column;
+    align-items: center;
+    height: auto; }
+
+  .TeacherHomeMyCourseContainer {
+    height: auto;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center; }
+
+  .removeCourseButton {
+    align-self: flex-start;
+    margin-bottom: 5px;
+    height: 36px;
+    width: 100%; }
+
+  .MyCourseButtonsContainer {
+    margin-top: 10px; }
+
+  .paperEditorContentTeacher {
+    margin-top: 0px; } }
 @media (max-width: 1170px) {
-  .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer {
+  .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {
     width: 95%; } }
 @media (max-width: 575px) {
   .AboutMeDisplayImageContainer {
@@ -893,7 +956,7 @@ a {
     text-align: left;
     padding-left: 15px; }
 
-  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer {
+  .paperEditorContentAboutMe, .TabsContainer, .AboutMeTabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {
     width: 100%; }
 
   .ViewCourseImageContainer {

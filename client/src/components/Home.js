@@ -9,7 +9,6 @@ export default class Home extends Component {
     }
 
     componentWillMount() {
-        console.log('mounting!!');
         this.redirectUser();
     }
 

@@ -77,6 +77,21 @@ router.post('/createCourse', (req, res, next) => {
     });
 });
 
+router.post('/saveEditCourse', (req,res,next) => {
+    Course.findById({_id: req.body.courseId}, (err, course ) => {
+        if(!err) {
+            course.title = req.body.title;
+            course.imgURL = req.body.imgURL;
+            course.description = req.body.description;
+            course.URLToCourse = req.bod.URLToCourse;
+
+            course.save((err, updatedCourse) => {
+                if(!err) res.json({saveEditCourse: updatedCourse});
+            })
+        }
+    })
+});
+
 router.post('/createComment', (req, res, next) => {
     Course.findById(req.body.courseId, function (err, course) {
         course.comments.push({

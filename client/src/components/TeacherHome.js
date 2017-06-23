@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {IndexLink} from "react-router";
 import {customTheme as customMuiTheme} from "../customMuiTheme";
 import axios from 'axios';
-import { hashHistory } from 'react-router';
+import {hashHistory} from 'react-router';
 
 export default class TeacherHome extends Component {
     constructor(props) {
@@ -29,6 +29,10 @@ export default class TeacherHome extends Component {
     removeCourse(courseId) {
         this.props.route.removeCourseUpdateState(courseId);
         console.log(this.props.route.siteData.finishedCourses);
+
+
+        // add this in production
+
         // axios.post('/api/removeCourse', {courseId: courseId}).then((response) => {
         //     if(response.status === 200) {
         //         this.props.route.removeCourseUpdateState(courseId);
@@ -72,37 +76,15 @@ export default class TeacherHome extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="MyCourseButtonsContainer">
-                                                        <RaisedButton className="removeCourseButton" label="Verwijderen"
-                                                                      labelStyle={{color: '#e53935'}}
-                                                                      onTouchTap={this.handleOpen}/>
 
-                                                        <Dialog
-                                                            title="Deze actie kan niet ongedaan worden, weet je het zeker?"
-                                                            actions={
-                                                                <div>
-                                                                    <FlatButton
-                                                                        label="Nee"
-                                                                        secondary={true}
-                                                                        onTouchTap={this.handleClose}
-                                                                    />
-                                                                    <FlatButton
-                                                                        label="Ja"
-                                                                        className='removeChapterButtonColor'
-                                                                        primary={true}
-                                                                        onTouchTap={this.handleClose}
-                                                                        onClick={() => this.removeCourse(elem._id)}
-                                                                    />
-                                                                </div>
-                                                            }
-                                                            modal={false}
-                                                            open={this.state.modalOpen}
-                                                            onRequestClose={this.handleClose}>
-                                                        </Dialog>
-
+                                                        <PopUpModalDialog courseId={elem._id}
+                                                                          removeCourseUpdateState={this.props.route.removeCourseUpdateState}/>
 
                                                         <div className="EditAndStudentButtonsContainer">
-                                                            <RaisedButton label="Pas aan" primary={true}
+                                                            <IndexLink to={"/teacher/home/editCourse/" + elem._id}>
+                                                                <RaisedButton label="Pas aan" primary={true}
                                                                           className="EditCourseButton"/>
+                                                            </IndexLink>
                                                             <RaisedButton label="Studenten" secondary={true}
                                                                           className="StudentButton"/>
                                                         </div>
@@ -157,6 +139,61 @@ export default class TeacherHome extends Component {
                     </Tab>
                 </Tabs>
             </Paper>
+        )
+    }
+}
+
+class PopUpModalDialog extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalOpen: false,
+        }
+        this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
+    }
+
+    handleOpen() {
+        this.setState({modalOpen: true});
+    }
+
+    handleClose() {
+        this.setState({modalOpen: false});
+    }
+
+    render() {
+        return (
+
+            <div className="removeCourseButton">
+                <RaisedButton className="removeCourseButton" label="Verwijderen"
+                              labelStyle={{color: '#e53935'}}
+                              onTouchTap={this.handleOpen}/>
+                <Dialog
+                    title="Deze actie kan niet ongedaan worden, weet je het zeker?"
+                    actions={
+                        <div>
+                            <FlatButton
+                                label="Nee"
+                                secondary={true}
+                                onTouchTap={this.handleClose}
+                            />
+                            <FlatButton
+                                label="Ja"
+                                className='removeChapterButtonColor'
+                                primary={true}
+                                onTouchTap={this.handleClose}
+                                onClick={() => {
+                                    this.props.removeCourseUpdateState(this.props.courseId);
+                                }}
+                            />
+                        </div>
+                    }
+                    modal={false}
+                    open={this.state.modalOpen}
+                    onRequestClose={this.handleClose}>
+                </Dialog>
+            </div>
         )
     }
 }

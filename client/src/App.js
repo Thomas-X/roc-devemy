@@ -17,6 +17,7 @@ import AboutMe from "./components/AboutMe";
 import ViewCourse from "./components/ViewCourse";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
+import EditCourse from "./components/EditCourse";
 
 injectTapEventPlugin();
 
@@ -64,7 +65,7 @@ class App extends Component {
                 __v: 0,
                 ownedData: [
                     {
-                        _id: "594bce5ed119d42370d42f6a",
+                        _id: "1",
                         comments: [],
                         allRatingValues: [],
                         totalRatingCount: 0,
@@ -81,7 +82,7 @@ class App extends Component {
                         __v: 0,
                     },
                     {
-                        _id: "594bce5ed119d442370d42f6a",
+                        _id: "2",
                         comments: [],
                         allRatingValues: [],
                         totalRatingCount: 0,
@@ -98,7 +99,7 @@ class App extends Component {
                         __v: 0,
                     },
                     {
-                        _id: "594bce5ed119d423730d42f6a",
+                        _id: "3",
                         comments: [],
                         allRatingValues: [],
                         totalRatingCount: 0,
@@ -115,7 +116,7 @@ class App extends Component {
                         __v: 0,
                     },
                     {
-                        _id: "594bce5ed119d42370d42f62a",
+                        _id: "4",
                         comments: [],
                         allRatingValues: [],
                         totalRatingCount: 0,
@@ -136,6 +137,7 @@ class App extends Component {
         };
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
         this.removeCourseUpdateState = this.removeCourseUpdateState.bind(this);
+        this.saveEditCourseUpdateState = this.saveEditCourseUpdateState.bind(this);
     }
 
 
@@ -177,12 +179,26 @@ class App extends Component {
         })
         data.ownedData.forEach((elem, index) => {
             if (elem._id == courseId) {
-                data.ownedData = data.ownedData.splice(index, 1);
+                data.ownedData.splice(index, 1)
                 this.setState(this.state);
             }
         })
 
     }
+
+    saveEditCourseUpdateState(updatedCourse) {
+        let data = this.state.siteData;
+
+        data.ownedData.forEach((elem, index) => {
+             if(elem._id == updatedCourse._id) {
+                 console.log(updatedCourse);
+                 this.state.siteData.ownedData[index] = updatedCourse;
+                 console.log(this.state.siteData.ownedData[index]);
+                 this.setState(this.state);
+             }
+        });
+    }
+
 
 
     render() {
@@ -203,6 +219,10 @@ class App extends Component {
                                    component={CreateCourse}
                                    siteData={this.state.siteData}
                                    createCourse={this.createCourseUpdateState}/>
+                            <Route path="/teacher/home/editCourse/:courseid"
+                                   siteData={this.state.siteData}
+                                   saveEditCourseUpdateState={this.saveEditCourseUpdateState}
+                                    component={EditCourse}/>
                             <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
                         </Route>
                         <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>

@@ -11,12 +11,20 @@ export default class CreateCourse extends Component {
     constructor(props) {
         super(props);
 
+        let course = null;
+
+        this.props.route.siteData.ownedData.forEach((elem, index) => {
+             if(elem._id == this.props.params.courseid) {
+                 course = elem;
+             }
+        });
+
         this.state = {
-            title: null,
-            imgURL: null,
-            URLToCourse: null,
-            description: null,
-            authorId: null,
+            title: course.title,
+            imgURL: course.imgURL,
+            URLToCourse: course.URLToCourse,
+            description: course.description,
+            authorId: course.authorId,
             canSubmit: false,
         }
 
@@ -64,17 +72,40 @@ export default class CreateCourse extends Component {
     }
 
     saveCourse() {
-        axios.post('/api/createCourse', {
-            title: this.state.title,
-            imgURL: this.state.imgURL,
-            URLToCourse: this.state.URLToCourse,
-            description: this.state.description,
-        }).then((response) => {
-            if(response.data.createCourse) {
-                this.props.route.createCourse(response.data.createCourse);
-                hashHistory.push('/teacher/home');
-            }
-        })
+
+        this.props.route.saveEditCourseUpdateState(
+            {
+            _id: "2",
+            comments: [],
+            allRatingValues: [],
+            totalRatingCount: 0,
+            ratingAverage: 0,
+            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
+            "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
+            "re vero voluptatibus. Culpa harum hic quasi.",
+            URLToCourse: "https://placekitten.com/640/380",
+            authorEmail: "",
+            author: "Thomas-X",
+            authorId: "",
+            imgURL: "https://placekitten.com/640/380",
+            title: "HTML",
+            __v: 0,}
+            );
+        hashHistory.push('/teacher/home');
+
+        // add this in production
+        // axios.post('/api/saveEditCourse', {
+        //     title: this.state.title,
+        //     imgURL: this.state.imgURL,
+        //     URLToCourse: this.state.URLToCourse,
+        //     description: this.state.description,
+        //     courseId: this.props.params.courseid
+        // }).then((response) => {
+        //     if(response.data.saveEditCourse) {
+        //         this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
+        //         hashHistory.push('/teacher/home');
+        //     }
+        // })
     }
 
 
@@ -99,6 +130,7 @@ export default class CreateCourse extends Component {
                                         required
                                         hintText="Titel van de cursus"
                                         floatingLabelText="Titel"
+                                        value={this.state.title}
                                         className="CreateCourseTitleTextField"
                                         floatingLabelStyle={styles.floatingLabelStyle}
                                         underlineFocusStyle={styles.underlineStyle}
@@ -113,6 +145,7 @@ export default class CreateCourse extends Component {
                                         validations="isUrl"
                                         validationError="Een geldige URL aub"
                                         required
+                                        value={this.state.imgURL}
                                         className="CreateCourseImgURLTextField"
                                         hintText="http://www.placekitten.com/640/380"
                                         floatingLabelText="Plaatje van de cursus"
@@ -130,6 +163,7 @@ export default class CreateCourse extends Component {
                                     validations="isUrl"
                                     validationError="Een geldige URL aub"
                                     required
+                                    value={this.state.URLToCourse}
                                     fullWidth={true}
                                     floatingLabelText="URL naar de cursus"
                                     hintText="http://www.example.com"
@@ -152,6 +186,7 @@ export default class CreateCourse extends Component {
                                     underlineFocusStyle={styles.underlineStyle}
                                     multiLine={true}
                                     updateImmediately
+                                    value={this.state.description}
                                     fullWidth={true}
                                     onChange={function (event) {
                                         this.handleEditorChange(event);

@@ -26,9 +26,7 @@ class App extends Component {
         super(props);
 
         // TODO default state of siteData should be
-        // siteData: {
-        //     role: "guest",
-        // }
+
 
         this.state = {
             siteData: {
@@ -56,14 +54,28 @@ class App extends Component {
                     author: "Thomas-X",
                 }],
                 followedCourses: [],
-                role: "guest",
+                role: "teacher",
                 email: "thomaszwarts@gmail.com",
                 displayImage: "https://lh4.googleusercontent.com/-2CWZ00hNXvs/AAAAAAAAAAI/AAAAAAAACV0/7doIgC3haEk/photo.jpg?sz=50",
                 displayName: "Thomas X",
                 googleId: "113410351108501075458",
                 isTeacher: true,
                 __v: 0,
-                ownedData: [],
+                ownedData: [{
+                    _id: "594bce5ed119d42370d42f6a",
+                    comments: [],
+                    allRatingValues: [],
+                    totalRatingCount: 0,
+                    ratingAverag: 0,
+                    description: "[object Object]",
+                    URLToCourse: "https://placekitten.com/640/380",
+                    authorEmail: "",
+                    author: "",
+                    authorId: "",
+                    imgURL: "https://placekitten.com/640/380",
+                    title: "sadsad",
+                    __v: 0,
+                }],
             }
         };
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);

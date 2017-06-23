@@ -18,6 +18,7 @@ var UserSchema = new Schema({
     finishedCourses: {type: [finishedCoursesSchema], default: null},
     token: {type: String, default: null, required: true, unique: true},
     isTeacher: {type: Boolean, default: null, required: true},
+    ownedData: {type: Array, default: []},
 });
 
 var User = mongoose.model('User', UserSchema);

@@ -26,7 +26,7 @@ export default class Search extends Component {
         console.log(window.token);
         if (str !== '') {
             this.setState({loading: true});
-            axios.post('http://localhost:5000/api/search', {
+            axios.post('/api/search', {
                 searchQuery: event.target.value,
                 token: window.token
             }).then(function (response) {

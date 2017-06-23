@@ -16,8 +16,8 @@ const checkToken = (req, res, next) => {
     }
 }
 // add this method to POST /createCourse on production
-const teacherLoggedIn = (req,res,next) => {
-    if(req.user.role == 'teacher') {
+const teacherLoggedIn = (req, res, next) => {
+    if (req.user.role == 'teacher') {
         next();
     } else {
         res.status(405).send();
@@ -26,8 +26,25 @@ const teacherLoggedIn = (req,res,next) => {
 
 router.post('/getUserData', (req, res, next) => {
     // todo is to set all vars needed as keys here. instead of one big data object
-    res.json({
-        data: req.user
+
+    // why use a DB request here? so we get the most accurate data
+    // also change this before production
+    User.findById({token: req.body.token}, (err, user) => {
+        if (!err) res.json({
+            siteData: {
+                googleId: user.googleId,
+                displayName: user.displayName,
+                displayImage: user.displayImage,
+                email: user.email,
+                role: user.role,
+                followedCourses: user.followedCourses,
+                finishedCourses: user.finishedCourses,
+                token: user.token,
+                isTeacher: user.isTeacher,
+                ownedData: user.ownedData,
+            }
+        });
+        else res.status(500).send();
     })
 });
 
@@ -43,22 +60,24 @@ router.post('/search', function (req, res, next) {
     });
 });
 
-router.post('/createCourse', (req,res,next) => {
-     Course.create({
-         title: req.body.title,
-         imgURL: req.body.imgURL,
-         // authorId: req.user._id,
-         // author: req.user.displayName,
-         // authorEmail: req.user.email,
-         URLToCourse: req.body.URLToCourse,
-         description: req.body.description,
-     },  (err, newCourse) => {
-             if(!err) res.json({createCourse: newCourse});
-             else res.status(500).send();
-     });
+router.post('/createCourse', (req, res, next) => {
+
+    // force string type on variables to avoid validation error by mongoose
+    Course.create({
+        title: String(req.body.title),
+        imgURL: String(req.body.imgURL),
+        // authorId: req.user._id,
+        // author: req.user.displayName,
+        // authorEmail: req.user.email,
+        URLToCourse: String(req.body.URLToCourse),
+        description: String(req.body.description),
+    }, (err, newCourse) => {
+        if (!err) res.json({createCourse: newCourse});
+        else res.status(500).send();
+    });
 });
 
-router.post('/createComment', (req,res,next) => {
+router.post('/createComment', (req, res, next) => {
     Course.findById(req.body.courseId, function (err, course) {
         course.comments.push({
             author: req.user.displayName,
@@ -82,9 +101,9 @@ router.post('/createComment', (req,res,next) => {
     })
 });
 
-router.post('/removeComment', (req,res,next) => {
+router.post('/removeComment', (req, res, next) => {
     Course.findById(req.body.courseId, (err, course) => {
-        if(course.authorId == req.body.userId) {
+        if (course.authorId == req.body.userId) {
             let comments = course.comments;
             comments.forEach((elem, index) => {
                 if (elem._id == req.body.commentId) {
@@ -102,14 +121,12 @@ router.post('/removeComment', (req,res,next) => {
 });
 
 
-router.post('/getCourse', (req,res,next) => {
-     Course.findById(req.body.courseId, (err, course) => {
-         if(!err) res.json({course: course});
-         else res.status(404).send();
-     })
+router.post('/getCourse', (req, res, next) => {
+    Course.findById(req.body.courseId, (err, course) => {
+        if (!err) res.json({course: course});
+        else res.status(404).send();
+    })
 });
-
-
 
 
 module.exports = router;

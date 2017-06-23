@@ -14,6 +14,7 @@ export default class TeacherHome extends Component {
         if (this.props.route.siteData.ownedData.length > 0) {
             hasCourses = true;
         }
+        let data = this.props.route.siteData;
 
         return (
             <Paper className='paperEditorContentTeacher' zDepth={1}>
@@ -25,7 +26,14 @@ export default class TeacherHome extends Component {
                         <div className="slideContainer">
                             {hasCourses ?
                                 <div>
-                                    {/*return the teacher's own courses*/}
+                                    {data.ownedData.map((elem, index) => {
+                                        return (
+                                            <div className="TeacherHomeMyCourseContainer">
+                                                {elem.imageURL}
+                                            </div>
+                                        )
+                                    })}
+
                                 </div>
                                 :
                                 <div className="TeacherHomegreyedOutTextNoOwnedCoursesContainer">

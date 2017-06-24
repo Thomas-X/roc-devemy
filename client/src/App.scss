@@ -1122,6 +1122,12 @@ a {
   margin-bottom: 15px !important;
 }
 
+.ViewCourseTitleAndAuthorEmailContainer {
+  display:flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 670px) {
   .MyCourseTitleAndDescriptionAndImageContainer {
     flex-direction: column;
@@ -1147,7 +1153,34 @@ a {
   .paperEditorContentTeacher {
     margin-top:0px;
   }
+  .ViewCourseTitleAndAuthorEmailContainer {
+    align-items: center;
+    justify-content: center;
+  }
+  .FollowButtons {
+    padding-top:10px;
+  }
+  .ViewCourseGoToCourse {
+    width:100%;
+    margin-bottom:10px;
+    height:36px;
+
+  }
+  .followedFollowingButton {
+    width:100%;
+    height:36px;
+  }
+  .errorFollowingButton {
+    width:100%;
+    height:36px;
+
+  }
+  .followButton {
+    width:100%;
+    height:36px;
+  }
 }
+
 
 @media (max-width: 1170px) {
   .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {

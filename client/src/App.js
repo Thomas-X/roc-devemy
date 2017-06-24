@@ -18,6 +18,7 @@ import ViewCourse from "./components/ViewCourse";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import EditCourse from "./components/EditCourse";
+import TeacherBoardPage from "./components/TeacherBoardPage";
 
 injectTapEventPlugin();
 
@@ -223,6 +224,10 @@ class App extends Component {
                                    siteData={this.state.siteData}
                                    saveEditCourseUpdateState={this.saveEditCourseUpdateState}
                                     component={EditCourse}/>
+                            <Route path="/teacher/home/courseStudents/:courseid"
+                                   siteData={this.state.siteData}
+                                   component={TeacherBoardPage}
+                            />
                             <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
                         </Route>
                         <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>

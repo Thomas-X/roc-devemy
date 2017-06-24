@@ -15,7 +15,7 @@ const checkToken = (req, res, next) => {
         res.status(405).send();
     }
 }
-// add this method to POST /createCourse and /removeCourse on production
+// add this method to POST /createCourse and /removeCourse /saveEditCourse and removeAllStudentsFromCourse production
 const teacherLoggedIn = (req, res, next) => {
     if (req.user.role == 'teacher') {
         next();
@@ -156,4 +156,173 @@ router.post('/removeCourse', (req,res,next) => {
      })
 });
 
+router.post('/removeAllStudentsFromCourse', (req,res,next) => {
+    Course.findById(req.body.courseId, (err, course) => {
+        if (req.user.role == "teacher") {
+            User.find({}, (err, users) => {
+                users.forEach((user, index) => {
+                    if (user.followedCourses.includes(req.body.courseId)) {
+                        user.followedCourses.forEach((elem, index) => {
+                            if (elem == req.body.courseId) {
+                                user.followedCourses.splice(index, 1);
+                            }
+                        })
+                    }
+                    if (user.finishedCourses.includes(req.body.courseId)) {
+                        user.finishedCourses.forEach((elem, index) => {
+                            if (elem.courseId == req.body.courseId) {
+                                user.finishedCourses.splice(index, 1);
+                            }
+                        });
+                    }
+                });
+                users.forEach((elem, index) => {
+                    elem.save((err) => {
+                        if (!err && index == (users.length - 1)) res.json({success: true});
+                    });
+                })
+            });
+        }
+    });
+});
+
+router.post('/getStudentsFollowingCourse', (req, res,next) => {
+    if (req.body.courseId != null) {
+        Course.findById(req.body.courseId, (err, course) => {
+            if (!err && req.user.role == "teacher") {
+                let usersFollowingCourse = [];
+                User.find({}, function (err, users) {
+                    users.forEach((user) => {
+                        if (user.followedCourses.includes(req.body.courseId)) {
+                            let finishedCourse = false;
+
+                            user.finishedCourses.forEach((elem) => {
+                                if (elem.courseId == req.body.courseId) {
+                                    finishedCourse = true;
+                                }
+                            })
+
+                            usersFollowingCourse.push({
+                                _id: user._id,
+                                username: user.displayName,
+                                email: user.email,
+                                finishedCourse: finishedCourse,
+                            });
+                        }
+                    });
+                    if (usersFollowingCourse.length > 0) {
+                        res.send({users: usersFollowingCourse, success: true});
+                    } else {
+                        res.send({success: false});
+                    }
+                });
+            } else {
+                res.send({success: false});
+            }
+        })
+    } else {
+        res.send({success: false});
+    }
+});
+
+router.post('/finishCourse', (req,res,next) => {
+    if (req.body.courseId != null && req.body.notFinished == true) {
+        Course.findById(req.body.courseId, (err, course) => {
+            if (!err) {
+                User.findById(req.body.user._id, function (err, user) {
+                    if (!err) {
+                        if (user.finishedCourses.length > 0) {
+
+                            let foundOne = false;
+                            user.finishedCourses.forEach((elem, index) => {
+
+                                if (elem.courseId == req.body.courseId) {
+                                    foundOne = true;
+                                }
+
+                                if (index == (user.finishedCourses.length - 1) && foundOne === false) {
+                                    user.finishedCourses.push({courseId: req.body.courseId});
+                                    user.save((err) => {
+                                        if (!err) res.send({success: true, finishedCourse: true});
+                                    });
+                                }
+                            });
+                        } else {
+
+                            let finishedCourses = user.finishedCourses;
+                            finishedCourses.push({courseId: req.body.courseId});
+                            user.save((err) => {
+                                if (!err) res.send({success: true, finishedCourse: true});
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    } else if (req.body.notFinished == false && req.body.courseId != null) {
+        // this is so if the user already finished it but for some reason it isnt finished any more
+        // no we undo the fact that the user finished course
+        Course.findById(req.body.courseId, (err, course) => {
+            if (req.user.role == "teacher" && !err) {
+                User.findById(req.body.user._id, (err, user) => {
+                    if (!err) {
+                        user.finishedCourses.forEach((elem, index) => {
+                            if (user.finishedCourses[index].courseId == req.body.courseId) {
+                                if (elem.courseId == req.body.courseId) {
+                                    user.finishedCourses.splice(index, 1);
+                                    user.save((err) => {
+                                        if (!err) {
+                                            res.send({success: true, finishedCourse: false})
+                                        }
+                                    });
+                                }
+                            }
+                        })
+
+                    }
+                });
+            }
+        });
+    }
+});
+
+router.post('/rateCourse', (req,res,next) => {
+    if (req.user._id != null && req.body.rating <= 5 && req.body.rating >= 1) {
+        Course.findById(req.body.courseId, function (err, course) {
+            let sum = 0;
+            var allRatingValues = course.allRatingValues;
+            if (!err) {
+                if (allRatingValues.length > 0) {
+                    for (let i = 0; i < allRatingValues.length; i++) {
+                        var elem = allRatingValues[i];
+                        var index = i;
+                        if (elem.authorId.equals(req.app.locals._id)) {
+                            elem.rating = req.body.rating;
+                            course.allRatingValues[index].rating = req.body.rating;
+                        } else if ((index + 1) == allRatingValues.length) {
+                            if (!elem.authorId.equals(req.app.locals._id)) {
+                                allRatingValues.push({authorId: req.user._id, rating: req.body.rating});
+                                course.totalRatingCount += 1;
+                            }
+                        }
+                        sum += elem.rating;
+                    }
+                    course.ratingAverage = sum / (allRatingValues.length);
+                    course.ratingAverage = course.ratingAverage.toFixed(1);
+
+                } else if (allRatingValues.length <= 0) {
+                    course.ratingAverage = req.body.rating;
+                    course.ratingAverage = course.ratingAverage.toFixed(1);
+                    course.totalRatingCount = 1;
+                    allRatingValues.push({authorId: req.user._id, rating: req.body.rating});
+                }
+
+                course.save((err, updatedCourse) => {
+                    if (err) res.json({success: false});
+                    else res.json({success: true, course: updatedCourse});
+                })
+            }
+        })
+    }
+})
 module.exports = router;

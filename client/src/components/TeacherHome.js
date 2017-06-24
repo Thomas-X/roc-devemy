@@ -85,8 +85,10 @@ export default class TeacherHome extends Component {
                                                                 <RaisedButton label="Pas aan" primary={true}
                                                                           className="EditCourseButton"/>
                                                             </IndexLink>
+                                                            <IndexLink to={"/teacher/home/courseStudents/" + elem._id}>
                                                             <RaisedButton label="Studenten" secondary={true}
                                                                           className="StudentButton"/>
+                                                            </IndexLink>
                                                         </div>
                                                     </div>
                                                 </div>

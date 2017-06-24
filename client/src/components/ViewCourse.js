@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
-import {Divider, Paper, RaisedButton, TextField} from "material-ui";
+import {Divider, FlatButton, Paper, RaisedButton, TextField} from "material-ui";
 import {FormsyText} from "formsy-material-ui";
 
 import Formsy from 'formsy-react';
 import * as styles from "../styles";
 import Comment from "./Comment";
+import {
+    ActionBookmark, ActionBookmarkBorder, AlertErrorOutline,
+    NavigationArrowForward
+} from "material-ui/svg-icons/index";
+import {Rating} from "material-ui-rating";
 
 export default class ViewCourse extends Component {
     constructor(props) {
@@ -40,9 +45,11 @@ export default class ViewCourse extends Component {
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
         this.removeComment = this.removeComment.bind(this);
+        this.followCourse = this.followCourse.bind(this);
+        this.unFollowCourse = this.unFollowCourse.bind(this);
+
+        this.rateCourse = this.rateCourse.bind(this);
     }
-
-
 
 
     // TODO add this in production
@@ -66,12 +73,12 @@ export default class ViewCourse extends Component {
             commentId: commentId
         })
             .then((response) => {
-            if(response.data.newComments) {
-                this.state.course.comments = response.data.newComments;
-                this.setState(this.state);
-            } else {
-                hashHistory.push(this.props.route.siteData.role + '/home');
-            }
+                if (response.data.newComments) {
+                    this.state.course.comments = response.data.newComments;
+                    this.setState(this.state);
+                } else {
+                    hashHistory.push(this.props.route.siteData.role + '/home');
+                }
             })
     }
 
@@ -109,6 +116,48 @@ export default class ViewCourse extends Component {
         }
     }
 
+    rateCourse(value) {
+        axios.post('/api/rateCourse', {
+            courseId: this.props.params.courseid,
+            rating: value
+        }).then(function (response) {
+            if (response.data.success) this.setState({
+                rating: value,
+                totalRatingsCallback: response.data.course.totalRatingCount,
+                avgRating: response.data.course.ratingAverage,
+            });
+        }.bind(this));
+    }
+
+
+    followCourse() {
+        axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
+            if (response.data.success === true) {
+                this.setState({
+                    followed: true,
+                });
+            } else if (response.data.success === false) {
+                this.setState({
+                    errorFollowing: true,
+                })
+            }
+        }.bind(this))
+    }
+
+    unFollowCourse() {
+        axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
+            if (response.data.success === true) {
+                this.setState({
+                    followed: false,
+                })
+            } else if (response.data.success === false) {
+                this.setState({
+                    errorFollowing: true,
+                })
+            }
+        }.bind(this))
+    }
+
     render() {
         let data = this.state.course;
         let siteData = this.props.route.siteData;
@@ -122,13 +171,69 @@ export default class ViewCourse extends Component {
                 </div>
                 <Paper className="paperViewCourseContainer" zDepth={1}>
                     <span className="ViewCourseCourseTitle">{data.title}</span>
-                    <span className="ViewCourseCourseAuthor">Cursus gemaakt door: {data.author}</span>
-                    <br/>
-                    <i>
+                    <div className="ViewCourseTitleAndAuthorEmailContainer">
+                        <div>
+                            <span className="ViewCourseCourseAuthor">Cursus gemaakt door: {data.author}</span>
+                            <br/>
+                            <i>
                         <span className="ViewCourseCourseAuthorSmallText">
                             ({data.authorEmail})
                         </span>
-                    </i>
+                            </i>
+                        </div>
+                        <div className="FollowButtons">
+
+                            <RaisedButton
+                                labelPosition="before"
+                                primary={true}
+                                label='Naar cursus'
+                                className='ViewCourseGoToCourse'
+                                href={data.URLToCourse}
+                                icon={<NavigationArrowForward/>}
+                            />
+                            <FlatButton
+                                secondary={true}
+                                labelPosition="before"
+                                label={this.state.errorFollowing ?
+                                    'Error met volgen'
+                                    :
+                                    this.state.followed ?
+                                        'Cursus ontvolgen'
+                                        :
+                                        'Cursus volgen'
+                                }
+                                onClick={this.state.followed ?
+                                    this.unFollowCourse
+                                    :
+                                    this.followCourse}
+
+                                className={this.state.errorFollowing ?
+                                    'errorFollowingButton'
+                                    :
+                                    this.state.followed ?
+                                        'followedFollowingButton'
+                                        :
+                                        'followButton'
+                                }
+
+                                icon={this.state.errorFollowing ?
+                                    <AlertErrorOutline/>
+                                    :
+                                    this.state.followed ?
+                                        <ActionBookmark className="whiteIcon"/>
+                                        :
+                                        <ActionBookmarkBorder/>
+                                }
+                            />
+                            <Rating
+                                value={this.state.rating}
+                                max={5}
+                                onChange={function (value) {
+                                    this.rateCourse(value)
+                                }.bind(this)}
+                            />
+                        </div>
+                    </div>
                     <Divider style={{marginTop: 10}}/>
                     <br/>
                     <span className="ViewCourseDescription">

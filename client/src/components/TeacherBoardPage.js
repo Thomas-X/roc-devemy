@@ -12,8 +12,6 @@ import {Checkbox, CircularProgress, Dialog, FlatButton, Paper, RaisedButton, Tex
 import * as styles from "../styles";
 import {hashHistory} from 'react-router';
 
-// todo fix this component to work
-
 export default class TeacherBoardPage extends Component {
     constructor(props) {
         super(props);
@@ -44,10 +42,8 @@ export default class TeacherBoardPage extends Component {
     }
 
     removeAllStudents() {
-        axios.post('http://localhost:5000/api/removeAllStudentsFromCourse', {courseId: this.props.params.courseid}).then((response) => {
-            if(response.data.authenticated === false) {
-                hashHistory.push('/');
-            } else if (response.data.success === true) {
+        axios.post('/api/removeAllStudentsFromCourse', {courseId: this.props.params.courseid}).then((response) => {
+            if (response.data.success === true) {
                 this.setState({
                     data: null,
                     loaded: true,
@@ -55,12 +51,14 @@ export default class TeacherBoardPage extends Component {
                     searchQuery: null,
                     searchData: [],
                 })
+            } else {
+                hashHistory.push(this.props.route.siteData.role + '/home');
             }
         });
     }
 
     componentDidMount() {
-        axios.post('http://localhost:5000/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
             if (response.data.authenticated === false) {
                 hashHistory.push('/');
             } else {
@@ -81,15 +79,12 @@ export default class TeacherBoardPage extends Component {
     }
 
     handleRowClick(index, user) {
-        axios.post('http://localhost:5000/api/finishCourse', {
-            notFinished: user.finishedCourse? false : true,
+        axios.post('/api/finishCourse', {
+            notFinished: !user.finishedCourse,
             courseId: this.props.params.courseid,
             user: user
         }).then((response) => {
 
-            if (response.data.authenticated === true) {
-                hashHistory.push('/');
-            }
             if (response.data.success === true && response.data.finishedCourse === true) {
 
                 // we have to re calculate the index of data because its a different index from searchData
@@ -192,7 +187,6 @@ export default class TeacherBoardPage extends Component {
                         <TableBody displayRowCheckbox={false} showRowHover={true}>
                             {this.state.searchData.map((user, index) => {
 
-                                console.log(user);
 
                                 return (
                                     <TableRow key={index}>

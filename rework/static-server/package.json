@@ -1,0 +1,22 @@
+{
+  "name": "static-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "hbs": "^4.0.1",
+    "mongoose": "^4.10.2",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-google-oauth20": "^1.0.0",
+    "request": "^2.81.0",
+    "serve-favicon": "^2.4.3"
+  }
+}

@@ -4,10 +4,14 @@ var User = require('../models/User').User;
 var Course = require('../models/Course').Course;
 var passport = require('passport');
 var request = require('request');
+var path = require('path');
 
+router.get('/', (req,res) => {
+    res.render('index');
+});
 
-router.get('/', (req,res,next) => {
-    res.render('index', {token: req.user.token});
+router.get('/app', (req,res) => {
+    res.sendfile(path.resolve('../client/build/index.html'));
 });
 
 
@@ -44,7 +48,7 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        res.redirect('/?token=' + req.user.token);
+        res.redirect('/app?token=' + req.user.token);
 });
 
 // route middleware to make sure a user is logged in
@@ -55,7 +59,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     // if user isn't logged in redirect them to the home page
-    res.redirect('/');
+    res.redirect('/app');
 }
 
 module.exports = router;

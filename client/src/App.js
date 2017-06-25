@@ -223,7 +223,7 @@ class App extends Component {
         if (this.state.siteData != null) {
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
-                    <Router history={hashHistory}>
+                    <Router history={hashHistory} basename="/app">
                         <Route path="/" component={Home} siteData={this.state.siteData}/>
 
                         <Route path="/guest/home" component={Home2} siteData={this.state.siteData}/>
@@ -254,7 +254,6 @@ class App extends Component {
                                    siteData={this.state.siteData}/>
                         </Route>
 
-                        <Route path="*" component={NotFound} siteData={this.state.siteData}/>
                     </Router>
                 </MuiThemeProvider>
             )

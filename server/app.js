@@ -37,7 +37,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 // public folder for when react builds, redirected than to public
-app.use(express.static(path.join(__dirname, 'public')));
+console.log(path.join(__dirname, '../client/build'));
+app.use('/app', express.static(path.join(__dirname, '../client/build')));
+app.use('/static', express.static(path.join(__dirname, '../client/build/static')));
 app.use(session({secret: 'secretysecret'})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -58,7 +60,7 @@ app.use('/api', api);
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',
         clientSecret: 'zteyUMl3dnk7qnLfB3UeOU2b',
-        callbackURL: "http://localhost:7000/auth/google/callback"
+        callbackURL: "http://localhost:5000/auth/google/callback"
     },
     function (accessToken, refreshToken, profile, cb) {
 

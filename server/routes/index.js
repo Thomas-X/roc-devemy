@@ -5,9 +5,7 @@ var Course = require('../models/Course').Course;
 var passport = require('passport');
 var request = require('request');
 
-router.get('/', function (req, res, next) {
-    res.render('index', {token: req.user.token});
-});
+
 
 router.get('/logout', isLoggedIn, function (req, res, next) {
 

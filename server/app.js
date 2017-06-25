@@ -52,6 +52,10 @@ app.use(passport.session()); // persistent login sessions
 app.use('/', index);
 app.use('/api', api);
 
+app.get('/', function (req, res, next) {
+    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
+});
+
 
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',

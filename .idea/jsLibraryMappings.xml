@@ -2,5 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <includedPredefinedLibrary name="Node.js Core" />
+    <excludedPredefinedLibrary name="roc-devemy-1.0/client/node_modules" />
+    <excludedPredefinedLibrary name="roc-devemy-1.0/server/node_modules" />
   </component>
 </project>

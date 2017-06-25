@@ -36,31 +36,29 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
+// public folder for when react builds, redirected than to public
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'secretysecret'})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-    app.use(function (req, res, next) {
+app.use(function (req, res, next) {
 
-        // todo replace this with http://localhost:3000 for added security
-        res.setHeader("Access-Control-Allow-Origin", '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'cache-control, Origin, X-Requested-With, Content-Type, Accept');
-        next();
-    });
+    // todo replace this with http://localhost:3000 for added security
+    res.setHeader("Access-Control-Allow-Origin", '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'cache-control, Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 
 app.use('/', index);
 app.use('/api', api);
-
-app.get('/', function (req, res, next) {
-    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
-});
 
 
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',
         clientSecret: 'zteyUMl3dnk7qnLfB3UeOU2b',
-        callbackURL: "http://localhost:5000/auth/google/callback"
+        callbackURL: "http://localhost:7000/auth/google/callback"
     },
     function (accessToken, refreshToken, profile, cb) {
 
@@ -69,8 +67,10 @@ passport.use(new GoogleStrategy({
             //check if we found a doc, if doc is null we create a new user, if doc isn't null we compare id's, for double safety :)
             if (doc != null) {
                 if (doc.googleId == profile.id) {
-                    doc.token = accessToken;
-                    return cb(err, doc);
+                    doc.token = String(accessToken);
+                    User.findOneAndUpdate({googleId: profile.id}, {token: String(accessToken)},{new: true}, (err, newUser) => {
+                        if (!err) return cb(err, newUser);
+                    })
                 }
             } else if (doc == null) {
                 User.create({
@@ -83,13 +83,15 @@ passport.use(new GoogleStrategy({
                     token: accessToken,
                     isTeacher: false,
                 }, function (err, val) {
-                    val.token = accessToken;
+                    val.token = String(accessToken);
                     return cb(err, val);
                 });
             }
-        });
+        })
+        ;
     }
-));
+))
+;
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);

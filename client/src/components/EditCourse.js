@@ -73,39 +73,20 @@ export default class CreateCourse extends Component {
 
     saveCourse() {
 
-        this.props.route.saveEditCourseUpdateState(
-            {
-            _id: "2",
-            comments: [],
-            allRatingValues: [],
-            totalRatingCount: 0,
-            ratingAverage: 0,
-            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores corpori" +
-            "s deleniti doloremque earum, eius eligendi enim explicabo laboriosam nemo quam rerum similique tempo" +
-            "re vero voluptatibus. Culpa harum hic quasi.",
-            URLToCourse: "https://placekitten.com/640/380",
-            authorEmail: "",
-            author: "Thomas-X",
-            authorId: "",
-            imgURL: "https://placekitten.com/640/380",
-            title: "HTML",
-            __v: 0,}
-            );
-        hashHistory.push('/teacher/home');
 
         // add this in production
-        // axios.post('/api/saveEditCourse', {
-        //     title: this.state.title,
-        //     imgURL: this.state.imgURL,
-        //     URLToCourse: this.state.URLToCourse,
-        //     description: this.state.description,
-        //     courseId: this.props.params.courseid
-        // }).then((response) => {
-        //     if(response.data.saveEditCourse) {
-        //         this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
-        //         hashHistory.push('/teacher/home');
-        //     }
-        // })
+        axios.post('/api/saveEditCourse', {
+            title: this.state.title,
+            imgURL: this.state.imgURL,
+            URLToCourse: this.state.URLToCourse,
+            description: this.state.description,
+            courseId: this.props.params.courseid
+        }).then((response) => {
+            if(response.data.saveEditCourse) {
+                this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
+                hashHistory.push('/teacher/home');
+            }
+        })
     }
 
 

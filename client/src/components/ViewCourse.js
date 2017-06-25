@@ -16,32 +16,32 @@ import {Rating} from "material-ui-rating";
 export default class ViewCourse extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            course: {
-                title: "PHP",
-                imgURL: "https://placekitten.com/640/380",
-                authorId: "123321",
-                author: "Thomas-X",
-                authorEmail: "tzwarts@roc-dev.com",
-                URLToCourse: "https://placekitten.com/640/380",
-                description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias at" +
-                "que aut cumque deleniti dicta esse expedita hic impedit laborum nulla obcaecati, optio quaerat " +
-                "quam reprehenderit sit soluta tenetur vero.",
-                ratingAverage: 0,
-                totalRatingCount: 0,
-                allRatingValues: [],
-                comments: [{
-                    author: "Thomas-X",
-                    authorImage: "https://placekitten.com/640/380",
-                    comment: "wow dit is een goede cursus zeg!!!",
-                    date: Date.now(),
-                    authorId: "5946815c213d312034889f0d",
-                }
-                ],
-            },
-            createComment: '',
-            submitButtonDisabled: true,
-        }
+        // this.state = {
+        //     course: {
+        //         title: "PHP",
+        //         imgURL: "https://placekitten.com/640/380",
+        //         authorId: "123321",
+        //         author: "Thomas-X",
+        //         authorEmail: "tzwarts@roc-dev.com",
+        //         URLToCourse: "https://placekitten.com/640/380",
+        //         description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias at" +
+        //         "que aut cumque deleniti dicta esse expedita hic impedit laborum nulla obcaecati, optio quaerat " +
+        //         "quam reprehenderit sit soluta tenetur vero.",
+        //         ratingAverage: 0,
+        //         totalRatingCount: 0,
+        //         allRatingValues: [],
+        //         comments: [{
+        //             author: "Thomas-X",
+        //             authorImage: "https://placekitten.com/640/380",
+        //             comment: "wow dit is een goede cursus zeg!!!",
+        //             date: Date.now(),
+        //             authorId: "5946815c213d312034889f0d",
+        //         }
+        //         ],
+        //     },
+        //     createComment: '',
+        //     submitButtonDisabled: true,
+        // }
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
         this.removeComment = this.removeComment.bind(this);
@@ -54,17 +54,17 @@ export default class ViewCourse extends Component {
 
     // TODO add this in production
 
-    // componentWillMount() {
-    //     axios.post('/api/getCourse', {courseId: this.props.params.courseid}).then((response) => {
-    //         if(response.data.course) {
-    //             this.setState({
-    //                 course: response.data.course,
-    //             })
-    //         } else {
-    //             hashHistory.push('/' + this.props.route.siteData.role + '/home');
-    //         }
-    //     })
-    // }
+    componentWillMount() {
+        axios.post('/api/getCourse', {courseId: this.props.params.courseid}).then((response) => {
+            if(response.data.course) {
+                this.setState({
+                    course: response.data.course,
+                })
+            } else {
+                hashHistory.push('/' + this.props.route.siteData.role + '/home');
+            }
+        })
+    }
 
     removeComment(commentId) {
         axios.post('/api/removeComment', {

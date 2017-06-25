@@ -29,7 +29,16 @@ router.post('/getUserData', (req, res, next) => {
 
     // why use a DB request here? so we get the most accurate data
     // also change this before production
-    User.findById({token: req.body.token}, (err, user) => {
+
+    let user = null;
+
+    User.find({token: String(req.body.token)}, (err, mUser) => {
+        console.log(err);
+        console.log(user);
+        console.log(req.body.token);
+
+        user = mUser[0];
+
         if (!err) res.json({
             siteData: {
                 googleId: user.googleId,
@@ -325,4 +334,24 @@ router.post('/rateCourse', (req,res,next) => {
         })
     }
 })
+
+router.post('/unfollowCourse', (req,res,next) => {
+    User.update(req.user._id, {$pull: {followedCourses: req.body.courseId}},
+        (err, user) => {
+            if (!err) res.json({
+                user: user,
+            });
+        });
+});
+
+router.post('/followCourse', (req,res,next) => {
+    User.update(
+        {_id: req.user._id},
+        {$addToSet: {followedCourses: req.body.courseId}},
+        (err, user) => {
+            if (!err) res.json({
+                user: user,
+            })
+        })
+});
 module.exports = router;

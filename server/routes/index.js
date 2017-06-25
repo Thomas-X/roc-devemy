@@ -6,6 +6,10 @@ var passport = require('passport');
 var request = require('request');
 
 
+router.get('/', (req,res,next) => {
+    res.render('index', {token: req.user.token});
+});
+
 
 router.get('/logout', isLoggedIn, function (req, res, next) {
 
@@ -40,7 +44,7 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        res.redirect('/');
+        res.redirect('/?token=' + req.user.token);
 });
 
 // route middleware to make sure a user is logged in

@@ -33,13 +33,13 @@ export default class TeacherHome extends Component {
 
         // add this in production
 
-        // axios.post('/api/removeCourse', {courseId: courseId}).then((response) => {
-        //     if(response.status === 200) {
-        //         this.props.route.removeCourseUpdateState(courseId);
-        //     } else {
-        //         // show an error with a toast? (snackbar)
-        //     }
-        // })
+        axios.post('/api/removeCourse', {courseId: courseId}).then((response) => {
+            if(response.status === 200) {
+                this.props.route.removeCourseUpdateState(courseId);
+            } else {
+                // show an error with a toast? (snackbar)
+            }
+        })
     }
 
     render() {

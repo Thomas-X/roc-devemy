@@ -11,10 +11,9 @@ var hbs = require('hbs');
 var request = require('request');
 var session = require('express-session');
 var User = require('./models/User').User;
-
+var jwt = require('jsonwebtoken');
 
 var index = require('./routes/index');
-var api = require('./routes/api');
 
 var app = express();
 
@@ -45,7 +44,6 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 app.use('/', index);
-app.use('/api', api);
 
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',
@@ -55,14 +53,21 @@ passport.use(new GoogleStrategy({
     function (accessToken, refreshToken, profile, cb) {
 
 
+
+        // change this in production
+
+
+
         User.findOne({googleId: profile.id}, function (err, doc) {
+
+            if(doc == null) {
+                accessToken = jwt.sign({secret: 'OÃ*ÙÜÐJ+¢Éêó|9¹¡}_øÆ7Ø¯¿&7mºoMýì$éà0ðåSøöu-ëdDêóú³ë¨&ÔÜºÃÈs¢¶ªÞw4¶/ù¶:$>»4üqu»1²î¶*úa|Ë£ý¡gSÓR¾P³:OP]1Pn°2}ü£ÖÊØÏ¼+}_xùGtÿÁÒû?år²*FL%BJ_¤OÅò¼ùôñ<¼ZÆìl¾©³B×ðþºùöÎ§3Ï{tjdaâêAïâêTôv¾+nèÉ³>h¸x°æÈ§,«+ÝÒJ&xÓð»ÕPÍ$¸Ø]ºÑ£Eêé²ÌÀ³§rÄæzÜxßc&z¥·é-¥±§iy(-¦ëf_»3-ëþef"ÄZ'}, 'Ò¨·Õ¬E\ØK6ìoöUA£²,ïnJÚo,e8¤¯úÁbL·WÉíeªIÄÚ£Qy©q¶l3æfEUËõr;þ·pÓ¬ÈùÜK²SÐPuôÛÌíêÖ¦6yðoîú¾ÁÛ¾t(îbÁ!l^Ò¦(uc}A/h³{`%ÌZÍG#ÔÚWP_Í2¿ÎN,jàq´ïºQµÆeéK)ÜéÀbÈ¶b¿@×l.C£UC`\¹7íùÆkäº·¥%37C,º=¼È-Ø©¬PÛÛÅ6ëÙ¬ÛgCm£×¯ôÂÌå_@äÉµõÒ7rQ{ËfZùVÌÂÙAô÷*¿Ìª;>¢ËúS£9×5è(íÐÒå¹EÈ1¬qÈë1C1ìú¦ÛV', {algorithm: 'HS512'});
+            }
+
             //check if we found a doc, if doc is null we create a new user, if doc isn't null we compare id's, for double safety :)
             if (doc != null) {
                 if (doc.googleId == profile.id) {
-                    doc.token = String(accessToken);
-                    User.findOneAndUpdate({googleId: profile.id}, {token: String(accessToken)}, {new: true}, (err, newUser) => {
-                        if (!err) return cb(err, newUser);
-                    })
+                        return cb(err, doc);
                 }
             } else if (doc == null) {
                 User.create({

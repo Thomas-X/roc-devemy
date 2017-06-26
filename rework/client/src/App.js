@@ -28,7 +28,13 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        // TODO default state of siteData should be
+
+        this.state = {
+            siteData: {
+                role: "guest",
+                token: null,
+            }
+        }
 
 
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
@@ -37,49 +43,52 @@ class App extends Component {
     }
 
 
-    // add this in production
-
     componentWillMount() {
+        let Cookie;
 
-        this.state = {
+
+        Cookie = cookie.loadAll();
+
+
+        this.setState({
             siteData: {
-                role: "guest",
-                token: cookie.load('token')
+                token: Cookie.token,
             }
-        };
+        });
 
         let token = null;
 
         // this means the cookie wasn't loaded properly or just simply doesn't exist
-        if(this.state.token == null) {
-            function gup( name, url ) {
+        if (this.state.token == null) {
+            function gup(name, url) {
                 if (!url) url = window.location.href;
-                name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-                var regexS = "[\\?&]"+name+"=([^&#]*)";
-                var regex = new RegExp( regexS );
-                var results = regex.exec( url );
+                name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                var regexS = "[\\?&]" + name + "=([^&#]*)";
+                var regex = new RegExp(regexS);
+                var results = regex.exec(url);
                 return results == null ? null : results[1];
             }
+
             token = gup('token');
 
-            if(token != null) {
+            if (token != null) {
                 this.setState({
                     token: token,
-                })
-                cookie.save('token', token, {
+                });
+                const CookieSaved = async () => cookie.save('token', token, {
                     path: '/',
                     maxAge: 1209600
                 });
-            } else {
-                console.log(this.state.token);
-                // prompt('error setting cookie');
+                CookieSaved().then(() => {
+                    window.location.href = removeURLParameter(window.location.href, "token");
+                })
             }
         }
+    }
 
+    componentDidMount() {
 
-
-
-        if(token != null) {
+        const doRequest = (token) => {
             axios.post('/api/getUserData', {token: token}).then((response) => {
                 if (response.data.siteData) {
 
@@ -91,6 +100,22 @@ class App extends Component {
                 }
                 console.log(response.data.siteData, response);
             })
+        }
+
+        let CheckCookie = cookie.loadAll();
+
+        if(this.state.token != null) {
+            doRequest(this.state.token);
+        }
+        if(CheckCookie.token != null) {
+            doRequest(CheckCookie.token);
+        }
+
+        if (this.state.token == null && CheckCookie.token == null) {
+
+            // ref back to server since no cookie is set AND no token in url,
+            // otherwise it would have been set in componentWillMount()
+            window.location.href = "http://localhost:4000";
         }
     }
 
@@ -142,7 +167,7 @@ class App extends Component {
         if (this.state.siteData != null) {
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
-                    <Router history={hashHistory} basename="/app">
+                    <Router history={hashHistory}>
                         <Route path="/" component={Home} siteData={this.state.siteData}/>
 
                         <Route path="/guest/home" component={Home2} siteData={this.state.siteData}/>
@@ -258,6 +283,29 @@ class StudentContainer extends React.Component {
                 {this.props.children}
             </div>
         )
+    }
+}
+
+function removeURLParameter(url, parameter) {
+    //prefer to use l.search if you have a location/link object
+    var urlparts = url.split('?');
+    if (urlparts.length >= 2) {
+
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
+
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0;) {
+            //idiom for string.startsWith
+            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                pars.splice(i, 1);
+            }
+        }
+
+        url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+        return url;
+    } else {
+        return url;
     }
 }
 

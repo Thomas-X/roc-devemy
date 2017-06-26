@@ -44,7 +44,7 @@ export default class TeacherHome extends Component {
 
     render() {
         let hasCourses = false;
-        if (this.props.route.siteData.ownedData.length > 0) {
+        if (this.props.siteData.ownedData != null && this.props.route.siteData.ownedData.length > 0) {
             hasCourses = true;
         }
         let data = this.props.route.siteData;

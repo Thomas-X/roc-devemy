@@ -9,7 +9,8 @@ export default class SubText extends Component {
 
     render() {
 
-        if (this.props.siteData.followedCourses.length > 0) {
+
+        if (this.props.siteData.followedCourses != null && this.props.siteData.followedCourses.length > 0) {
             return (
                 <div className="StudentHomePageSubText">
                     <span>Hier zijn je gevolgde cursussen:</span>

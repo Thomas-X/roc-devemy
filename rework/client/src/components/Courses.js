@@ -10,7 +10,7 @@ export default class Courses extends Component {
 
     render() {
 
-        if (this.props.siteData.followedCourses.length > 0) {
+        if (this.props.siteData.followedCourses != null && this.props.siteData.followedCourses.length > 0) {
             return (
                 <Paper zDepth={1} className="StudentHomeCourses">
                     {this.props.siteData.followedCourses.map((elem, index) => {

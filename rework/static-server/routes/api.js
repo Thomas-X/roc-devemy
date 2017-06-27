@@ -15,14 +15,24 @@ router.post('/getUserData', (req, res, next) => {
 
     let user = null;
 
-    User.find({token: String(req.body.token)}, (err, mUser) => {
-        console.log(err);
+
+    User.find({token: String(req.body.token)}, (err1, mUser) => {
+        console.log(err1);
         console.log(user);
         console.log(req.body.token);
 
         user = mUser[0];
 
-        if (!err) res.json({
+        Course.find({authorId: user._id}, (err2, courses) => {
+            let ownedData = [];
+            if(courses != null) {
+                courses.forEach((elem, index) => {
+                    ownedData.push(elem);
+                });
+            }
+            console.log(ownedData, courses);
+
+            if (!err1 && !err2) res.json({
                 googleId: user.googleId,
                 displayName: user.displayName,
                 displayImage: user.displayImage,
@@ -32,9 +42,10 @@ router.post('/getUserData', (req, res, next) => {
                 finishedCourses: user.finishedCourses,
                 token: user.token,
                 isTeacher: user.isTeacher,
-                ownedData: user.ownedData,
+                ownedData: ownedData,
+            });
+            else res.status(500).send();
         });
-        else res.status(500).send();
     })
 });
 
@@ -53,18 +64,29 @@ router.post('/search', function (req, res, next) {
 
 router.post('/createCourse', (req, res, next) => {
 
-    // force string type on variables to avoid validation error by mongoose
-    Course.create({
-        title: String(req.body.title),
-        imgURL: String(req.body.imgURL),
-        // authorId: req.user._id,
-        // author: req.user.displayName,
-        // authorEmail: req.user.email,
-        URLToCourse: String(req.body.URLToCourse),
-        description: String(req.body.description),
-    }, (err, newCourse) => {
-        if (!err) res.json({createCourse: newCourse});
-        else res.status(500).send();
+    User.find({token: String(req.body.token)}, (err1, mUser) => {
+
+        mUser = mUser[0];
+
+        console.log('mUser', mUser);
+
+        // force string type on variables to avoid validation error by mongoose
+        req.body.description = JSON.stringify(req.body.description);
+
+        console.log(req.body.description, typeof req.body.description);
+
+        Course.create({
+            title: String(req.body.title),
+            imgURL: String(req.body.imgURL),
+            authorId: String(mUser._id),
+            author: String(mUser.displayName),
+            authorEmail: String(mUser.email),
+            URLToCourse: String(req.body.URLToCourse),
+            description: String(req.body.description),
+        }, (err, newCourse) => {
+            if (!err) res.json({createCourse: newCourse});
+            else res.status(500).send();
+        });
     });
 });
 
@@ -73,8 +95,8 @@ router.post('/saveEditCourse', (req,res,next) => {
         if(!err) {
             course.title = req.body.title;
             course.imgURL = req.body.imgURL;
-            course.description = req.body.description;
-            course.URLToCourse = req.bod.URLToCourse;
+            course.description = JSON.stringify(req.body.description);
+            course.URLToCourse = req.body.URLToCourse;
 
             course.save((err, updatedCourse) => {
                 if(!err) res.json({saveEditCourse: updatedCourse});

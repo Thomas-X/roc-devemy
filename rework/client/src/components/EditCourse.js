@@ -23,7 +23,7 @@ export default class CreateCourse extends Component {
             title: course.title,
             imgURL: course.imgURL,
             URLToCourse: course.URLToCourse,
-            description: course.description,
+            description: JSON.stringify(course.description),
             authorId: course.authorId,
             canSubmit: false,
         }

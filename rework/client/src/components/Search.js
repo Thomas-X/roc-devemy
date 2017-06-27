@@ -75,7 +75,7 @@ export default class Search extends Component {
                             <div className='searchCoursesResultContainer'>
                                 {this.state.courses.map(function (course, index) {
                                     return (
-                                        <IndexLink to={"/courses/" + course._id} key={index}>
+                                        <IndexLink to={"/student/home/course/" + course._id} key={index}>
                                             <Card id='card' className='cardMediaItem'>
                                                 <CardMedia
                                                     overlay={

@@ -68,7 +68,8 @@ export default class CreateCourse extends Component {
             title: this.state.title,
             imgURL: this.state.imgURL,
             URLToCourse: this.state.URLToCourse,
-            description: this.state.description,
+            description: JSON.stringify(this.state.description),
+            token: this.props.route.siteData.token,
         }).then((response) => {
             if(response.data.createCourse) {
                 this.props.route.createCourse(response.data.createCourse);

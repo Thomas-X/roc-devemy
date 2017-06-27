@@ -134,35 +134,26 @@ class App extends Component {
     }
 
     createCourseUpdateState(course) {
-        this.setState({
-            siteData: {
-                ownedData: this.state.siteData.ownedData.push(course)
-            }
-        })
+        this.state.siteData.ownedData.push(course);
+        this.setState(this.state);
     }
 
     removeCourseUpdateState(courseId) {
 
         let data = this.state.siteData;
         if (data.followedCourses.includes(courseId)) {
-            this.setState({
-                siteData: {
-                    followedCourses: data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1)
-                }
-            })
+            data.followedCourses = data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1);
+            this.setState(this.state);
         }
         data.finishedCourses.forEach((elem, index) => {
             if (elem._id == courseId) {
-                this.setState({
-                    siteData: {
-                        finishedCourses: data.finishedCourses.splice(index, 1)
-                    }
-                })
+                data.finishedCourses = data.finishedCourses.splice(index, 1);
+                this.setState(this.state);
             }
         })
         data.ownedData.forEach((elem, index) => {
             if (elem._id == courseId) {
-                data.ownedData.splice(index, 1)
+                data.ownedData.splice(index, 1);
                 this.setState(this.state);
             }
         })

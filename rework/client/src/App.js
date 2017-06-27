@@ -23,6 +23,14 @@ import TeacherBoardPage from "./components/TeacherBoardPage";
 
 injectTapEventPlugin();
 
+function gup(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    return results == null ? null : results[1];
+}
 
 class App extends Component {
     constructor(props) {
@@ -42,39 +50,45 @@ class App extends Component {
         this.saveEditCourseUpdateState = this.saveEditCourseUpdateState.bind(this);
     }
 
-
     componentWillMount() {
+
+
         let Cookie;
 
 
         Cookie = cookie.loadAll();
 
+        let token = Cookie.token;
 
         this.setState({
             siteData: {
-                token: Cookie.token,
-            }
+                token: token,
+            },
         });
 
-        let token = null;
+
+        // this means a cookie is set, but the user has logged in with a different user than
+        // the cookie says
+        let getUrlParam = gup("token");
+        if (getUrlParam != null && Cookie.token != null && this.state.siteData.token != null && getUrlParam != Cookie.token) {
+            cookie.remove('token', {path: '/'});
+            token = null;
+        }
+
+        // this means the cookie was set but there was a login token for some reason
+        if (Cookie.token == getUrlParam) {
+            window.location.href = removeURLParameter(window.location.href, "token");
+        }
+
 
         // this means the cookie wasn't loaded properly or just simply doesn't exist
-        if (this.state.token == null) {
-            function gup(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-                var regexS = "[\\?&]" + name + "=([^&#]*)";
-                var regex = new RegExp(regexS);
-                var results = regex.exec(url);
-                return results == null ? null : results[1];
-            }
+        if (token == null) {
+
 
             token = gup('token');
 
             if (token != null) {
-                this.setState({
-                    token: token,
-                });
+
                 const CookieSaved = async () => cookie.save('token', token, {
                     path: '/',
                     maxAge: 1209600
@@ -82,15 +96,15 @@ class App extends Component {
                 CookieSaved().then(() => {
                     window.location.href = removeURLParameter(window.location.href, "token");
                 })
+            } else {
+                window.location.href = "http://localhost:4000/";
             }
         }
-    }
-
-    componentDidMount() {
 
         const doRequest = (token) => {
             axios.post('/api/getUserData', {token: token}).then((response) => {
-                if (response.data.siteData) {
+                console.log(`got response from api`, response);
+                if (response.data) {
 
                     this.setState({
                         siteData: response.data
@@ -104,14 +118,14 @@ class App extends Component {
 
         let CheckCookie = cookie.loadAll();
 
-        if(this.state.token != null) {
-            doRequest(this.state.token);
+        if (this.state.siteData.token != null) {
+            doRequest(this.state.siteData.token);
         }
-        if(CheckCookie.token != null) {
+        if (CheckCookie.token != null) {
             doRequest(CheckCookie.token);
         }
 
-        if (this.state.token == null && CheckCookie.token == null) {
+        if (this.state.siteData.token == null && CheckCookie.token == null) {
 
             // ref back to server since no cookie is set AND no token in url,
             // otherwise it would have been set in componentWillMount()
@@ -121,7 +135,9 @@ class App extends Component {
 
     createCourseUpdateState(course) {
         this.setState({
-            ownedData: this.state.siteData.ownedData.push(course)
+            siteData: {
+                ownedData: this.state.siteData.ownedData.push(course)
+            }
         })
     }
 
@@ -130,13 +146,17 @@ class App extends Component {
         let data = this.state.siteData;
         if (data.followedCourses.includes(courseId)) {
             this.setState({
-                followedCourses: data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1)
+                siteData: {
+                    followedCourses: data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1)
+                }
             })
         }
         data.finishedCourses.forEach((elem, index) => {
             if (elem._id == courseId) {
                 this.setState({
-                    finishedCourses: data.finishedCourses.splice(index, 1)
+                    siteData: {
+                        finishedCourses: data.finishedCourses.splice(index, 1)
+                    }
                 })
             }
         })
@@ -164,7 +184,16 @@ class App extends Component {
 
 
     render() {
-        if (this.state.siteData != null) {
+
+
+        console.log(`Here is our state:`, this.state, this.state.siteData);
+        if (this.state.siteData.role != null && this.state.siteData.role == "teacher" || this.state.siteData.role == "student") {
+            console.log('LOADING SITE');
+
+
+            let data = this.state.siteData.siteData;
+            console.log(data);
+
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <Router history={hashHistory}>
@@ -202,6 +231,7 @@ class App extends Component {
                 </MuiThemeProvider>
             )
         } else {
+            console.log('LOADING LOADER')
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <div className="loaderCenterContainer">

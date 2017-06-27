@@ -10,6 +10,7 @@ import {
 import {IndexLink} from "react-router";
 import {ActionHome, ActionPermMedia, ActionSearch, ContentAdd, ActionInput, SocialPersonOutline, ActionFace} from "material-ui/svg-icons/index";
 import {customTheme} from "../customMuiTheme";
+import cookie from 'react-cookies';
 
 
 export default class NavigationAndDrawer extends Component {
@@ -23,6 +24,7 @@ export default class NavigationAndDrawer extends Component {
         this.handleTouchTap = this.handleTouchTap.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.drawerActivated = this.drawerActivated.bind(this);
+        this.handleSignOut = this.handleSignOut.bind(this);
 
     }
 
@@ -47,6 +49,18 @@ export default class NavigationAndDrawer extends Component {
         this.setState({
             open: false,
         });
+    }
+
+    handleSignOut() {
+
+        try {
+            const CookieRemoved = async () => cookie.remove('token', { path: '/' });
+            CookieRemoved().then(() => {
+                window.location.href = "http://localhost:4000/";
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     render() {
@@ -95,7 +109,7 @@ export default class NavigationAndDrawer extends Component {
                                                 </div> : null
                                             }
                                             <Divider/>
-                                            <a href="http://localhost:5000/logout"><MenuItem primaryText="Sign out"
+                                            <a onClick={this.handleSignOut}><MenuItem primaryText="Sign out"
                                                                                              leftIcon={<ActionInput/>}/></a>
                                         </Menu>
                                     </Popover>

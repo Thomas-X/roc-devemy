@@ -67,7 +67,7 @@ export default class Search extends Component {
                         this.handleSearchInput(event);
                     }.bind(this)}/>
                 <br/>
-                {this.state.loading ? <CircularProgress size={80} thickness={5} className='circularLoader'/>
+                {this.state.loading ? <Loader/>
                     : <div>
                         {this.state.coursesNotNull
                             ?
@@ -106,6 +106,17 @@ export default class Search extends Component {
                     </div>
                 }
             </Paper>
+        )
+    }
+}
+
+class Loader extends Component {
+    render() {
+        return (
+            <div className="LoaderContainer">
+                <span className="LoaderText">Aan het zoeken..</span>
+                <CircularProgress size={80} thickness={5} className='circularLoader'/>
+            </div>
         )
     }
 }

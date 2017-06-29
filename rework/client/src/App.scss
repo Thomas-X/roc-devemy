@@ -563,14 +563,15 @@ a {
 }
 
 .followedFollowingButton {
-  line-height:0px !important;
-  margin-left:10px !important;
+  line-height: 0px !important;
+  margin-left: 10px !important;
   background-color: $lightGreen600 !important;
   color: $alternateTextColor !important;
 }
+
 .followButton {
-  line-height:0px !important;
-  margin-left:10px !important;
+  line-height: 0px !important;
+  margin-left: 10px !important;
 }
 
 .commentContentContainer {
@@ -746,6 +747,7 @@ a {
   color: $white !important;
   margin-top: 6px !important;
 }
+
 .whiteIcon {
   fill: $white !important;
 }
@@ -941,6 +943,21 @@ a {
   color: $accent3Color;
 }
 
+.TeacherBoardPageNoStudentsFollowed {
+  font-size: 2em;
+  color: $accent3Color;
+  text-align: center;
+}
+
+.TeacherBoardPageNoStudentsFollowedContainer {
+  width: 100%;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .AboutMeSmallText {
   font-size: 1em;
   color: $accent3Color;
@@ -953,8 +970,8 @@ a {
 
 .AboutMeFinishedCourseItemContainer {
   width: 350px;
-  padding:10px;
-  display:flex;
+  padding: 10px;
+  display: flex;
   flex-direction: column;
 }
 
@@ -966,7 +983,6 @@ a {
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
 
-
 }
 
 .AboutFinishedCourseItemContentTitle {
@@ -977,39 +993,46 @@ a {
 .AboutFinishedCourseItemContentAuthor {
   align-self: flex-end;
 }
+
 .AboutMeFinishedCourseItemsContainer {
-  padding:10px;
-  display:flex;
-  flex-wrap:wrap;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
+
 .AboutMeSwipeTabs {
   overflow-x: visible !important;
 }
+
 .ViewCourseHeaderContainer {
-  height:270px;
+  height: 270px;
   background-color: $footerColor;
-  width:100%;
+  width: 100%;
 }
+
 .ViewCourseCourseTitle {
-  font-size:2em;
-  color:$alternateTextColor;
-  position:absolute;
-  top:-50px;
+  font-size: 2em;
+  color: $alternateTextColor;
+  position: absolute;
+  top: -50px;
 }
+
 .ViewCourseCourseAuthor {
-  font-size:1.5em;
+  font-size: 1.5em;
 
 }
+
 .paperViewCourseContainer {
   width: 80%;
   margin: auto;
   max-width: 934px;
   position: relative;
-  padding:20px;
+  padding: 20px;
   overflow: visible !important;
-  min-height:200px;
+  min-height: 200px;
 }
+
 .ViewCourseCourseAuthorSmallText {
   font-size: 1em;
   color: $accent3Color;
@@ -1025,68 +1048,78 @@ a {
   align-items: center;
   justify-content: flex-end;
 }
+
 .ViewCourseImage {
-  height:150px;
+  height: 150px;
   max-width: 260px;
-  background-color:$alternateTextColor;
-  padding:7px;
-  border-radius:7px;
+  background-color: $alternateTextColor;
+  padding: 7px;
+  border-radius: 7px;
 }
+
 .paperViewCourseCommentContainer {
   width: 80%;
   margin: auto;
   max-width: 934px;
   position: relative;
-  padding:20px;
+  padding: 20px;
   overflow: visible !important;
-  min-height:200px;
-  margin-top:20px;
+  min-height: 200px;
+  margin-top: 20px;
 }
+
 .ViewCourseCreateCommentImage {
   max-height: 50px;
   max-width: 50px;
-  margin-right:10px;
+  margin-right: 10px;
 }
+
 .ViewCourseCreateCommentImageAndTextField {
-  display:flex;
-  max-height:50px;
+  display: flex;
+  max-height: 50px;
   flex-direction: row;
-  flex:3;
+  flex: 3;
 }
+
 .ViewCourseCreateCommentTextfield {
-  height:45px;
-  width:100%;
+  height: 45px;
+  width: 100%;
 }
+
 .ViewCourseCreateCommentContainer {
-  display:flex;
+  display: flex;
   flex-direction: row;
 
 }
+
 .NotFoundErrorContainer {
-  display:flex;
-  height:100%;
-  width:100%;
+  display: flex;
+  height: 100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
 }
+
 .NotFoundErrorContentContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
 .TeacherHomeMyCourseContainer {
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height:133px;
+  height: 133px;
 }
 
 .MyCourseImage {
-  width:200px;
+  width: 200px;
 }
+
 .MyCourseTitle {
-  font-size:1.5em;
+  font-size: 1.5em;
 }
 
 .paperEditorContentTeacher {
@@ -1095,99 +1128,121 @@ a {
   max-width: 934px;
   position: relative;
   overflow: visible !important;
-  margin-top:40px;
+  margin-top: 40px;
 }
+
 .MyCourseTitleAndDescriptionAndImageContainer {
-  display:flex;
+  display: flex;
   align-items: center;
 }
+
 .MyCourseTitleAndDescriptionContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
   flex-direction: column;
-  margin-left:10px;
+  margin-left: 10px;
 }
-.MyCourseButtonsContainer{
-  display:flex;
+
+.MyCourseButtonsContainer {
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .EditCourseButton {
-  margin-right:5px;
-  height:36px;
+  margin-right: 5px;
+  height: 36px;
 }
+
 .StudentButton {
-  height:36px;
+  height: 36px;
 }
+
 .removeCourseButton {
   align-self: flex-end;
 }
+
 .MyCoursesDivider {
-  margin-top:15px !important;
+  margin-top: 15px !important;
   margin-bottom: 15px !important;
 }
 
 .ViewCourseTitleAndAuthorEmailContainer {
-  display:flex;
+  display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
+.LoaderText {
+  font-size: 2em;
+  color: $primary1Color;
+}
+.LoaderContainer {
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  display:flex;
+  min-height:390px;
+}
+.StudentHomeCoursesGoToCourseDirectlyButton {
+  width:100%;
+  height: 36px;
+
+}
 @media (max-width: 670px) {
   .MyCourseTitleAndDescriptionAndImageContainer {
     flex-direction: column;
     align-items: center;
-    height:auto;
+    height: auto;
   }
   .TeacherHomeMyCourseContainer {
-    height:auto;
-    flex-wrap:wrap;
+    height: auto;
+    flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
   }
   .removeCourseButton {
-    align-self:flex-start;
-    margin-bottom:5px;
-    height:36px;
-    width:100%;
+    align-self: flex-start;
+    margin-bottom: 5px;
+    height: 36px;
+    width: 100%;
   }
   .MyCourseButtonsContainer {
     margin-top: 10px;
   }
 
   .paperEditorContentTeacher {
-    margin-top:0px;
+    margin-top: 0px;
   }
   .ViewCourseTitleAndAuthorEmailContainer {
     align-items: center;
     justify-content: center;
   }
   .FollowButtons {
-    padding-top:10px;
+    padding-top: 10px;
   }
   .ViewCourseGoToCourse {
-    width:100%;
-    margin-bottom:10px;
-    height:36px;
+    width: 100%;
+    margin-bottom: 10px;
+    height: 36px;
 
   }
   .followedFollowingButton {
-    width:100%;
-    height:36px;
+    width: 100%;
+    height: 36px;
     margin-left: 0px !important;
   }
   .errorFollowingButton {
-    width:100%;
-    height:36px;
+    width: 100%;
+    height: 36px;
 
   }
   .followButton {
-    width:100%;
-    height:36px;
+    width: 100%;
+    height: 36px;
     margin-left: 0px !important;
   }
 }
-
 
 @media (max-width: 1170px) {
   .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {
@@ -1209,12 +1264,12 @@ a {
     width: 100%;
   }
   .ViewCourseImageContainer {
-    justify-content:center;
+    justify-content: center;
   }
   .AboutMeUserDataContainer {
     padding: 8px 0px;
   }
   .AboutMeFinishedCourseItemContainer, .AboutMeFinishedCourseItemImage {
-    width:100%;
+    width: 100%;
   }
 }

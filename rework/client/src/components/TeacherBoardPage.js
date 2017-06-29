@@ -10,7 +10,7 @@ import {
 import axios from 'axios';
 import {Checkbox, CircularProgress, Dialog, FlatButton, Paper, RaisedButton, TextField} from "material-ui";
 import * as styles from "../styles";
-import {hashHistory} from 'react-router';
+import {hashHistory, IndexLink} from 'react-router';
 
 export default class TeacherBoardPage extends Component {
     constructor(props) {
@@ -96,7 +96,7 @@ export default class TeacherBoardPage extends Component {
 
                 // we have to re calculate the index of data because its a different index from searchData
                 this.state.data.forEach((elem, index2) => {
-                    if(elem.username.indexOf(user.username) != -1) {
+                    if (elem.username.indexOf(user.username) != -1) {
                         this.state.data[index2].finishedCourse = true;
                     }
                 });
@@ -109,11 +109,11 @@ export default class TeacherBoardPage extends Component {
 
                 // we have to re calculate the index of data because its a different index from searchData
                 this.state.data.forEach((elem, index2) => {
-                    if(elem.username.indexOf(user.username) != -1) {
+                    if (elem.username.indexOf(user.username) != -1) {
                         this.state.data[index2].finishedCourse = false;
                     }
                 });
-                if(this.state.searchData[index - 1] != null) this.state.searchData[index - 1].finishedCourse = false;
+                if (this.state.searchData[index - 1] != null) this.state.searchData[index - 1].finishedCourse = false;
                 else this.state.searchData[index].finishedCourse = false;
                 this.setState(this.state);
             }
@@ -130,7 +130,6 @@ export default class TeacherBoardPage extends Component {
         })
         this.setState(this.state);
     }
-
 
 
     render() {
@@ -153,7 +152,8 @@ export default class TeacherBoardPage extends Component {
                                     />
                                 </TableHeaderColumn>
 
-                                <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1" className='tableRemoveStudents'>
+                                <TableHeaderColumn tooltip='Verwijder alle studenten die de cursus volgen' colSpan="1"
+                                                   className='tableRemoveStudents'>
                                     <div className='removeStudentsFromCourseButtonContainer'>
                                         <FlatButton label='verwijder studenten'
                                                     className='removeChapterButtonColor'
@@ -213,7 +213,17 @@ export default class TeacherBoardPage extends Component {
                     </Table>
                     :
                     this.state.noItems ?
-                        <h1>Er zijn nog geen studenten die de cursus volgen!</h1>
+                        <div className="TeacherBoardPageNoStudentsFollowedContainer">
+                        <span className="TeacherBoardPageNoStudentsFollowed">
+                                        Er zijn nog geen studenten die de cursus volgen.
+                                    </span>
+                            <IndexLink to={this.props.route.siteData.role + '/home'}>
+                                <RaisedButton
+                                    label="Terug naar thuispagina"
+                                    primary={true}
+                                    className='TeacherHomeCreateCourseButton'/>
+                            </IndexLink>
+                        </div>
                         :
                         <CircularProgress size={80} thickness={5} className='circularLoader'/>
                 }

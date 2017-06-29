@@ -183,8 +183,9 @@ class App extends Component {
         });
     }
 
-    updateFollowedCourses(updatedFollowedCourses) {
+    updateFollowedCourses(updatedFollowedCourses, updatedFollowedCoursesData) {
         this.state.siteData.followedCourses = updatedFollowedCourses;
+        this.state.siteData.followedCoursesData = updatedFollowedCourses;
         this.setState(this.state);
     }
 
@@ -223,7 +224,7 @@ class App extends Component {
                                    siteData={this.state.siteData}
                                    component={TeacherBoardPage}
                             />
-                            <Route path="/teacher/home/me" component={AboutMe} siteData={this.state.siteData}/>
+
                         </Route>
                         <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                             <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
@@ -232,6 +233,9 @@ class App extends Component {
                                    component={ViewCourse}
                                    siteData={this.state.siteData}
                                    updateFollowedCourses={this.updateFollowedCourses}/>
+                            <Route path="/student/home/me"
+                                   component={AboutMe}
+                                   siteData={this.state.siteData}/>
                         </Route>
 
                     </Router>

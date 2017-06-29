@@ -753,6 +753,19 @@ a {
   font-size: 2em;
   color: #9e9e9e; }
 
+.TeacherBoardPageNoStudentsFollowed {
+  font-size: 2em;
+  color: #9e9e9e;
+  text-align: center; }
+
+.TeacherBoardPageNoStudentsFollowedContainer {
+  width: 100%;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
 .AboutMeSmallText {
   font-size: 1em;
   color: #9e9e9e; }
@@ -930,6 +943,21 @@ a {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; }
+
+.LoaderText {
+  font-size: 2em;
+  color: #ff5722; }
+
+.LoaderContainer {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  min-height: 390px; }
+
+.StudentHomeCoursesGoToCourseDirectlyButton {
+  width: 100%;
+  height: 36px; }
 
 @media (max-width: 670px) {
   .MyCourseTitleAndDescriptionAndImageContainer {

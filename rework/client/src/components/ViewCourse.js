@@ -140,7 +140,7 @@ export default class ViewCourse extends Component {
             console.log(response);
 
             if (response.data.followedCourses) {
-                this.props.route.updateFollowedCourses(response.data.followedCourses);
+                this.props.route.updateFollowedCourses(response.data.followedCourses, response.data.followedCoursesData);
                 this.setState({
                     followed: true,
                 });
@@ -155,7 +155,7 @@ export default class ViewCourse extends Component {
         }).then(function (response) {
             console.log(response);
             if (response.data.followedCourses) {
-                this.props.route.updateFollowedCourses(response.data.followedCourses);
+                this.props.route.updateFollowedCourses(response.data.followedCourses, response.data.followedCoursesData);
                 this.setState({
                     followed: false,
                 })

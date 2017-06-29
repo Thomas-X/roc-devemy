@@ -160,7 +160,7 @@ export class MePopoverAppbar extends React.Component {
 
     render() {
         return (
-            <IndexLink activeClassName='active' to='/teacher/home/me/'><MenuItem primaryText={this.props.username}
+            <IndexLink activeClassName='active' to='/student/home/me/'><MenuItem primaryText={this.props.username}
                                                                          leftIcon={<SocialPersonOutline/>}/></IndexLink>
         )
     }

@@ -6,6 +6,9 @@ var passport = require('passport');
 var request = require('request');
 var path = require('path');
 
+
+// auth functions
+
 const CheckTokenAndReturnUserInReqUser = (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
         if (!err && user != null && user.role == "teacher" || user.role == "student") {
@@ -29,9 +32,31 @@ const CheckTokenAndReturnUserInReqUserTeacher = (req, res, next) => {
     })
 }
 
+// functional functions
+
+const retrieveFollowedCoursesData = (req, res, next, callback) => {
+
+    let followedCoursesData = [];
+
+    if (req.user.followedCourses.length > 0) {
+        req.user.followedCourses.forEach((elem, index) => {
+            Course.findById(elem, (err, course) => {
+                if (!err) {
+                    followedCoursesData.push(course);
+                }
+                if ((index + 1) == req.user.followedCourses.length) {
+                    return callback(followedCoursesData);
+                }
+            })
+        });
+    } else {
+        return null;
+    }
+}
 
 router.post('/getUserData', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
     let user = req.user;
+    let mFollowedCoursesData = null;
 
     Course.find({authorId: user._id}, (err, courses) => {
         let ownedData = [];
@@ -41,20 +66,29 @@ router.post('/getUserData', CheckTokenAndReturnUserInReqUser, (req, res, next) =
             });
         }
 
-        if (!err) res.json({
-            googleId: user.googleId,
-            displayName: user.displayName,
-            displayImage: user.displayImage,
-            email: user.email,
-            role: user.role,
-            followedCourses: user.followedCourses,
-            finishedCourses: user.finishedCourses,
-            token: user.token,
-            isTeacher: user.isTeacher,
-            ownedData: ownedData,
-            _id: user._id,
-        });
-        else res.status(500).send();
+        try {
+            retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
+                mFollowedCoursesData = followedCoursesData;
+                console.log(mFollowedCoursesData);
+                if (!err && mFollowedCoursesData != null) res.json({
+                    googleId: user.googleId,
+                    displayName: user.displayName,
+                    displayImage: user.displayImage,
+                    email: user.email,
+                    role: user.role,
+                    followedCourses: user.followedCourses,
+                    followedCoursesData: mFollowedCoursesData,
+                    finishedCourses: user.finishedCourses,
+                    token: user.token,
+                    isTeacher: user.isTeacher,
+                    ownedData: ownedData,
+                    _id: user._id,
+                });
+                else res.status(500).send();
+            });
+        } catch (err) {
+            console.log(err);
+        }
     });
 });
 
@@ -210,7 +244,7 @@ router.post('/removeAllStudentsFromCourse', CheckTokenAndReturnUserInReqUserTeac
                     });
                 }
                 user.save((err) => {
-                    if(!err) res.json({success: true});
+                    if (!err) res.json({success: true});
                 })
             });
         });
@@ -331,7 +365,6 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
                         var index = i;
 
 
-
                         if (elem.authorId == req.user._id) {
                             console.log(elem.rating);
                             course.allRatingValues[i].rating = req.body.rating;
@@ -364,7 +397,7 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
             }
         })
     }
-})
+});
 
 router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
@@ -381,23 +414,26 @@ router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next
             res.status(405).send();
         }
 
-        user.save((err, user) => {
-            if (!err) {
-                res.json({
-                    followedCourses: user.followedCourses,
-                });
-            } else {
-                res.status(500).send();
-            }
+        let mFollowedCoursesData = [];
+        retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
+            mFollowedCoursesData = followedCoursesData;
+            user.save((err, user) => {
+                if (!err) {
+                    res.json({
+                        followedCourses: user.followedCourses,
+
+                    });
+                } else {
+                    res.status(500).send();
+                }
+            });
         });
     });
 });
 
 router.post('/followCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
-        console.log(user);
 
-        // {$addToSet: {followedCourses: req.body.courseId}
 
         if (user.followedCourses.length > 0) {
             user.followedCourses.forEach((elem, index) => {
@@ -412,16 +448,21 @@ router.post('/followCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) 
         } else {
             user.followedCourses.push(req.body.courseId);
         }
+        let mFollowedCoursesData = [];
+        retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
+            mFollowedCoursesData = followedCoursesData;
 
-        user.save((err, user) => {
-            if (!err) {
-                res.json({
-                    followedCourses: user.followedCourses,
-                });
-            } else {
-                res.status(500).send();
-            }
-        })
+            user.save((err, user) => {
+                if (!err) {
+                    res.json({
+                        followedCourses: user.followedCourses,
+                        followedCoursesData: mFollowedCoursesData,
+                    });
+                } else {
+                    res.status(500).send();
+                }
+            })
+        });
     });
 });
 

@@ -1,6 +1,6 @@
 {
-  "name": "static-server",
-  "version": "0.0.0",
+  "name": "roc-devemy-static-server",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"

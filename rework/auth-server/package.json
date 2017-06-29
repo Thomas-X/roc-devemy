@@ -1,5 +1,5 @@
 {
-  "name": "auth-server",
+  "name": "roc-devemy-auth-server",
   "version": "1.0.0",
   "private": true,
   "scripts": {

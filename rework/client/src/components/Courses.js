@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Divider, Paper} from "material-ui";
+import {Divider, Paper, RaisedButton} from "material-ui";
+import {IndexLink} from "react-router";
 
 
 export default class Courses extends Component {
@@ -13,11 +14,14 @@ export default class Courses extends Component {
         if (this.props.siteData.followedCourses != null && this.props.siteData.followedCourses.length > 0) {
             return (
                 <Paper zDepth={1} className="StudentHomeCourses">
-                    {this.props.siteData.followedCourses.map((elem, index) => {
+                    {this.props.siteData.followedCoursesData.map((elem, index) => {
                         return (
                             <div className="StudentHomeCoursesCard">
                                 <img className="StudentHomeCoursesCardImage" src={elem.imgURL}/>
                                 <h1 className="StudentHomeCoursesCardTitle">{elem.title}</h1>
+                                <IndexLink to={elem.URLToCourse}>
+                                    <RaisedButton className='StudentHomeCoursesGoToCourseDirectlyButton' label='Ga direct naar cursus' primary={true}/>
+                                </IndexLink>
                             </div>
 
                         )
@@ -28,7 +32,11 @@ export default class Courses extends Component {
         } else {
             return (
                 <Paper zDepth={1} className="StudentHomeCourses">
-                    <h1>JE VOLGT NOG NIETS</h1>
+                    <div className="TeacherBoardPageNoStudentsFollowedContainer">
+                        <span className="TeacherBoardPageNoStudentsFollowed">
+                                        Je volgt nog geen cursussen.
+                                    </span>
+                    </div>
                 </Paper>
             )
         }

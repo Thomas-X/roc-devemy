@@ -16,6 +16,7 @@ export default class TeacherHome extends Component {
         }
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
+        this.removeCourse = this.removeCourse.bind(this);
     }
 
     handleOpen() {
@@ -33,7 +34,10 @@ export default class TeacherHome extends Component {
 
         // add this in production
 
-        axios.post('/api/removeCourse', {courseId: courseId}).then((response) => {
+        axios.post('/api/removeCourse', {
+            courseId: courseId,
+            token: this.props.route.siteData.token,
+        }).then((response) => {
             if(response.status === 200) {
                 this.props.route.removeCourseUpdateState(courseId);
             } else {

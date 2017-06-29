@@ -103,7 +103,7 @@ export default class ViewCourse extends Component {
     rateCourse(value) {
         axios.post('http://localhost:5000/api/rateCourse', {
             courseId: this.props.params.courseid,
-            rating: value
+            rating: value,
         }).then(function (response) {
             if (response.data.success) this.setState({
                 rating: value,

@@ -16,38 +16,15 @@ import {Rating} from "material-ui-rating";
 export default class ViewCourse extends Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     course: {
-        //         title: "PHP",
-        //         imgURL: "https://placekitten.com/640/380",
-        //         authorId: "123321",
-        //         author: "Thomas-X",
-        //         authorEmail: "tzwarts@roc-dev.com",
-        //         URLToCourse: "https://placekitten.com/640/380",
-        //         description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias at" +
-        //         "que aut cumque deleniti dicta esse expedita hic impedit laborum nulla obcaecati, optio quaerat " +
-        //         "quam reprehenderit sit soluta tenetur vero.",
-        //         ratingAverage: 0,
-        //         totalRatingCount: 0,
-        //         allRatingValues: [],
-        //         comments: [{
-        //             author: "Thomas-X",
-        //             authorImage: "https://placekitten.com/640/380",
-        //             comment: "wow dit is een goede cursus zeg!!!",
-        //             date: Date.now(),
-        //             authorId: "5946815c213d312034889f0d",
-        //         }
-        //         ],
-        //     },
-        //     createComment: '',
-        //     submitButtonDisabled: true,
-        // }
+
+        this.state = {
+            course: null,
+        };
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
         this.removeComment = this.removeComment.bind(this);
         this.followCourse = this.followCourse.bind(this);
         this.unFollowCourse = this.unFollowCourse.bind(this);
-
         this.rateCourse = this.rateCourse.bind(this);
     }
 
@@ -55,10 +32,24 @@ export default class ViewCourse extends Component {
     // TODO add this in production
 
     componentWillMount() {
-        axios.post('/api/getCourse', {courseId: this.props.params.courseid}).then((response) => {
+
+        let rating;
+
+        axios.post('/api/getCourse', {
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
+        }).then((response) => {
             if(response.data.course) {
+                response.data.course.allRatingValues.forEach((elem, index) => {
+                    if(elem.authorId == this.props.route.siteData._id) {
+                        rating = elem.rating;
+                    }
+                });
+
+                console.log('setting state..', rating);
                 this.setState({
                     course: response.data.course,
+                    rating: rating,
                 })
             } else {
                 hashHistory.push('/' + this.props.route.siteData.role + '/home');
@@ -70,7 +61,8 @@ export default class ViewCourse extends Component {
         axios.post('/api/removeComment', {
             courseId: this.props.params.courseid,
             userId: this.props.route.siteData._id,
-            commentId: commentId
+            commentId: commentId,
+            token: this.props.route.siteData.token,
         })
             .then((response) => {
                 if (response.data.newComments) {
@@ -85,7 +77,8 @@ export default class ViewCourse extends Component {
     submitComment() {
         axios.post('/api/createComment', {
             courseId: this.props.params.courseid,
-            comment: this.state.createComment
+            comment: this.state.createComment,
+            token: this.props.route.siteData.token,
         })
             .then((response) => {
                 if (response.data.newComments) {
@@ -119,7 +112,8 @@ export default class ViewCourse extends Component {
     rateCourse(value) {
         axios.post('/api/rateCourse', {
             courseId: this.props.params.courseid,
-            rating: value
+            rating: value,
+            token: this.props.route.siteData.token,
         }).then(function (response) {
             if (response.data.success) this.setState({
                 rating: value,
@@ -131,7 +125,10 @@ export default class ViewCourse extends Component {
 
 
     followCourse() {
-        axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('/api/followCourse', {
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
+        }).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: true,
@@ -145,7 +142,10 @@ export default class ViewCourse extends Component {
     }
 
     unFollowCourse() {
-        axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('/api/unFollowCourse', {
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
+        }).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: false,
@@ -159,120 +159,130 @@ export default class ViewCourse extends Component {
     }
 
     render() {
-        let data = this.state.course;
-        let siteData = this.props.route.siteData;
+        if(this.state.course != null) {
+            let data = this.state.course;
+            let siteData = this.props.route.siteData;
 
-        return (
-            <div>
-                <div className="ViewCourseHeaderContainer">
-                    <div className="ViewCourseImageContainer">
-                        <img src={data.imgURL} className="ViewCourseImage"/>
+            console.log(data, siteData);
+
+            return (
+                <div>
+                    <div className="ViewCourseHeaderContainer">
+                        <div className="ViewCourseImageContainer">
+                            <img src={data.imgURL} className="ViewCourseImage"/>
+                        </div>
                     </div>
-                </div>
-                <Paper className="paperViewCourseContainer" zDepth={1}>
-                    <span className="ViewCourseCourseTitle">{data.title}</span>
-                    <div className="ViewCourseTitleAndAuthorEmailContainer">
-                        <div>
-                            <span className="ViewCourseCourseAuthor">Cursus gemaakt door: {data.author}</span>
-                            <br/>
-                            <i>
+                    <Paper className="paperViewCourseContainer" zDepth={1}>
+                        <span className="ViewCourseCourseTitle">{data.title}</span>
+                        <div className="ViewCourseTitleAndAuthorEmailContainer">
+                            <div>
+                                <span className="ViewCourseCourseAuthor">Cursus gemaakt door: {data.author}</span>
+                                <br/>
+                                <i>
                         <span className="ViewCourseCourseAuthorSmallText">
                             ({data.authorEmail})
                         </span>
-                            </i>
+                                </i>
+                            </div>
+                            <div className="FollowButtons">
+
+                                <RaisedButton
+                                    labelPosition="before"
+                                    primary={true}
+                                    label='Naar cursus'
+                                    className='ViewCourseGoToCourse'
+                                    href={data.URLToCourse}
+                                    icon={<NavigationArrowForward/>}
+                                />
+                                <FlatButton
+                                    secondary={true}
+                                    labelPosition="before"
+                                    label={this.state.errorFollowing ?
+                                        'Error met volgen'
+                                        :
+                                        this.state.followed ?
+                                            'Cursus ontvolgen'
+                                            :
+                                            'Cursus volgen'
+                                    }
+                                    onClick={this.state.followed ?
+                                        this.unFollowCourse
+                                        :
+                                        this.followCourse}
+
+                                    className={this.state.errorFollowing ?
+                                        'errorFollowingButton'
+                                        :
+                                        this.state.followed ?
+                                            'followedFollowingButton'
+                                            :
+                                            'followButton'
+                                    }
+
+                                    icon={this.state.errorFollowing ?
+                                        <AlertErrorOutline/>
+                                        :
+                                        this.state.followed ?
+                                            <ActionBookmark className="whiteIcon"/>
+                                            :
+                                            <ActionBookmarkBorder/>
+                                    }
+                                />
+                                <Rating
+                                    value={this.state.rating}
+                                    max={5}
+                                    onChange={function (value) {
+                                        this.rateCourse(value)
+                                    }.bind(this)}
+                                />
+                            </div>
                         </div>
-                        <div className="FollowButtons">
-
-                            <RaisedButton
-                                labelPosition="before"
-                                primary={true}
-                                label='Naar cursus'
-                                className='ViewCourseGoToCourse'
-                                href={data.URLToCourse}
-                                icon={<NavigationArrowForward/>}
-                            />
-                            <FlatButton
-                                secondary={true}
-                                labelPosition="before"
-                                label={this.state.errorFollowing ?
-                                    'Error met volgen'
-                                    :
-                                    this.state.followed ?
-                                        'Cursus ontvolgen'
-                                        :
-                                        'Cursus volgen'
-                                }
-                                onClick={this.state.followed ?
-                                    this.unFollowCourse
-                                    :
-                                    this.followCourse}
-
-                                className={this.state.errorFollowing ?
-                                    'errorFollowingButton'
-                                    :
-                                    this.state.followed ?
-                                        'followedFollowingButton'
-                                        :
-                                        'followButton'
-                                }
-
-                                icon={this.state.errorFollowing ?
-                                    <AlertErrorOutline/>
-                                    :
-                                    this.state.followed ?
-                                        <ActionBookmark className="whiteIcon"/>
-                                        :
-                                        <ActionBookmarkBorder/>
-                                }
-                            />
-                            <Rating
-                                value={this.state.rating}
-                                max={5}
-                                onChange={function (value) {
-                                    this.rateCourse(value)
-                                }.bind(this)}
-                            />
-                        </div>
-                    </div>
-                    <Divider style={{marginTop: 10}}/>
-                    <br/>
-                    <span className="ViewCourseDescription">
+                        <Divider style={{marginTop: 10}}/>
+                        <br/>
+                        <span className="ViewCourseDescription">
                         {data.description}
                     </span>
-                </Paper>
-                <Paper className="paperViewCourseCommentContainer" zDepth={1}>
-                    <div className='mCreateCommentContainer'>
-                        <div className='createCommentContainer'>
-                            <img src={siteData.displayImage} className='commentUserImage'/>
-                            <TextField
-                                hintText="Type een comment.."
-                                multiLine={true}
-                                value={this.state.createComment}
-                                rows={2}
-                                floatingLabelStyle={styles.floatingLabelStyle}
-                                underlineFocusStyle={styles.underlineStyle}
-                                onChange={this.commentInput}
-                                rowsMax={4}
-                            />
+                    </Paper>
+                    <Paper className="paperViewCourseCommentContainer" zDepth={1}>
+                        <div className='mCreateCommentContainer'>
+                            <div className='createCommentContainer'>
+                                <img src={siteData.displayImage} className='commentUserImage'/>
+                                <TextField
+                                    hintText="Type een comment.."
+                                    multiLine={true}
+                                    value={this.state.createComment}
+                                    rows={2}
+                                    floatingLabelStyle={styles.floatingLabelStyle}
+                                    underlineFocusStyle={styles.underlineStyle}
+                                    onChange={this.commentInput}
+                                    rowsMax={4}
+                                />
+                            </div>
+                            <RaisedButton className='createCommentSubmitButton'
+                                          labelColor="#ffffff"
+                                          primary={true}
+                                          disabled={this.state.submitButtonDisabled}
+                                          onClick={this.submitComment}
+                                          label='Creëer comment'/>
                         </div>
-                        <RaisedButton className='createCommentSubmitButton'
-                                      labelColor="#ffffff"
-                                      primary={true}
-                                      disabled={this.state.submitButtonDisabled}
-                                      onClick={this.submitComment}
-                                      label='Creëer comment'/>
-                    </div>
 
-                    <div className="ViewCourseCommentContainer">
-                        {this.state.course.comments.map((elem, index) => {
-                            return (
-                                <Comment siteData={this.props.route.siteData} commentData={elem}
-                                         removeComment={this.removeComment} key={index}/>
-                            )
-                        })}
-                    </div>
-                </Paper>
-            </div>
-        )
+                        <div className="ViewCourseCommentContainer">
+                            {this.state.course.comments.map((elem, index) => {
+                                return (
+                                    <Comment siteData={this.props.route.siteData} commentData={elem}
+                                             removeComment={this.removeComment} key={index}/>
+                                )
+                            })}
+                        </div>
+                    </Paper>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+
+                </div>
+            )
+        }
     }
 }

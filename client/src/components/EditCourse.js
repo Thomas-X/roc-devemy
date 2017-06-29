@@ -73,20 +73,29 @@ export default class CreateCourse extends Component {
 
     saveCourse() {
 
+        console.log(`
+        
+        
+        saveCourse called!
+        
+        
+        
+        `, this.props.route.siteData);
 
         // add this in production
-        axios.post('/api/saveEditCourse', {
-            title: this.state.title,
-            imgURL: this.state.imgURL,
-            URLToCourse: this.state.URLToCourse,
-            description: this.state.description,
-            courseId: this.props.params.courseid
-        }).then((response) => {
-            if(response.data.saveEditCourse) {
-                this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
-                hashHistory.push('/teacher/home');
-            }
-        })
+        // axios.post('/api/saveEditCourse', {
+        //     title: this.state.title,
+        //     imgURL: this.state.imgURL,
+        //     URLToCourse: this.state.URLToCourse,
+        //     description: this.state.description,
+        //     courseId: this.props.params.courseid,
+        //     token: this.props.route.siteData.token,
+        // }).then((response) => {
+        //     if(response.data.saveEditCourse) {
+        //         this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
+        //         hashHistory.push('/teacher/home');
+        //     }
+        // })
     }
 
 

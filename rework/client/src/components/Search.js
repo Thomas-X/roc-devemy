@@ -23,12 +23,11 @@ export default class Search extends Component {
 
     handleSearchInput(event) {
         var str = event.target.value;
-        console.log(window.token);
         if (str !== '') {
             this.setState({loading: true});
             axios.post('/api/search', {
                 searchQuery: event.target.value,
-                token: window.token
+                token: this.props.route.siteData.token,
             }).then(function (response) {
                 if (response.data.success === true) {
                     this.setState({

@@ -42,7 +42,10 @@ export default class TeacherBoardPage extends Component {
     }
 
     removeAllStudents() {
-        axios.post('/api/removeAllStudentsFromCourse', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('/api/removeAllStudentsFromCourse', {
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
+        }).then((response) => {
             if (response.data.success === true) {
                 this.setState({
                     data: null,
@@ -58,7 +61,10 @@ export default class TeacherBoardPage extends Component {
     }
 
     componentDidMount() {
-        axios.post('/api/getStudentsFollowingCourse', {courseId: this.props.params.courseid}).then((response) => {
+        axios.post('/api/getStudentsFollowingCourse', {
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
+        }).then((response) => {
             if (response.data.authenticated === false) {
                 hashHistory.push('/');
             } else {
@@ -82,7 +88,8 @@ export default class TeacherBoardPage extends Component {
         axios.post('/api/finishCourse', {
             notFinished: !user.finishedCourse,
             courseId: this.props.params.courseid,
-            user: user
+            user: user,
+            token: this.props.route.siteData.token,
         }).then((response) => {
 
             if (response.data.success === true && response.data.finishedCourse === true) {

@@ -17,7 +17,7 @@ var UserSchema = new Schema({
     followedCourses: {type: [], default: null},
     finishedCourses: {type: [finishedCoursesSchema], default: null},
     token: {type: String, default: null, required: true, unique: true},
-    isTeacher: {type: Boolean, default: null, required: true},
+    isTeacher: {type: Boolean, default: false, required: true},
     ownedData: {type: Array, default: []},
 });
 

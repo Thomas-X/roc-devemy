@@ -29,8 +29,10 @@ export default class CreateCourse extends Component {
         this.saveCourse = this.saveCourse.bind(this);
     }
 
-    handleEditorChange(value) {
-        this.setState({description: value})
+    handleEditorChange(event) {
+        this.setState({
+            description: event.target.value
+        })
     }
 
     courseTitleChange(event) {
@@ -68,7 +70,7 @@ export default class CreateCourse extends Component {
             title: this.state.title,
             imgURL: this.state.imgURL,
             URLToCourse: this.state.URLToCourse,
-            description: JSON.stringify(this.state.description),
+            description: this.state.description,
             token: this.props.route.siteData.token,
         }).then((response) => {
             if(response.data.createCourse) {

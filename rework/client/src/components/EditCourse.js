@@ -23,7 +23,7 @@ export default class CreateCourse extends Component {
             title: course.title,
             imgURL: course.imgURL,
             URLToCourse: course.URLToCourse,
-            description: JSON.stringify(course.description),
+            description: course.description,
             authorId: course.authorId,
             canSubmit: false,
         }
@@ -37,8 +37,10 @@ export default class CreateCourse extends Component {
         this.saveCourse = this.saveCourse.bind(this);
     }
 
-    handleEditorChange(value) {
-        this.setState({description: value})
+    handleEditorChange(event) {
+        this.setState({
+            description: event.target.value
+        })
     }
 
     courseTitleChange(event) {
@@ -73,14 +75,14 @@ export default class CreateCourse extends Component {
 
     saveCourse() {
 
-
         // add this in production
         axios.post('/api/saveEditCourse', {
             title: this.state.title,
             imgURL: this.state.imgURL,
             URLToCourse: this.state.URLToCourse,
             description: this.state.description,
-            courseId: this.props.params.courseid
+            courseId: this.props.params.courseid,
+            token: this.props.route.siteData.token,
         }).then((response) => {
             if(response.data.saveEditCourse) {
                 this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);

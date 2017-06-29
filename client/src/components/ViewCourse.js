@@ -131,7 +131,7 @@ export default class ViewCourse extends Component {
 
 
     followCourse() {
-        axios.post('/api/followCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('/api/followCourse', {courseId: this.props.params.courseid, token: this.props.route.siteData.token}).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: true,
@@ -145,7 +145,7 @@ export default class ViewCourse extends Component {
     }
 
     unFollowCourse() {
-        axios.post('/api/unFollowCourse', {_id: this.props.params.courseid}).then(function (response) {
+        axios.post('/api/unFollowCourse', {courseId: this.props.params.courseid, token: this.props.route.siteData.route}).then(function (response) {
             if (response.data.success === true) {
                 this.setState({
                     followed: false,

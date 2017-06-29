@@ -10,6 +10,11 @@ var CommentSchema = new Schema({
     comment: {type: String, default: ''},
     date: {type: Date, default: Date.now},
 });
+
+var allRatingValueSchema = new Schema({
+    authorId: {type: String, required: true},
+    rating: {type: Number, required:true},
+})
 var CourseSchema = new Schema({
     title: {type: String, default: ''},
     imgURL: {type: String, default: ''},
@@ -20,7 +25,7 @@ var CourseSchema = new Schema({
     description: {type: String, default: ''},
     ratingAverage: {type: Number, default: 0},
     totalRatingCount: {type: Number, default: 0},
-    allRatingValues: {type: Array, default: []},
+    allRatingValues: [allRatingValueSchema],
     comments: [CommentSchema],
 })
 

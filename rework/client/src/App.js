@@ -102,7 +102,9 @@ class App extends Component {
         }
 
         const doRequest = (token) => {
-            axios.post('/api/getUserData', {token: token}).then((response) => {
+            axios.post('/api/getUserData', {
+                token: token
+            }).then((response) => {
                 console.log(`got response from api`, response);
                 if (response.data) {
 
@@ -141,23 +143,30 @@ class App extends Component {
     removeCourseUpdateState(courseId) {
 
         let data = this.state.siteData;
-        if (data.followedCourses.includes(courseId)) {
-            data.followedCourses = data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1);
-            this.setState(this.state);
-        }
-        data.finishedCourses.forEach((elem, index) => {
-            if (elem._id == courseId) {
-                data.finishedCourses = data.finishedCourses.splice(index, 1);
-                this.setState(this.state);
-            }
-        })
-        data.ownedData.forEach((elem, index) => {
-            if (elem._id == courseId) {
-                data.ownedData.splice(index, 1);
-                this.setState(this.state);
-            }
-        })
 
+        axios.post('/api/removeCourse', {
+            courseId: courseId,
+            token: this.state.siteData.token
+        }).then((response) => {
+            if(response.status === 200) {
+                if (data.followedCourses.includes(courseId)) {
+                    data.followedCourses = data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1);
+                    this.setState(this.state);
+                }
+                data.finishedCourses.forEach((elem, index) => {
+                    if (elem._id == courseId) {
+                        data.finishedCourses = data.finishedCourses.splice(index, 1);
+                        this.setState(this.state);
+                    }
+                })
+                data.ownedData.forEach((elem, index) => {
+                    if (elem._id == courseId) {
+                        data.ownedData.splice(index, 1);
+                        this.setState(this.state);
+                    }
+                })
+            }
+        });
     }
 
     saveEditCourseUpdateState(updatedCourse) {
@@ -222,7 +231,7 @@ class App extends Component {
                 </MuiThemeProvider>
             )
         } else {
-            console.log('LOADING LOADER')
+            console.log('LOADING LOADER');
             return (
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <div className="loaderCenterContainer">

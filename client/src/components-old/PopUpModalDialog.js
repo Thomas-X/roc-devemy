@@ -44,7 +44,10 @@ export default class PopUpModalDialog extends Component {
                                 primary={true}
                                 onTouchTap={this.handleClose}
                                 onClick={function () {
-                                    console.log(this.props.dataItem._id, this.props.index);
+                                    console.log(this.props
+
+
+                                        .dataItem._id, this.props.index);
                                     this.props.removeCourse(this.props.dataItem._id, this.props.index);
                                 }.bind(this)}
                             />

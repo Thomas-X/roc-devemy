@@ -1,7 +1,7 @@
 # roc-devemy-1.0
 
 
-#Run and setup for install:
+#Run and setup for install
 
 #Windows: 
 

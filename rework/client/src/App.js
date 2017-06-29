@@ -48,6 +48,7 @@ class App extends Component {
         this.createCourseUpdateState = this.createCourseUpdateState.bind(this);
         this.removeCourseUpdateState = this.removeCourseUpdateState.bind(this);
         this.saveEditCourseUpdateState = this.saveEditCourseUpdateState.bind(this);
+        this.updateFollowedCourses = this.updateFollowedCourses.bind(this);
     }
 
     componentWillMount() {
@@ -182,6 +183,10 @@ class App extends Component {
         });
     }
 
+    updateFollowedCourses(updatedFollowedCourses) {
+        this.state.siteData.followedCourses = updatedFollowedCourses;
+        this.setState(this.state);
+    }
 
     render() {
 
@@ -223,8 +228,10 @@ class App extends Component {
                         <Route path="/student" component={StudentContainer} siteData={this.state.siteData}>
                             <Route path="/student/home" component={StudentHome} siteData={this.state.siteData}/>
                             <Route path="/student/search" component={Search} siteData={this.state.siteData}/>
-                            <Route path="/student/home/course/:courseid" component={ViewCourse}
-                                   siteData={this.state.siteData}/>
+                            <Route path="/student/home/course/:courseid"
+                                   component={ViewCourse}
+                                   siteData={this.state.siteData}
+                                   updateFollowedCourses={this.updateFollowedCourses}/>
                         </Route>
 
                     </Router>

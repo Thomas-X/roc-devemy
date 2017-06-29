@@ -16,7 +16,7 @@ var allRatingValueSchema = new Schema({
 })
 var CourseSchema = new Schema({
     title: {type: String, default: ''},
-    imgURL: {type: String, default: ''},
+    imgURL: {type: String, default: 'http://i.imgur.com/WZ7v9gO.png'},
     authorId: {type: String, default: ''},
     author: {type: String, default: ''},
     authorEmail: {type: String, default: ''},

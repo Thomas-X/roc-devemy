@@ -440,8 +440,14 @@ a {
   color: #ffffff !important; }
 
 .followedFollowingButton {
+  line-height: 0px !important;
+  margin-left: 10px !important;
   background-color: #7cb342 !important;
   color: #ffffff !important; }
+
+.followButton {
+  line-height: 0px !important;
+  margin-left: 10px !important; }
 
 .commentContentContainer {
   padding: 10px;
@@ -963,7 +969,8 @@ a {
 
   .followedFollowingButton {
     width: 100%;
-    height: 36px; }
+    height: 36px;
+    margin-left: 0px !important; }
 
   .errorFollowingButton {
     width: 100%;
@@ -971,7 +978,8 @@ a {
 
   .followButton {
     width: 100%;
-    height: 36px; } }
+    height: 36px;
+    margin-left: 0px !important; } }
 @media (max-width: 1170px) {
   .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {
     width: 95%; } }

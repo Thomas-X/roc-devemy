@@ -17,8 +17,15 @@ export default class ViewCourse extends Component {
     constructor(props) {
         super(props);
 
+        let followed = false;
+        if(this.props.route.siteData.followedCourses.includes(this.props.params.courseid)) {
+            followed = true;
+        }
+
         this.state = {
             course: null,
+            followed: followed,
+            submitButtonDisabled: true,
         };
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
@@ -75,6 +82,7 @@ export default class ViewCourse extends Component {
     }
 
     submitComment() {
+        console.log(this.state.createComment);
         axios.post('/api/createComment', {
             courseId: this.props.params.courseid,
             comment: this.state.createComment,
@@ -129,14 +137,13 @@ export default class ViewCourse extends Component {
             courseId: this.props.params.courseid,
             token: this.props.route.siteData.token,
         }).then(function (response) {
-            if (response.data.success === true) {
+            console.log(response);
+
+            if (response.data.followedCourses) {
+                this.props.route.updateFollowedCourses(response.data.followedCourses);
                 this.setState({
                     followed: true,
                 });
-            } else if (response.data.success === false) {
-                this.setState({
-                    errorFollowing: true,
-                })
             }
         }.bind(this))
     }
@@ -146,13 +153,11 @@ export default class ViewCourse extends Component {
             courseId: this.props.params.courseid,
             token: this.props.route.siteData.token,
         }).then(function (response) {
-            if (response.data.success === true) {
+            console.log(response);
+            if (response.data.followedCourses) {
+                this.props.route.updateFollowedCourses(response.data.followedCourses);
                 this.setState({
                     followed: false,
-                })
-            } else if (response.data.success === false) {
-                this.setState({
-                    errorFollowing: true,
                 })
             }
         }.bind(this))

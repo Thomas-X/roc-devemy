@@ -108,11 +108,12 @@ router.post('/saveEditCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, re
 
 router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
     Course.findById(req.body.courseId, function (err, course) {
+        console.log(req.body.comment);
         course.comments.push({
             author: req.user.displayName,
             authorId: req.user._id,
             authorImage: req.user.displayImage,
-            comment: req.body.createComment
+            comment: req.body.comment
         });
         course.comments.sort(function (date1, date2) {
             // Turn your strings into dates, and then subtract them
@@ -132,20 +133,16 @@ router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
 
 router.post('/removeComment', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
     Course.findById(req.body.courseId, (err, course) => {
-        if (course.authorId == req.body.userId) {
-            let comments = course.comments;
-            comments.forEach((elem, index) => {
-                if (elem._id == req.body.commentId) {
-                    comments = comments.splice(index, 1);
-                }
-            })
-            course.save(function (err, updatedCourse) {
-                if (!err) res.json({newComments: updatedCourse.comments});
-                else res.status(500).send();
-            })
-        } else {
-            res.status(405).send();
-        }
+        let comments = course.comments;
+        comments.forEach((elem, index) => {
+            if (elem._id == req.body.commentId && elem.authorId == req.body.userId) {
+                comments = comments.splice(index, 1);
+            }
+        })
+        course.save(function (err, updatedCourse) {
+            if (!err) res.json({newComments: updatedCourse.comments});
+            else res.status(500).send();
+        })
     })
 });
 
@@ -164,9 +161,9 @@ router.post('/removeCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
                 users.forEach((user) => {
                     let userFollowedCourses = user.followedCourses;
                     if (userFollowedCourses.length > 0) {
-                        userFollowedCourses.forEach((elem) => {
+                        userFollowedCourses.forEach((elem, index) => {
                             if (elem == req.body.courseId) {
-                                userFollowedCourses.splice(userFollowedCourses.indexOf(elem), 1);
+                                userFollowedCourses.splice(index, 1);
                                 user.save((err) => {
                                     if (err) res.status(500).send();
                                 });
@@ -175,9 +172,9 @@ router.post('/removeCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
                     }
                     if (user.finishedCourses.length > 0) {
                         let userFinishedCourses = user.finishedCourses;
-                        userFinishedCourses.forEach((elem) => {
+                        userFinishedCourses.forEach((elem, index) => {
                             if (elem.courseId == req.body.courseId) {
-                                user.finishedCourses.splice(userFinishedCourses.indexOf(elem), 1);
+                                user.finishedCourses.splice(index, 1);
                                 user.save((err) => {
                                     if (err) res.status(500).send();
                                 });
@@ -212,12 +209,10 @@ router.post('/removeAllStudentsFromCourse', CheckTokenAndReturnUserInReqUserTeac
                         }
                     });
                 }
+                user.save((err) => {
+                    if(!err) res.json({success: true});
+                })
             });
-            users.forEach((elem, index) => {
-                elem.save((err) => {
-                    if (!err && index == (users.length - 1)) res.json({success: true});
-                });
-            })
         });
     });
 });
@@ -328,7 +323,6 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
             let sum = 0;
             var allRatingValues = course.allRatingValues;
 
-            console.log(err, !err);
 
             if (!err) {
                 if (allRatingValues.length > 0) {
@@ -336,15 +330,15 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
                         var elem = allRatingValues[i];
                         var index = i;
 
-                        console.log(elem.authorId == req.user._id);
+
 
                         if (elem.authorId == req.user._id) {
                             console.log(elem.rating);
                             course.allRatingValues[i].rating = req.body.rating;
                             console.log(elem.rating);
                         } else if ((index + 1) == allRatingValues.length) {
-                            if (!elem.authorId == req.user._id) {
-                                allRatingValues.push({authorId: req.user._id, rating: req.body.rating});
+                            if (elem.authorId != req.user._id) {
+                                allRatingValues.push({authorId: String(req.user._id), rating: req.body.rating});
                                 course.totalRatingCount += 1;
                             }
                         }
@@ -357,7 +351,7 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
                     course.ratingAverage = req.body.rating;
                     course.ratingAverage = course.ratingAverage.toFixed(1);
                     course.totalRatingCount = 1;
-                    allRatingValues.push({authorId: String(req.user._id), rating: req.body.rating});
+                    course.allRatingValues.push({authorId: String(req.user._id), rating: req.body.rating});
                 }
 
                 course.save((err, updatedCourse) => {
@@ -373,23 +367,62 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
 })
 
 router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
-    User.update({token: req.body.token}, {$pull: {followedCourses: req.body.courseId}},
-        (err, user) => {
-            if (!err) res.json({
-                user: user,
+    User.findOne({token: req.body.token}, (err, user) => {
+
+
+        console.log(user);
+        if (user.followedCourses.length > 0) {
+            user.followedCourses.forEach((elem, index) => {
+                if (elem == req.body.courseId) {
+                    user.followedCourses = user.followedCourses.splice(index, 1);
+                }
             });
+        } else {
+            res.status(405).send();
+        }
+
+        user.save((err, user) => {
+            if (!err) {
+                res.json({
+                    followedCourses: user.followedCourses,
+                });
+            } else {
+                res.status(500).send();
+            }
         });
+    });
 });
 
 router.post('/followCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
-    User.update(
-        {token: req.body.token},
-        {$addToSet: {followedCourses: req.body.courseId}},
-        (err, user) => {
-            if (!err) res.json({
-                user: user,
+    User.findOne({token: req.body.token}, (err, user) => {
+        console.log(user);
+
+        // {$addToSet: {followedCourses: req.body.courseId}
+
+        if (user.followedCourses.length > 0) {
+            user.followedCourses.forEach((elem, index) => {
+                let foundCourse = false;
+                if (elem == req.body.courseId) {
+                    foundCourse = true;
+                }
+                if (!foundCourse) {
+                    user.followedCourses.push(req.body.courseId);
+                }
             })
+        } else {
+            user.followedCourses.push(req.body.courseId);
+        }
+
+        user.save((err, user) => {
+            if (!err) {
+                res.json({
+                    followedCourses: user.followedCourses,
+                });
+            } else {
+                res.status(500).send();
+            }
         })
+    });
 });
 
 module.exports = router;

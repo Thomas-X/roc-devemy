@@ -1,9 +1,9 @@
 # roc-devemy-1.0
 
 
-#Run and setup for install
+## Run and setup for install
 
-#Windows: 
+## Windows: 
 
 - Install NodeJS 
 - Install MongoDB
@@ -13,7 +13,7 @@
 - run `npm run start-backend` and `npm run start-frontend`
 - You're all up and running!
 
-#Mac (OS X):
+## Mac (OS X):
 - Install NodeJS
 - (mongodb install):
 1. in home directory:
@@ -26,7 +26,11 @@
 - run `npm run start-backend` and `npm run start-frontend`
 - You're all up and running!
 
-###Minimum viable product for roc-devemy
+
+
+
+
+
 
 
 

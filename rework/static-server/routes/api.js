@@ -52,7 +52,7 @@ const retrieveFollowedCoursesData = (req, res, next, callback) => {
             })
         });
     } else {
-        return null;
+        return callback([]);
     }
 }
 

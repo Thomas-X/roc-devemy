@@ -26,7 +26,7 @@ export default class CreateCourse extends Component {
             description: course.description,
             authorId: course.authorId,
             canSubmit: false,
-        }
+        };
 
         this.handleEditorChange = this.handleEditorChange.bind(this);
         this.courseTitleChange = this.courseTitleChange.bind(this);

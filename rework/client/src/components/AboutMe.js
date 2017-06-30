@@ -15,23 +15,24 @@ export default class AboutMe extends Component {
 
         this.state = {
             tabOneSelected: true,
-            slideIndex: 0,
         }
-        this.handleTabClick = this.handleTabClick.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTabOneClick = this.handleTabOneClick.bind(this);
+        this.handleTabTwoClick = this.handleTabTwoClick.bind(this);
     }
 
-    handleTabClick() {
+
+    // I am aware this isn't great code.
+
+    handleTabOneClick() {
         this.setState({
-            tabOneSelected: !this.state.tabOneSelected
+            tabOneSelected: true,
         })
     }
-
-    handleChange(value) {
+    handleTabTwoClick() {
         this.setState({
-            slideIndex: value,
-        });
-    };
+            tabOneSelected: false,
+        })
+    }
 
 
     render() {
@@ -49,14 +50,13 @@ export default class AboutMe extends Component {
                         <Tabs className="AboutMeTabsContainer">
                             <Tab
                                 label='mijn profiel'
-                                onClick={this.handleTabClick}
-                                icon={<ActionAccountCircle/>}
-                            >
+                                onClick={this.handleTabOneClick}
+                                icon={<ActionAccountCircle/>}>
 
                             </Tab>
                             <Tab
                                 icon={<ActionCheckCircle/>}
-                                onClick={this.handleTabClick}
+                                onClick={this.handleTabTwoClick}
                                 label='voltooide cursussen'>
 
 
@@ -65,45 +65,6 @@ export default class AboutMe extends Component {
                         </Tabs>
                     </div>
                 </div>
-                    <Paper className="paperEditorContentAboutMe"
-                           style={this.state.tabOneSelected ? {display: 'none'} : {display: 'block'}}>
-
-                        {hasFinishedCourses ?
-                            <div className="AboutMeFinishedCourseItemsContainer">
-                                {data.finishedCourses.map((elem, index) => {
-                                    return (
-                                        <div className="AboutMeFinishedCourseItemContainer" key={index}>
-                                            <img src={elem.imgURL} className="AboutMeFinishedCourseItemImage"/>
-                                            <div className="AboutFinishedCourseItemContentContainer">
-                                                <span
-                                                    className="AboutFinishedCourseItemContentTitle">{elem.title}</span>
-                                                <br/>
-                                                <i><span
-                                                    className="AboutFinishedCourseItemContentAuthor">Docent: {elem.author}</span></i>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            :
-                            <div className="AboutMegreyedOutTextNoFinishedCoursesContainer">
-                                    <span className="AboutMegreyedOutTextNoFinishedCoursesContent">
-                                        Je hebt nog geen voltooide cursussen
-                                    </span>
-                                <br/>
-                                <span className="AboutMeSmallText"><i>Klopt dit niet? Praat met je docent.</i></span>
-                                <br/>
-                                <IndexLink to={data.role + '/home'}>
-                                    <RaisedButton
-                                        label="Terug naar thuispagina"
-                                        primary={true}
-                                        className='TeacherHomeCreateCourseButton'/>
-                                </IndexLink>
-                            </div>
-                        }
-
-
-                    </Paper>
 
                     {/* profile page */}
                     <Paper className="paperEditorContentAboutMe"
@@ -154,6 +115,47 @@ export default class AboutMe extends Component {
                             </List>
                         </div>
                     </Paper>
+
+                <Paper className="paperEditorContentAboutMe"
+                       style={this.state.tabOneSelected ? {display: 'none'} : {display: 'block'}}>
+
+                    {hasFinishedCourses ?
+                        <div className="AboutMeFinishedCourseItemsContainer">
+                            {data.finishedCourses.map((elem, index) => {
+                                return (
+                                    <div className="AboutMeFinishedCourseItemContainer" key={index}>
+                                        <img src={elem.imgURL} className="AboutMeFinishedCourseItemImage"/>
+                                        <div className="AboutFinishedCourseItemContentContainer">
+                                                <span
+                                                    className="AboutFinishedCourseItemContentTitle">{elem.title}</span>
+                                            <br/>
+                                            <i><span
+                                                className="AboutFinishedCourseItemContentAuthor">Docent: {elem.author}</span></i>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        :
+                        <div className="AboutMegreyedOutTextNoFinishedCoursesContainer">
+                                    <span className="AboutMegreyedOutTextNoFinishedCoursesContent">
+                                        Je hebt nog geen voltooide cursussen
+                                    </span>
+                            <br/>
+                            <span className="AboutMeSmallText"><i>Klopt dit niet? Praat met je docent.</i></span>
+                            <br/>
+                            <IndexLink to={data.role + '/home'}>
+                                <RaisedButton
+                                    label="Terug naar thuispagina"
+                                    primary={true}
+                                    className='TeacherHomeCreateCourseButton'/>
+                            </IndexLink>
+                        </div>
+                    }
+
+
+                </Paper>
+
 
             </div>
         )

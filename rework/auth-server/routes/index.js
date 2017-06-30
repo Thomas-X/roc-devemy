@@ -46,7 +46,7 @@ router.get('/auth/google/callback',
     function (req, res) {
 
         // redirect to static nodejs server here
-        res.redirect('http://localhost:3000/?token=' + req.user.token);
+        res.redirect('http://localhost:5001/?token=' + req.user.token);
     });
 
 // route middleware to make sure a user is logged in

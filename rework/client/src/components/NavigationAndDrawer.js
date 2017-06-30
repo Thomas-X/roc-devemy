@@ -56,7 +56,7 @@ export default class NavigationAndDrawer extends Component {
         try {
             const CookieRemoved = async () => cookie.remove('token', { path: '/' });
             CookieRemoved().then(() => {
-                window.location.href = "http://localhost:4000/";
+                window.location.href = "http://localhost:5002/";
             })
         } catch (err) {
             console.log(err);

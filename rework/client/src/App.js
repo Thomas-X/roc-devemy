@@ -98,7 +98,7 @@ class App extends Component {
                     window.location.href = removeURLParameter(window.location.href, "token");
                 })
             } else {
-                window.location.href = "http://localhost:4000/";
+                window.location.href = "http://localhost:5002/";
             }
         }
 
@@ -132,7 +132,7 @@ class App extends Component {
 
             // ref back to server since no cookie is set AND no token in url,
             // otherwise it would have been set in componentWillMount()
-            window.location.href = "http://localhost:4000";
+            window.location.href = "http://localhost:5002";
         }
     }
 
@@ -149,7 +149,7 @@ class App extends Component {
             courseId: courseId,
             token: this.state.siteData.token
         }).then((response) => {
-            if(response.status === 200) {
+            if (response.status === 200) {
                 if (data.followedCourses.includes(courseId)) {
                     data.followedCourses = data.followedCourses.splice(data.followedCourses.indexOf(courseId), 1);
                     this.setState(this.state);
@@ -177,15 +177,23 @@ class App extends Component {
             if (elem._id == updatedCourse._id) {
                 console.log(updatedCourse);
                 this.state.siteData.ownedData[index] = updatedCourse;
-                console.log(this.state.siteData.ownedData[index]);
+                this.setState(this.state);
+            }
+        });
+        console.log('followedCoursesData..2', data.followedCoursesData);
+        data.followedCoursesData.forEach((elem, index) => {
+            console.log('followedCoursesData..', elem, updatedCourse);
+            if (elem._id == updatedCourse._id) {
+                this.state.siteData.followedCoursesData[index] = updatedCourse;
                 this.setState(this.state);
             }
         });
     }
 
     updateFollowedCourses(updatedFollowedCourses, updatedFollowedCoursesData) {
+        console.log('updateFollowedCourses', updatedFollowedCourses, updatedFollowedCoursesData);
         this.state.siteData.followedCourses = updatedFollowedCourses;
-        this.state.siteData.followedCoursesData = updatedFollowedCourses;
+        this.state.siteData.followedCoursesData = updatedFollowedCoursesData;
         this.setState(this.state);
     }
 

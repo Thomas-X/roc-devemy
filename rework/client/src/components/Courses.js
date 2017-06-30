@@ -11,19 +11,21 @@ export default class Courses extends Component {
 
     render() {
 
-        if (this.props.siteData.followedCourses != null && this.props.siteData.followedCourses.length > 0) {
+        if (this.props.siteData.followedCoursesData != null && this.props.siteData.followedCoursesData.length > 0) {
             return (
-                <Paper zDepth={1} className="StudentHomeCourses">
+                <Paper zDepth={1} className="paperViewCourseContainer" id="minHeightAndFlex">
                     {this.props.siteData.followedCoursesData.map((elem, index) => {
                         return (
                             <div className="StudentHomeCoursesCard">
-                                <img className="StudentHomeCoursesCardImage" src={elem.imgURL}/>
-                                <h1 className="StudentHomeCoursesCardTitle">{elem.title}</h1>
-                                <IndexLink to={elem.URLToCourse}>
-                                    <RaisedButton className='StudentHomeCoursesGoToCourseDirectlyButton' label='Ga direct naar cursus' primary={true}/>
+                                <IndexLink to={"/student/home/course/" + elem._id} className="StudentHomeIndexLinkImageAndCardTitle">
+                                    <img className="StudentHomeCoursesCardImage" src={elem.imgURL}/>
+                                    <span className="StudentHomeCoursesCardTitle">{elem.title}</span>
                                 </IndexLink>
+                                <a href={elem.URLToCourse}>
+                                    <RaisedButton className='StudentHomeCoursesGoToCourseDirectlyButton'
+                                                  label='Ga direct naar cursus' primary={true}/>
+                                </a>
                             </div>
-
                         )
                     })}
 

@@ -783,7 +783,7 @@ a {
   display: flex;
   flex-direction: column;
   font-weight: 300;
-  font-size: 35px;
+  font-size: 2em;
   z-index: 2;
 }
 
@@ -814,10 +814,8 @@ a {
   width: 80%;
   margin: auto;
 }
-
 .StudentHomeCoursesCard {
   width: 250px;
-  height: 286px;
   display: flex;
   flex-direction: column;
   margin: 5px;
@@ -825,12 +823,21 @@ a {
 
 .StudentHomeCoursesCardImage {
   width: 250px;
-  height: 286px;
+  height: 250px;
 }
 
 .StudentHomeCoursesCardTitle {
-  background-color: $primary3Color;
-  line-height: 61px;
+  background-color: $homePurposeColor;
+  line-height: 35px;
+  margin:0;
+  font-size:1.5em;
+  text-align:center;
+  width:250px;
+  color:black;
+}
+.StudentHomeIndexLinkImageAndCardTitle {
+  display:flex;
+  flex-direction: column;
 }
 
 .TeacherHomegreyedOutTextNoOwnedCourses {
@@ -1116,6 +1123,7 @@ a {
 
 .MyCourseImage {
   width: 200px;
+  height:130px;
 }
 
 .MyCourseTitle {
@@ -1244,6 +1252,12 @@ a {
   }
 }
 
+#minHeightAndFlex {
+  min-height:400px;
+  display:flex;
+  flex-wrap:wrap;
+}
+
 @media (max-width: 1170px) {
   .paperEditorContentAboutMe, .TabsContainer, .paperViewCourseContainer, .ViewCourseImageContainer, .paperViewCourseCommentContainer, .paperEditorContentTeacher {
     width: 95%;
@@ -1251,6 +1265,17 @@ a {
 }
 
 @media (max-width: 575px) {
+  #minHeightAndFlex, .StudentHomeCoursesCard, .StudentHomeCoursesCardImage, .StudentHomeCoursesCardTitle, .StudentHomeCoursesGoToCourseDirectlyButton {
+  width:100%;
+  }
+  #minHeightAndFlex {
+    padding:0;
+    justify-content: center;
+  }
+  .StudentHomeCoursesCard {
+    margin: 0 0 5px;
+  }
+
   .AboutMeDisplayImageContainer {
     position: initial;
     left: 0px;

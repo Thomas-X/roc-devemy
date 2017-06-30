@@ -11,6 +11,7 @@ var path = require('path');
 
 const CheckTokenAndReturnUserInReqUser = (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
+        console.log(user);
         if (!err && user != null && user.role == "teacher" || user.role == "student") {
             req.user = user;
             next();
@@ -39,6 +40,7 @@ const retrieveFollowedCoursesData = (req, res, next, callback) => {
     let followedCoursesData = [];
 
     if (req.user.followedCourses.length > 0) {
+        console.log(req.user.followedCourses);
         req.user.followedCourses.forEach((elem, index) => {
             Course.findById(elem, (err, course) => {
                 if (!err) {

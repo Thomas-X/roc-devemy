@@ -20,6 +20,7 @@ import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import EditCourse from "./components/EditCourse";
 import TeacherBoardPage from "./components/TeacherBoardPage";
+import iFrame from "./components/iFrame";
 
 injectTapEventPlugin();
 
@@ -245,7 +246,7 @@ class App extends Component {
                                    component={AboutMe}
                                    siteData={this.state.siteData}/>
                         </Route>
-
+                        <Route path="/iframe/:userid/:courseid" component={iFrame}/>
                     </Router>
                 </MuiThemeProvider>
             )

@@ -152,7 +152,7 @@ router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
     // regex replace \n chars with <br/> tags
     req.body.comment = req.body.comment.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 
-    if(req.body.comment.length > 254) {
+    if (req.body.comment.length > 254) {
         // since 0 is a char aswell, dont substring from index 255 but from 254
         req.body.comment = req.body.comment.substr(0, 254);
     }
@@ -181,7 +181,7 @@ router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
             
             updated course ocmments
             
-            `,updatedCourse.comments);
+            `, updatedCourse.comments);
             if (!err) res.json({newComments: updatedCourse.comments});
             else res.status(500).send();
         })
@@ -320,7 +320,6 @@ router.post('/finishCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
                 User.findById(req.body.user._id, function (err, user) {
                     if (!err) {
                         if (user.finishedCourses.length > 0) {
-
                             let foundOne = false;
                             user.finishedCourses.forEach((elem, index) => {
 
@@ -484,6 +483,62 @@ router.post('/followCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) 
             })
         });
     });
+});
+
+router.post('/getFinishedCoursesData', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
+    if (req.user.finishedCourses.length > 0) {
+        let finishedCourses = req.user.finishedCourses;
+
+        let finishedCoursesData = [];
+
+        ((callback) => {
+            finishedCourses.forEach((elem, index) => {
+                Course.findById(elem.courseId, (err, course) => {
+                    if (!err) finishedCoursesData.push(course);
+                    if ((index + 1) == finishedCourses.length) {
+                        console.log(finishedCoursesData);
+                        callback(finishedCoursesData);
+                    }
+                });
+            });
+        })((finishedCoursesData) => {
+            res.json({
+                finishedCoursesData: finishedCoursesData,
+            })
+        });
+    }
+});
+
+router.post('/getiFrameData', (req,res,next) => {
+     if(req.body.userId != null && req.body.courseId != null) {
+        User.findById(req.body.userId, (err, user) => {
+            let iFrameData = {};
+            if(!err && user.finishedCourses.length > 0) {
+                user.finishedCourses.forEach((elem, index) => {
+                     if(elem.courseId == req.body.courseId) {
+                         Course.findById(elem.courseId, (err, course) => {
+                             console.log(course);
+
+
+                            iFrameData.title = course.title;
+                            iFrameData.imgURL = course.imgURL;
+                            iFrameData.finishedOn = elem.date;
+                            iFrameData.username = user.displayName;
+                            res.json({
+                                iFrameData: iFrameData,
+                            });
+                         });
+                     } else {
+                         res.status(404).send();
+                     }
+                });
+            } else {
+                res.status(404).send();
+            }
+        })
+     } else {
+         res.status(404).send();
+     }
 });
 
 module.exports = router;

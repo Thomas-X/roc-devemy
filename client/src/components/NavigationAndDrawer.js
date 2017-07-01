@@ -126,7 +126,7 @@ export default class NavigationAndDrawer extends Component {
                     docked={false}
                     onRequestChange={(drawerOpen) => this.setState({drawerOpen})}
                     children={
-                        <div>
+                        <div className="NavigationAndDrawerDrawerContainer">
                             <div>
                                 <IndexLink className='drawerLogoContainer'
                                            to={"/" + this.props.siteData.role + '/home'}>
@@ -141,7 +141,9 @@ export default class NavigationAndDrawer extends Component {
                                     <div>
                                         <NewCoursePopoverAppbar/>
                                         <MyCoursesPopOverAppbar/>
-                                        <ToStudentArea/>
+                                        <IndexLink to="/student/home/">
+                                            <MenuItem primaryText='Naar studentenpagina' leftIcon={<ActionFace/>}/>
+                                        </IndexLink>
                                     </div> : null
                                 }
                                 <a onClick={this.handleSignOut}><MenuItem primaryText="Uitloggen"
@@ -162,6 +164,12 @@ export default class NavigationAndDrawer extends Component {
                                         leftIcon={<ActionChromeReaderMode id='githubIconDrawer'/>}>BPV site</MenuItem>
                                 </a>
 
+                            </div>
+                            <div className="NavigationAndDrawerDrawerFooter">
+                                <span className="NavigationAndDrawerDrawerFooterTitle">Made with ❤ by <a href="https://github.com/Thomas-X/">Thomas Zwarts</a> </span>
+                                <span className="NavigationAndDrawerFooterSubText">
+                                    <i>(And React + NodeJS)</i>
+                                </span>
                             </div>
                         </div>
                     }>

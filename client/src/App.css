@@ -486,14 +486,16 @@ a {
   align-items: flex-start;
   width: 100%;
   max-width: 710px;
-  height: 48px; }
+  min-height: 48px; }
 
 .commentAuthor {
   margin-bottom: 5px; }
 
 .commentContent {
   margin-bottom: 5px;
-  margin-top: 5px; }
+  margin-top: 5px;
+  word-wrap: break-word;
+  max-width: 470px; }
 
 .commentDate {
   font-weight: 300;
@@ -506,7 +508,7 @@ a {
 .authorAndCommentContentContainer {
   display: flex;
   flex-direction: column;
-  height: 48px;
+  min-height: 48px;
   margin-top: 16px; }
 
 .commentMoreAndDateContainer {

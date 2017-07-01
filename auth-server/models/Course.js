@@ -1,5 +1,14 @@
 var mongoose = require('mongoose');
+var validate = require('mongoose-validator');
 
+
+const lengthValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [0, 255],
+        message: 'Naam zou tussen 0 en 255 karakters moeten zijn'
+    })
+]
 
 var Schema = mongoose.Schema;
 
@@ -7,7 +16,7 @@ var CommentSchema = new Schema({
     author: {type: String, default: ''},
     authorId: {type: String, default: ''},
     authorImage: {type: String, default: ''},
-    comment: {type: String, default: ''},
+    comment: {type: String, default: '', validate: lengthValidator},
     date: {type: Date, default: Date.now},
 });
 

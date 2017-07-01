@@ -8,7 +8,10 @@ import {
     Subheader
 } from "material-ui";
 import {IndexLink} from "react-router";
-import {ActionHome, ActionPermMedia, ActionSearch, ContentAdd, ActionInput, SocialPersonOutline, ActionFace} from "material-ui/svg-icons/index";
+import {
+    ActionHome, ActionPermMedia, ActionSearch, ContentAdd, ActionInput, SocialPersonOutline, ActionFace,
+    ActionChromeReaderMode, ActionAccountBox
+} from "material-ui/svg-icons/index";
 import {customTheme} from "../customMuiTheme";
 import cookie from 'react-cookies';
 
@@ -54,7 +57,7 @@ export default class NavigationAndDrawer extends Component {
     handleSignOut() {
 
         try {
-            const CookieRemoved = async () => cookie.remove('token', { path: '/' });
+            const CookieRemoved = async () => cookie.remove('token', {path: '/'});
             CookieRemoved().then(() => {
                 window.location.href = "http://localhost:5002/";
             })
@@ -109,8 +112,8 @@ export default class NavigationAndDrawer extends Component {
                                                 </div> : null
                                             }
                                             <Divider/>
-                                            <a onClick={this.handleSignOut}><MenuItem primaryText="Sign out"
-                                                                                             leftIcon={<ActionInput/>}/></a>
+                                            <a onClick={this.handleSignOut}><MenuItem primaryText="Uitloggen"
+                                                                                      leftIcon={<ActionInput/>}/></a>
                                         </Menu>
                                     </Popover>
                                 </List>
@@ -125,7 +128,8 @@ export default class NavigationAndDrawer extends Component {
                     children={
                         <div>
                             <div>
-                                <IndexLink className='drawerLogoContainer' to={"/" + this.props.siteData.role + '/home'}>
+                                <IndexLink className='drawerLogoContainer'
+                                           to={"/" + this.props.siteData.role + '/home'}>
                                     <h1 id='drawer-logo' className='drawerLogoh1'>roc-dev</h1>
                                 </IndexLink>
                                 <IndexLink to={"/" + this.props.siteData.role + '/home'}>
@@ -133,16 +137,31 @@ export default class NavigationAndDrawer extends Component {
                                         Thuispagina
                                     </MenuItem>
                                 </IndexLink>
+                                {this.props.siteData.isTeacher ?
+                                    <div>
+                                        <NewCoursePopoverAppbar/>
+                                        <MyCoursesPopOverAppbar/>
+                                        <ToStudentArea/>
+                                    </div> : null
+                                }
+                                <a onClick={this.handleSignOut}><MenuItem primaryText="Uitloggen"
+                                                                          leftIcon={<ActionInput/>}/></a>
                                 <Divider/>
-                                <Subheader>Resources</Subheader>
+                                <Subheader>Nuttige links</Subheader>
+                                <a href="https://classroom.google.com">
+                                    <MenuItem
+                                        leftIcon={<ActionAccountBox
+                                            id='githubIconDrawer'/>}>Classroom</MenuItem>
+                                </a>
                                 <a href="https://github.com/">
                                     <MenuItem
                                         leftIcon={<i className="fa fa-github" id='githubIconDrawer'/>}>GitHub</MenuItem>
                                 </a>
-                                <a href="https://google.com/">
+                                <a href="https://sites.google.com/site/mediavormgeven/">
                                     <MenuItem
-                                        leftIcon={<i className="fa fa-google" id='githubIconDrawer'/>}>Google</MenuItem>
+                                        leftIcon={<ActionChromeReaderMode id='githubIconDrawer'/>}>BPV site</MenuItem>
                                 </a>
+
                             </div>
                         </div>
                     }>
@@ -161,7 +180,8 @@ export class MePopoverAppbar extends React.Component {
     render() {
         return (
             <IndexLink activeClassName='active' to='/student/home/me/'><MenuItem primaryText={this.props.username}
-                                                                         leftIcon={<SocialPersonOutline/>}/></IndexLink>
+                                                                                 leftIcon={
+                                                                                     <SocialPersonOutline/>}/></IndexLink>
         )
     }
 }
@@ -169,8 +189,8 @@ export class NewCoursePopoverAppbar extends React.Component {
     render() {
         return (
             <IndexLink activeClassName="active" to="/teacher/home/createCourse"><MenuItem primaryText='Nieuwe cursus'
-                                                                                      leftIcon={
-                                                                                          <ContentAdd/>}/></IndexLink>
+                                                                                          leftIcon={
+                                                                                              <ContentAdd/>}/></IndexLink>
         )
     }
 }
@@ -188,6 +208,6 @@ export class ToStudentArea extends React.Component {
             <IndexLink to="/student/home/">
                 <MenuItem primaryText='Naar student thuispagina' leftIcon={<ActionFace/>}/>
             </IndexLink>
-                )
+        )
     }
 }

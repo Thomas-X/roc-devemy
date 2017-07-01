@@ -33,12 +33,15 @@ export default class Comment extends Component {
 
     render() {
         let data = this.props.siteData;
-        let commentData = this.props.commentData
+        let commentData = this.props.commentData;
         var removeAuth = false;
 
         if (data._id == commentData.authorId) {
             removeAuth = true;
         }
+
+        // date formatting, this is ok since its always a set amount of chars (well, till the year 10000)
+        let date = commentData.date.substr(0,10);
 
         return (
             <div>
@@ -49,12 +52,15 @@ export default class Comment extends Component {
                     <div className='commentDateAndDescriptionContainer'>
                         <div className='authorAndCommentContentContainer'>
                             <strong><span className='commentAuthor'>{commentData.author}</span></strong>
-                            <span className='commentContent'>{commentData.comment}</span>
+                            {/* using dangerouslySetInnerHTML because JSX is escaping <> tags */}
+                            <span className='commentContent' dangerouslySetInnerHTML={{__html: commentData.comment}}>
+
+                            </span>
                         </div>
 
 
                         <div className='commentMoreAndDateContainer'>
-                            <i className='commentDate'><span>Op: {commentData.date}</span></i>
+                            <i className='commentDate'><span>Op: {date}</span></i>
                             <IconButton tooltip='View more' className='commentViewMore' onClick={this.handleOpen}>
                                 <NavigationMoreVert/>
                             </IconButton>

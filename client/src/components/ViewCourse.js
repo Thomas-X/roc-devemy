@@ -18,7 +18,7 @@ export default class ViewCourse extends Component {
         super(props);
 
         let followed = false;
-        if(this.props.route.siteData.followedCourses.includes(this.props.params.courseid)) {
+        if (this.props.route.siteData.followedCourses.includes(this.props.params.courseid)) {
             followed = true;
         }
 
@@ -26,6 +26,7 @@ export default class ViewCourse extends Component {
             course: null,
             followed: followed,
             submitButtonDisabled: true,
+            createComment: '',
         };
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
@@ -46,9 +47,9 @@ export default class ViewCourse extends Component {
             courseId: this.props.params.courseid,
             token: this.props.route.siteData.token,
         }).then((response) => {
-            if(response.data.course) {
+            if (response.data.course) {
                 response.data.course.allRatingValues.forEach((elem, index) => {
-                    if(elem.authorId == this.props.route.siteData._id) {
+                    if (elem.authorId == this.props.route.siteData._id) {
                         rating = elem.rating;
                     }
                 });
@@ -82,6 +83,9 @@ export default class ViewCourse extends Component {
     }
 
     submitComment() {
+        if (this.state.createComment.length > 254) {
+            this.state.createComment = this.state.createComment.substr(0, 254);
+        }
         console.log(this.state.createComment);
         axios.post('/api/createComment', {
             courseId: this.props.params.courseid,
@@ -91,6 +95,8 @@ export default class ViewCourse extends Component {
             .then((response) => {
                 if (response.data.newComments) {
                     this.state.course.comments = response.data.newComments;
+                    this.state.createComment = '';
+                    this.state.submitButtonDisabled = true;
                     this.setState(this.state);
                 } else {
                     hashHistory.push(this.props.route.siteData.role + '/home');
@@ -100,21 +106,37 @@ export default class ViewCourse extends Component {
 
 
     commentInput(event) {
-        var str = event.target.value;
+        console.log(`
+        
+        comment:
+        =============
+        ${JSON.stringify(this.state.createComment)}
+        
+        `,);
+
+        if (this.state.createComment.length <= 253) {
+            var str = event.target.value;
 
 
-        // if this is not true, it only contains whitespace which we dont accept
-        if (str.replace(/\s/g, '').length) {
+            // if this is not true, it only contains whitespace which we dont accept
+            if (str.replace(/\s/g, '').length) {
+                this.setState({
+                    submitButtonDisabled: false,
+                    createComment: event.target.value,
+                })
+            } else {
+                this.setState({
+                    submitButtonDisabled: true,
+                    createComment: '',
+                })
+            }
+        } else {
+            // this is in case someone copy-pasted a huge lump of text into the comment text area.
             this.setState({
                 submitButtonDisabled: false,
-                createComment: event.target.value,
-            })
-        } else {
-            this.setState({
-                submitButtonDisabled: true,
-                createComment: '',
             })
         }
+
     }
 
     rateCourse(value) {
@@ -164,11 +186,19 @@ export default class ViewCourse extends Component {
     }
 
     render() {
-        if(this.state.course != null) {
+        if (this.state.course != null) {
             let data = this.state.course;
             let siteData = this.props.route.siteData;
 
-            console.log(data, siteData);
+
+            console.log(`
+            
+            
+            
+            data description viewcourse:
+            
+            
+            `, data.description);
 
             return (
                 <div>
@@ -244,8 +274,8 @@ export default class ViewCourse extends Component {
                         </div>
                         <Divider style={{marginTop: 10}}/>
                         <br/>
-                        <span className="ViewCourseDescription">
-                        {data.description}
+                        {/* using dangerouslySetInnerHTML here because JSX is escaping the <> tags */}
+                        <span className="ViewCourseDescription" dangerouslySetInnerHTML={{__html: data.description}}>
                     </span>
                     </Paper>
                     <Paper className="paperViewCourseCommentContainer" zDepth={1}>
@@ -253,11 +283,11 @@ export default class ViewCourse extends Component {
                             <div className='createCommentContainer'>
                                 <img src={siteData.displayImage} className='commentUserImage'/>
                                 <TextField
-                                    hintText="Type een comment.."
+                                    floatingLabelText='Type een comment'
                                     multiLine={true}
                                     value={this.state.createComment}
-                                    rows={2}
-                                    floatingLabelStyle={styles.floatingLabelStyle}
+                                    rows={1}
+                                    floatingLabelFocusStyle={styles.floatingLabelStyle}
                                     underlineFocusStyle={styles.underlineStyle}
                                     onChange={this.commentInput}
                                     rowsMax={4}
@@ -268,7 +298,7 @@ export default class ViewCourse extends Component {
                                           primary={true}
                                           disabled={this.state.submitButtonDisabled}
                                           onClick={this.submitComment}
-                                          label='Creëer comment'/>
+                                          label='Plaats comment'/>
                         </div>
 
                         <div className="ViewCourseCommentContainer">

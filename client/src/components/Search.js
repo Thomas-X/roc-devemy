@@ -55,6 +55,14 @@ export default class Search extends Component {
     }
 
     render() {
+
+        let coursesLength = false;
+        if(this.state.courses != null) {
+            if (this.state.courses.length > 0) {
+                coursesLength = true;
+            }
+        }
+
         return (
             <Paper className='paperEditorContent' zDepth={1} id="minHeight">
                 <TextField
@@ -72,7 +80,8 @@ export default class Search extends Component {
                         {this.state.coursesNotNull
                             ?
                             <div className='searchCoursesResultContainer'>
-                                {this.state.courses.map(function (course, index) {
+                                {coursesLength ?
+                                    this.state.courses.map(function (course, index) {
                                     return (
                                         <IndexLink to={"/student/home/course/" + course._id} key={index}>
                                             <Card id='card' className='cardMediaItem'>
@@ -98,7 +107,12 @@ export default class Search extends Component {
                                             </Card>
                                         </IndexLink>
                                     )
-                                })}
+                                })
+                                :
+                                    <div className="LoaderContainer">
+                                        <span className="LoaderText">Niks gevonden! Probeer een andere zoekterm.</span>
+                                    </div>
+                                }
                             </div>
                             :
                             null

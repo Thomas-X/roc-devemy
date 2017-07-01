@@ -11,7 +11,6 @@ var path = require('path');
 
 const CheckTokenAndReturnUserInReqUser = (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
-        console.log(user);
         if (!err && user != null && user.role == "teacher" || user.role == "student") {
             req.user = user;
             next();
@@ -23,7 +22,6 @@ const CheckTokenAndReturnUserInReqUser = (req, res, next) => {
 
 const CheckTokenAndReturnUserInReqUserTeacher = (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
-        console.log('checktoken', err, user, req.body.token);
         if (!err && user != null && user.role == "teacher") {
             req.user = user;
             next();
@@ -40,7 +38,6 @@ const retrieveFollowedCoursesData = (req, res, next, callback) => {
     let followedCoursesData = [];
 
     if (req.user.followedCourses.length > 0) {
-        console.log(req.user.followedCourses);
         req.user.followedCourses.forEach((elem, index) => {
             Course.findById(elem, (err, course) => {
                 if (!err) {
@@ -52,7 +49,7 @@ const retrieveFollowedCoursesData = (req, res, next, callback) => {
             })
         });
     } else {
-        return null;
+        return callback([]);
     }
 }
 
@@ -71,7 +68,6 @@ router.post('/getUserData', CheckTokenAndReturnUserInReqUser, (req, res, next) =
         try {
             retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
                 mFollowedCoursesData = followedCoursesData;
-                console.log(mFollowedCoursesData);
                 if (!err && mFollowedCoursesData != null) res.json({
                     googleId: user.googleId,
                     displayName: user.displayName,
@@ -111,8 +107,12 @@ router.post('/createCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
     let mUser = req.user;
 
 
-    // force string type on variables to avoid validation error by mongoose
+    // regex replace \n chars with <br/> tags
+    req.body.description = req.body.description.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 
+    console.log(req.body.description, String(req.body.description));
+
+    // force string type on variables to avoid validation error by mongoose
     Course.create({
         title: String(req.body.title),
         imgURL: String(req.body.imgURL),
@@ -128,6 +128,9 @@ router.post('/createCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
 });
 
 router.post('/saveEditCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res, next) => {
+
+    req.body.description = req.body.description.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+
     Course.findById({_id: req.body.courseId}, (err, course) => {
         if (!err) {
             course.title = req.body.title;
@@ -143,8 +146,21 @@ router.post('/saveEditCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, re
 });
 
 router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
+
+    console.log(req.body.comment);
+
+    // regex replace \n chars with <br/> tags
+    req.body.comment = req.body.comment.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+
+    if(req.body.comment.length > 254) {
+        // since 0 is a char aswell, dont substring from index 255 but from 254
+        req.body.comment = req.body.comment.substr(0, 254);
+    }
+
+    console.log(req.body.comment);
+
+
     Course.findById(req.body.courseId, function (err, course) {
-        console.log(req.body.comment);
         course.comments.push({
             author: req.user.displayName,
             authorId: req.user._id,
@@ -161,6 +177,11 @@ router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
 
 
         course.save(function (err, updatedCourse) {
+            console.log(`
+            
+            updated course ocmments
+            
+            `,updatedCourse.comments);
             if (!err) res.json({newComments: updatedCourse.comments});
             else res.status(500).send();
         })
@@ -368,9 +389,7 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
 
 
                         if (elem.authorId == req.user._id) {
-                            console.log(elem.rating);
                             course.allRatingValues[i].rating = req.body.rating;
-                            console.log(elem.rating);
                         } else if ((index + 1) == allRatingValues.length) {
                             if (elem.authorId != req.user._id) {
                                 allRatingValues.push({authorId: String(req.user._id), rating: req.body.rating});
@@ -405,7 +424,6 @@ router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next
     User.findOne({token: req.body.token}, (err, user) => {
 
 
-        console.log(user);
         if (user.followedCourses.length > 0) {
             user.followedCourses.forEach((elem, index) => {
                 if (elem == req.body.courseId) {

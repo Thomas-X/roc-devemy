@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Paper} from "material-ui";
-import '../iFrame.css';
 export default class iFrame extends Component {
     constructor(props) {
         super(props);

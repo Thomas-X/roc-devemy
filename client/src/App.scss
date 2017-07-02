@@ -31,8 +31,8 @@ body {
   position: relative;
   height: 100%;
   /* Height of the footer */
-  padding: 60px 0 60px;
-  height: 100%;
+  padding-top:60px;
+  min-height:180px;
 }
 
 /*
@@ -1294,6 +1294,9 @@ a {
   display:flex;
   flex-direction: column;
   height:300px;
+  position:absolute;
+  top:0;
+  left:0;
 }
 .iFrameImage {
   width:250px;

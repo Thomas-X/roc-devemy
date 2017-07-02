@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
-import {Paper, RaisedButton, Tab, Tabs} from "material-ui";
-import {ContentCreate, EditorModeEdit, EditorShortText} from "material-ui/svg-icons/index";
+import {Divider, FlatButton, Paper, RaisedButton, Tab, Tabs} from "material-ui";
+import {
+    ActionBookmarkBorder, ContentCreate, EditorModeEdit, EditorShortText,
+    NavigationArrowForward
+} from "material-ui/svg-icons/index";
 import {FormsyText} from "formsy-material-ui";
 import * as styles from "../styles";
 import Formsy from 'formsy-react';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
+import {Rating} from "material-ui-rating";
+import Preview from './Preview';
 
 export default class CreateCourse extends Component {
     constructor(props) {
@@ -14,9 +19,10 @@ export default class CreateCourse extends Component {
         let course = null;
 
         this.props.route.siteData.ownedData.forEach((elem, index) => {
-             if(elem._id == this.props.params.courseid) {
-                 course = elem;
-             }
+            if (elem._id == this.props.params.courseid) {
+                course = elem;
+                course.description = course.description.replace(/<br\s*\/?>/mg,"\n");
+            }
         });
 
         this.state = {
@@ -84,7 +90,7 @@ export default class CreateCourse extends Component {
             courseId: this.props.params.courseid,
             token: this.props.route.siteData.token,
         }).then((response) => {
-            if(response.data.saveEditCourse) {
+            if (response.data.saveEditCourse) {
                 this.props.route.saveEditCourseUpdateState(response.data.saveEditCourse);
                 hashHistory.push('/teacher/home');
             }
@@ -189,8 +195,7 @@ export default class CreateCourse extends Component {
                     >
 
                         <div className="CreateCourseSlideContainer">
-                            {/* TODO basically a viewcourse component
-                             but with the current state as values instead of data from api*/}
+                            <Preview stateProps={this.state} siteData={this.props.route.siteData}/>
                         </div>
                     </Tab>
                 </Tabs>

@@ -6,16 +6,17 @@ import * as styles from "../styles";
 import Formsy from 'formsy-react';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
+import Preview from "./Preview";
 
 export default class CreateCourse extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            title: null,
-            imgURL: null,
-            URLToCourse: null,
-            description: null,
+            title: '',
+            imgURL: '',
+            URLToCourse: '',
+            description: '',
             authorId: null,
             canSubmit: false,
         }
@@ -174,8 +175,7 @@ export default class CreateCourse extends Component {
                     >
 
                         <div className="CreateCourseSlideContainer">
-                            {/* TODO basically a viewcourse component
-                             but with the current state as values instead of data from api*/}
+                            <Preview stateProps={this.state} siteData={this.props.route.siteData}/>
                         </div>
                     </Tab>
                 </Tabs>
@@ -183,3 +183,4 @@ export default class CreateCourse extends Component {
         )
     }
 }
+

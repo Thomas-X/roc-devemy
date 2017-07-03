@@ -144,7 +144,10 @@ router.post('/saveEditCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, re
 
             course.save((err, updatedCourse) => {
                 if (!err) res.json({saveEditCourse: updatedCourse});
+                else res.status(500).send();
             })
+        } else {
+            res.status(500).send();
         }
     })
 });
@@ -386,6 +389,7 @@ router.post('/removeAllStudentsFromCourse', CheckTokenAndReturnUserInReqUserTeac
                 }
                 user.save((err) => {
                     if (!err) res.json({success: true});
+                    else res.status(500).send();
                 })
             });
         });
@@ -458,6 +462,7 @@ router.post('/finishCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
                             finishedCourses.push({courseId: req.body.courseId});
                             user.save((err) => {
                                 if (!err) res.send({success: true, finishedCourse: true});
+                                else res.status(500).send();
                             });
                         }
                     }
@@ -478,7 +483,7 @@ router.post('/finishCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res,
                                     user.save((err) => {
                                         if (!err) {
                                             res.send({success: true, finishedCourse: false})
-                                        }
+                                        } else res.status(500).send();
                                     });
                                 }
                             }
@@ -624,6 +629,10 @@ router.post('/getFinishedCoursesData', CheckTokenAndReturnUserInReqUser, (req, r
                 finishedCoursesData: finishedCoursesData,
             })
         });
+    } else {
+        res.json({
+            finishedCoursesData: [],
+        })
     }
 });
 

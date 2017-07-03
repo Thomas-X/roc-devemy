@@ -79,6 +79,7 @@ passport.use(new GoogleStrategy({
                     followedCourses: [],
                     token: accessToken,
                     isTeacher: false,
+                    firstTimeCheck: [],
                 }, function (err, val) {
                     val.token = String(accessToken);
                     return cb(err, val);

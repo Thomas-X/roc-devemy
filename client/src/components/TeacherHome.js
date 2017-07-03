@@ -38,7 +38,7 @@ export default class TeacherHome extends Component {
             courseId: courseId,
             token: this.props.route.siteData.token,
         }).then((response) => {
-            if(response.status === 200) {
+            if (response.status === 200) {
                 this.props.route.removeCourseUpdateState(courseId);
             } else {
                 // show an error with a toast? (snackbar)
@@ -87,11 +87,11 @@ export default class TeacherHome extends Component {
                                                         <div className="EditAndStudentButtonsContainer">
                                                             <IndexLink to={"/teacher/home/editCourse/" + elem._id}>
                                                                 <RaisedButton label="Pas aan" primary={true}
-                                                                          className="EditCourseButton"/>
+                                                                              className="EditCourseButton"/>
                                                             </IndexLink>
                                                             <IndexLink to={"/teacher/home/courseStudents/" + elem._id}>
-                                                            <RaisedButton label="Studenten" secondary={true}
-                                                                          className="StudentButton"/>
+                                                                <RaisedButton label="Studenten" secondary={true}
+                                                                              className="StudentButton"/>
                                                             </IndexLink>
                                                         </div>
                                                     </div>
@@ -124,9 +124,7 @@ export default class TeacherHome extends Component {
                     >
                         <div className="slideContainer">
                             {hasCourses ?
-                                <div>
-                                    {/*return the teacher's courses' stats */}
-                                </div>
+                                <Stats stateProps={this.state} siteData={this.props.route.siteData}/>
                                 :
                                 <div className="TeacherHomegreyedOutTextNoOwnedCoursesContainer">
                                     <span className="TeacherHomegreyedOutTextNoOwnedCourses">
@@ -201,5 +199,101 @@ class PopUpModalDialog extends Component {
                 </Dialog>
             </div>
         )
+    }
+}
+
+class Stats extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            stats: null,
+        }
+    }
+
+    componentDidMount() {
+        axios.post('/api/getStats', {
+            token: this.props.siteData.token,
+            userId: this.props.siteData._id,
+        }).then((response) => {
+            if (response.data) {
+                this.setState({
+                    stats: response.data,
+                })
+            }
+        });
+    }
+
+    render() {
+
+        let totalViewLabel;
+        let totalFollowerLabel;
+
+        if(this.state.stats) {
+            return (
+                <div>
+                    <div className="TeacherHomeViewStatsContainer">
+                        <div className="TeacherHomeStatsTotalViewsContainer">
+                            <span className="TeacherHomeTitle">
+                                Totale views
+                            </span>
+                            <span className="TeacherHomeTotalView">
+                            {this.state.stats.totalViews}
+                            </span>
+                        </div>
+                        <div className="TeacherHomeStatsTotalViewsContainer">
+                            <span className="TeacherHomeTitle">
+                                Totale unieke views
+                            </span>
+                            <span className="TeacherHomeTotalView">
+                            {this.state.stats.totalUniqueViews}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="TeacherHomeCourseStatsContainer">
+                        <Divider className="MyCoursesDivider"/>
+                        {this.state.stats.coursesViewData.map((elem, index) => {
+                            totalViewLabel = 'views';
+                            totalFollowerLabel = 'volgers';
+                            if (elem.courseTotalViews == 1) {
+                                totalViewLabel = 'view'
+                            }
+                            if (elem.courseFollowers == 1) {
+                                totalFollowerLabel = 'volger'
+                            }
+                            console.log('looped through coursesViewData');
+                            return (
+                                <div key={index}>
+                                    <div className="TeacherHomeMyCourseContainer">
+                                        <div className="MyCourseTitleAndDescriptionAndImageContainer">
+                                            <img src={elem.imgURL} className="MyCourseImage"/>
+                                            <div className="MyCourseTitleAndDescriptionContainer">
+                                                <span className="MyCourseTitle">{elem.title}</span>
+                                                <div className="MyCourseAuthorAndRatingContainer">
+                                                <span>
+                                                    {elem.courseTotalViews} {totalViewLabel}.
+                                                </span>
+                                                    <br/>
+                                                    <span>
+                                                    {elem.courseFollowers} {totalFollowerLabel}.
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Divider className="MyCoursesDivider"/>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+
+                </div>
+            )
+        }
     }
 }

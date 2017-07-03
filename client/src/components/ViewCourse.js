@@ -46,6 +46,7 @@ export default class ViewCourse extends Component {
         axios.post('/api/getCourse', {
             courseId: this.props.params.courseid,
             token: this.props.route.siteData.token,
+            userId: this.props.route.siteData._id,
         }).then((response) => {
             if (response.data.course) {
                 response.data.course.allRatingValues.forEach((elem, index) => {
@@ -54,11 +55,19 @@ export default class ViewCourse extends Component {
                     }
                 });
 
-                console.log('setting state..', rating);
-                this.setState({
-                    course: response.data.course,
-                    rating: rating,
-                })
+                if (response.data.followedCourses && response.data.followedCoursesData) {
+                    this.props.route.updateFollowedCourses(response.data.followedCourses, response.data.followedCoursesData);
+                    this.setState({
+                        course: response.data.course,
+                        rating: rating,
+                        followed: true,
+                    })
+                } else {
+                    this.setState({
+                        course: response.data.course,
+                        rating: rating,
+                    });
+                }
             } else {
                 hashHistory.push('/' + this.props.route.siteData.role + '/home');
             }

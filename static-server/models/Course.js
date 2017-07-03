@@ -23,7 +23,12 @@ var CommentSchema = new Schema({
 var allRatingValueSchema = new Schema({
     authorId: {type: String, required: true},
     rating: {type: Number, required:true},
-})
+});
+
+var ViewSchema = new Schema({
+    authorId: {type: String, required: true},
+});
+
 var CourseSchema = new Schema({
     title: {type: String, default: ''},
     imgURL: {type: String, default: ''},
@@ -36,6 +41,7 @@ var CourseSchema = new Schema({
     totalRatingCount: {type: Number, default: 0},
     allRatingValues: [allRatingValueSchema],
     comments: [CommentSchema],
+    views: [ViewSchema],
 })
 
 var Course = mongoose.model('Course', CourseSchema);

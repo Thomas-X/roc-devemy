@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-var validate = require('mongoose-validator');
-
 
 var Schema = mongoose.Schema;
 
@@ -20,6 +18,7 @@ var UserSchema = new Schema({
     token: {type: String, default: null, required: true, unique: true},
     isTeacher: {type: Boolean, default: false, required: true},
     ownedData: {type: Array, default: []},
+    firstTimeCheck: {type: Array, default: []},
 });
 
 var User = mongoose.model('User', UserSchema);

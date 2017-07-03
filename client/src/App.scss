@@ -31,8 +31,8 @@ body {
   position: relative;
   height: 100%;
   /* Height of the footer */
-  padding-top:60px;
-  min-height:180px;
+  padding-top: 60px;
+  min-height: 180px;
 }
 
 /*
@@ -627,8 +627,8 @@ a {
 .commentContent {
   margin-bottom: 5px;
   margin-top: 5px;
-  word-wrap:break-word;
-  max-width:470px;
+  word-wrap: break-word;
+  max-width: 470px;
 }
 
 .commentDate {
@@ -816,6 +816,7 @@ a {
   width: 80%;
   margin: auto;
 }
+
 .StudentHomeCoursesCard {
   width: 250px;
   display: flex;
@@ -831,14 +832,15 @@ a {
 .StudentHomeCoursesCardTitle {
   background-color: $homePurposeColor;
   line-height: 35px;
-  margin:0;
-  font-size:1.5em;
-  text-align:center;
-  width:250px;
-  color:black;
+  margin: 0;
+  font-size: 1.5em;
+  text-align: center;
+  width: 250px;
+  color: black;
 }
+
 .StudentHomeIndexLinkImageAndCardTitle {
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -1008,7 +1010,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -1127,7 +1129,7 @@ a {
 
 .MyCourseImage {
   width: 200px;
-  height:130px;
+  height: 130px;
 }
 
 .MyCourseTitle {
@@ -1189,18 +1191,21 @@ a {
   font-size: 2em;
   color: $primary1Color;
 }
+
 .LoaderContainer {
-  width:100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  display:flex;
-  min-height:390px;
+  display: flex;
+  min-height: 390px;
 }
+
 .StudentHomeCoursesGoToCourseDirectlyButton {
-  width:100%;
+  width: 100%;
   height: 36px;
 
 }
+
 @media (max-width: 670px) {
   .MyCourseTitleAndDescriptionAndImageContainer {
     flex-direction: column;
@@ -1257,63 +1262,92 @@ a {
 }
 
 #minHeightAndFlex {
-  min-height:400px;
-  display:flex;
-  flex-wrap:wrap;
+  min-height: 400px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .NavigationAndDrawerDrawerContainer {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  height:100%;
-  justify-content:space-between;
+  height: 100%;
+  justify-content: space-between;
 }
+
 .NavigationAndDrawerDrawerFooter {
   text-align: center;
-  background-color:$borderColor;
-  display:flex;
-  width:100%;
+  background-color: $borderColor;
+  display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   flex-direction: column;
 }
+
 .NavigationAndDrawerDrawerFooterTitle {
-  font-weight:500;
-  font-size:0.8em;
+  font-weight: 500;
+  font-size: 0.8em;
   color: black;
 }
+
 .NavigationAndDrawerFooterSubText {
-  font-size:0.8em;
-  color:$accent3Color;
+  font-size: 0.8em;
+  color: $accent3Color;
 }
 
 .iFrameContainer {
-  width:250px;
-  display:flex;
+  width: 250px;
+  display: flex;
   flex-direction: column;
-  height:300px;
-  position:absolute;
-  top:0;
-  left:0;
+  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
+
 .iFrameImage {
-  width:250px;
-  height:200px;
+  width: 250px;
+  height: 200px;
 }
+
 .iFramePaperContainer {
-  width:100%;
-  padding:5px;
-  height:100px;
+  width: 100%;
+  padding: 5px;
+  height: 100px;
 }
+
 .iFrameTitle {
-  font-size:1.5em;
-  font-weight:500;
+  font-size: 1.5em;
+  font-weight: 500;
 }
+
 .iFrameContent {
-  font-size:1em;
+  font-size: 1em;
+  width: 100%;
+}
+
+.TeacherHomeViewStatsContainer {
+  display:flex;
+  flex-wrap:wrap;
+  min-height:250px;
   width:100%;
+}
+.TeacherHomeStatsTotalViewsContainer {
+  flex: 1;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.TeacherHomeTotalView {
+  font-size:2.5em;
+}
+.TeacherHomeTitle {
+  font-size:2em;
+  white-space:nowrap;
+  color:$primary3Color;
 }
 
 @media (max-width: 1170px) {
@@ -1324,10 +1358,10 @@ a {
 
 @media (max-width: 575px) {
   #minHeightAndFlex, .StudentHomeCoursesCard, .StudentHomeCoursesCardImage, .StudentHomeCoursesCardTitle, .StudentHomeCoursesGoToCourseDirectlyButton {
-  width:100%;
+    width: 100%;
   }
   #minHeightAndFlex {
-    padding:0;
+    padding: 0;
     justify-content: center;
   }
   .StudentHomeCoursesCard {

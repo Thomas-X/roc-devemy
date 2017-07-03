@@ -11,9 +11,13 @@ var path = require('path');
 
 const CheckTokenAndReturnUserInReqUser = (req, res, next) => {
     User.findOne({token: req.body.token}, (err, user) => {
-        if (!err && user != null && user.role == "teacher" || user.role == "student") {
-            req.user = user;
-            next();
+        if (user != null) {
+            if (!err && user.role == "teacher" || user.role == "student") {
+                req.user = user;
+                next();
+            } else {
+                res.status(405).send();
+            }
         } else {
             res.status(405).send();
         }
@@ -205,7 +209,7 @@ router.post('/removeComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
 
 
 router.post('/getCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
-    if(req.user.firstTimeCheck.length > 0) {
+    if (req.user.firstTimeCheck.length > 0) {
         req.user.firstTimeCheck.forEach((elem, index) => {
             if (elem == req.body.courseId) {
                 // so the user already has viewed the course atleast once
@@ -668,15 +672,15 @@ router.post('/getStats', CheckTokenAndReturnUserInReqUserTeacher, (req, res, nex
 
                 let uniqueValues = [];
                 course.views.forEach((elem, index) => {
-                    if(uniqueValues.length > 0) {
+                    if (uniqueValues.length > 0) {
 
-                    uniqueValues.forEach((elem2, index) => {
-                        if(!uniqueValues.includes(elem2.authorId)) {
-                        } else {
-                            uniqueValues.push(elem.authorId);
-                            totalUniqueViews++;
-                        }
-                    });
+                        uniqueValues.forEach((elem2, index) => {
+                            if (!uniqueValues.includes(elem2.authorId)) {
+                            } else {
+                                uniqueValues.push(elem.authorId);
+                                totalUniqueViews++;
+                            }
+                        });
 
                     } else {
                         uniqueValues.push(elem.authorId);

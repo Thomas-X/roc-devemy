@@ -107,16 +107,19 @@ class App extends Component {
             axios.post('/api/getUserData', {
                 token: token
             }).then((response) => {
-                console.log(`got response from api`, response);
-                if (response.data) {
-
-                    this.setState({
-                        siteData: response.data
-                    })
+                console.log('response is: ', response);
+                if(response.status == 405) {
+                    hashHistory.push('http://localhost:5002');
                 } else {
-                    hashHistory.push('/errorwedontknowwhathappened');
+                    if (response.data) {
+
+                        this.setState({
+                            siteData: response.data
+                        })
+                    } else {
+                        hashHistory.push('/errorwedontknowwhathappened');
+                    }
                 }
-                console.log(response.data.siteData, response);
             })
         }
 
@@ -129,6 +132,11 @@ class App extends Component {
             doRequest(CheckCookie.token);
         }
 
+
+    }
+
+    componentDidMount() {
+        let CheckCookie = cookie.loadAll();
         if (this.state.siteData.token == null && CheckCookie.token == null) {
 
             // ref back to server since no cookie is set AND no token in url,

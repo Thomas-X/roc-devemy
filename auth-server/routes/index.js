@@ -31,7 +31,7 @@ router.get('/auth/google',
             'https://www.googleapis.com/auth/plus.me',
             'https://www.googleapis.com/auth/plus.circles.read',
             'https://www.googleapis.com/auth/userinfo.profile'
-        ] //, hostedDomain: 'roc-dev.com' TODO uncomment this after testing so only roc-dev.com domains are allowed.
+        ],hostedDomain: 'roc-dev.com'
     }));
 
 
@@ -46,7 +46,7 @@ router.get('/auth/google/callback',
     function (req, res) {
 
         // redirect to static nodejs server here
-        res.redirect('http://localhost:5001/?token=' + req.user.token);
+        res.redirect('http://ao.thomas.zwarts.codes/?token=' + req.user.token);
     });
 
 // route middleware to make sure a user is logged in

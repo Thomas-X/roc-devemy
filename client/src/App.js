@@ -99,7 +99,7 @@ class App extends Component {
                     window.location.href = removeURLParameter(window.location.href, "token");
                 })
             } else {
-                window.location.href = "http://localhost:5002/";
+                window.location.href = "http://auth.thomas.zwarts.codes/";
             }
         }
 
@@ -109,7 +109,7 @@ class App extends Component {
             }).then((response) => {
                 console.log('response is: ', response);
                 if(response.status == 405) {
-                    hashHistory.push('http://localhost:5002');
+                    hashHistory.push('http://auth.thomas.zwarts.codes');
                 } else {
                     if (response.data) {
 
@@ -141,7 +141,7 @@ class App extends Component {
 
             // ref back to server since no cookie is set AND no token in url,
             // otherwise it would have been set in componentWillMount()
-            window.location.href = "http://localhost:5002";
+            window.location.href = "http://auth.thomas.zwarts.codes";
         }
     }
 

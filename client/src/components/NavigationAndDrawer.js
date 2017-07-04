@@ -59,7 +59,7 @@ export default class NavigationAndDrawer extends Component {
         try {
             const CookieRemoved = async () => cookie.remove('token', {path: '/'});
             CookieRemoved().then(() => {
-                window.location.href = "http://localhost:5002/";
+                window.location.href = "http://auth.thomas.zwarts.codes/";
             })
         } catch (err) {
             console.log(err);
@@ -150,16 +150,16 @@ export default class NavigationAndDrawer extends Component {
                                                                           leftIcon={<ActionInput/>}/></a>
                                 <Divider/>
                                 <Subheader>Nuttige links</Subheader>
-                                <a href="https://classroom.google.com">
+                                <a href="https://classroom.google.com" target="_blank">
                                     <MenuItem
                                         leftIcon={<ActionAccountBox
                                             id='githubIconDrawer'/>}>Classroom</MenuItem>
                                 </a>
-                                <a href="https://github.com/">
+                                <a href="https://github.com/" target="_blank">
                                     <MenuItem
                                         leftIcon={<i className="fa fa-github" id='githubIconDrawer'/>}>GitHub</MenuItem>
                                 </a>
-                                <a href="https://sites.google.com/site/mediavormgeven/">
+                                <a href="https://sites.google.com/site/mediavormgeven/" target="_blank">
                                     <MenuItem
                                         leftIcon={<ActionChromeReaderMode id='githubIconDrawer'/>}>BPV site</MenuItem>
                                 </a>

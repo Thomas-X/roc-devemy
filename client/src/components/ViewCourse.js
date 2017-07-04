@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
-import {Divider, FlatButton, Paper, RaisedButton, TextField} from "material-ui";
+import {Divider, FlatButton, Paper, RaisedButton, Snackbar, TextField} from "material-ui";
 import {FormsyText} from "formsy-material-ui";
 
 import Formsy from 'formsy-react';
@@ -27,6 +27,7 @@ export default class ViewCourse extends Component {
             followed: followed,
             submitButtonDisabled: true,
             createComment: '',
+            toastOpen: false,
         };
         this.commentInput = this.commentInput.bind(this);
         this.submitComment = this.submitComment.bind(this);
@@ -34,6 +35,8 @@ export default class ViewCourse extends Component {
         this.followCourse = this.followCourse.bind(this);
         this.unFollowCourse = this.unFollowCourse.bind(this);
         this.rateCourse = this.rateCourse.bind(this);
+        this.handleToastPopup = this.handleToastPopup.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
 
@@ -141,8 +144,12 @@ export default class ViewCourse extends Component {
             }
         } else {
             // this is in case someone copy-pasted a huge lump of text into the comment text area.
+            if(this.state.createComment.length >= 254) {
+                this.state.createComment = this.state.createComment.substr(0,252);
+            }
             this.setState({
                 submitButtonDisabled: false,
+                createComment: this.state.createComment,
             })
         }
 
@@ -193,6 +200,19 @@ export default class ViewCourse extends Component {
             }
         }.bind(this))
     }
+
+    handleToastPopup() {
+        this.setState({
+            toastOpen: true,
+        })
+    }
+
+    handleRequestClose() {
+        this.setState({
+            toastOpen: false,
+        });
+    }
+
 
     render() {
         if (this.state.course != null) {
@@ -313,12 +333,18 @@ export default class ViewCourse extends Component {
                         <div className="ViewCourseCommentContainer">
                             {this.state.course.comments.map((elem, index) => {
                                 return (
-                                    <Comment siteData={this.props.route.siteData} commentData={elem}
-                                             removeComment={this.removeComment} key={index}/>
+                                    <Comment siteData={this.props.route.siteData} commentData={elem} authorId={data.authorId}
+                                             removeComment={this.removeComment} handleToastPopup={this.handleToastPopup} key={index}/>
                                 )
                             })}
                         </div>
                     </Paper>
+                    <Snackbar
+                        open={this.state.toastOpen}
+                        message={"Stuur je mail naar: " + data.authorEmail}
+                        autoHideDuration={4000}
+                        onRequestClose={this.handleRequestClose}
+                    />
                 </div>
             )
         } else {

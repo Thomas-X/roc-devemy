@@ -48,7 +48,7 @@ app.use('/', index);
 passport.use(new GoogleStrategy({
         clientID: '162588864112-vgmfiefsv6l7ku12r2di8r8qkhrnn3jt.apps.googleusercontent.com',
         clientSecret: 'zteyUMl3dnk7qnLfB3UeOU2b',
-        callbackURL: "http://localhost:5002/auth/google/callback"
+        callbackURL: "http://auth.thomas.zwarts.codes/auth/google/callback"
     },
     function (accessToken, refreshToken, profile, cb) {
 

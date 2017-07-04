@@ -156,6 +156,7 @@ export default class AboutMe extends Component {
                                     <span className="AboutMegreyedOutTextNoFinishedCoursesContent">
                                         Je hebt nog geen voltooide cursussen
                                     </span>
+                            <br/>
                             <span className="AboutMeSmallText"><i>Klopt dit niet? Praat met je docent.</i></span>
                             <br/>
                             <IndexLink to={data.role + '/home'}>
@@ -204,7 +205,7 @@ class CopyiFrameCode extends Component {
         return (
             <div>
                 <CopyToClipboard
-                    text={"<iframe src=\"http://localhost:5001/#/iframe/" + this.props.userId + "/" + this.props.courseId + "\" width=\"250\" height=\"300\" frameBorder=\"0\"></iframe>"
+                    text={"<iframe src=\"http://ao.thomas.zwarts.codes/#/iframe/" + this.props.userId + "/" + this.props.courseId + "\" width=\"250\" height=\"300\" frameBorder=\"0\"></iframe>"
                     } onCopy={this.handleToastPopup}>
                     <RaisedButton label='Kopieer iFrame code' primary={true}
                                   className='whiteText' fullWidth={true}/>

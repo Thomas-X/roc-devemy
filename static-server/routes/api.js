@@ -762,7 +762,6 @@ router.post('/getFollowedCourses', CheckTokenAndReturnUserInReqUserTeacher, (req
                      })
                  }
            });
-
         });
     }  else {
         res.json({

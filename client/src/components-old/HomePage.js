@@ -24,41 +24,7 @@ export default class HomePage extends Component {
 }
 
 
-class Hero extends Component {
-    render() {
-        return (
-            <div className="heroContainer">
 
-
-                <img src={logo} className='heroImage'/> <br/>
-                <h2 className='heroTitle'>Roc-Devemy</h2>
-                <span className="heroDescription">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
-                    blanditiis deserunt ex neque omnis possimus quibusdam?</span>
-                <div className="heroButtonContainer">
-                    <IndexLink to='/info/getStarted'>
-                        <RaisedButton
-                            className='heroButtonGetStarted'
-                            secondary={true}
-                            label='GET STARTED'
-                            />
-                    </IndexLink>
-                </div>
-            </div>
-        )
-    }
-}
-
-class HomePurpose extends Component {
-    render() {
-        return (
-            <div className='homePurpose'>
-                <span className='homePurposeText'>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Accusamus, aspernatur atque cumque dolore <strong>doloribus ex fuga illo</strong>incidunt magni natus nemo nostrum
-                    numquam <strong>saepe</strong> similique sint tempore, ullam unde voluptas.</span>
-            </div>
-        )
-    }
-}
 class About extends Component {
     render() {
         return (

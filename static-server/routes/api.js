@@ -185,9 +185,9 @@ router.post('/createComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
 
         course.save(function (err, updatedCourse) {
             console.log(`
-            
+
             updated course ocmments
-            
+
             `, updatedCourse.comments);
             if (!err) res.json({newComments: updatedCourse.comments});
             else res.status(500).send();
@@ -212,136 +212,10 @@ router.post('/removeComment', CheckTokenAndReturnUserInReqUser, (req, res, next)
 
 
 router.post('/getCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
-    if (req.user.firstTimeCheck.length > 0) {
-        req.user.firstTimeCheck.forEach((elem, index) => {
-            if (elem == req.body.courseId) {
-                // so the user already has viewed the course atleast once
-                Course.findById(req.body.courseId, (err, course) => {
-                    if (req.body.userId) {
-                        course.views.push({authorId: req.body.userId});
-                        course.save((err, updatedCourses) => {
-                            if (!err && !res.headersSent) {
-                                console.log(`
-                                
-                                HEADERS:
-                                
-                                `, res.headersSent);
-                                res.json({course: updatedCourses});
-                            }
-                            else res.status(405).send();
-                        });
-                    } else {
-                        res.status(405).send();
-                    }
-                })
-            } else {
-                User.find({token: req.body.token}, (err, user) => {
-                    user = user[0];
-
-                    if(!user.firstTimeCheck.includes(req.body.courseId)) {
-                        user.firstTimeCheck.push(req.body.courseId);
-                    }
-
-                    // follow the course
-
-                    if (user.followedCourses.length > 0) {
-                        user.followedCourses.forEach((elem, index) => {
-                            let foundCourse = false;
-                            if (elem == req.body.courseId) {
-                                foundCourse = true;
-                            }
-                            if (!foundCourse && !user.followedCourses.includes(elem)) {
-                                user.followedCourses.push(req.body.courseId);
-                            }
-                        })
-                    } else {
-                        user.followedCourses.push(req.body.courseId);
-                    }
-                    let mFollowedCoursesData = [];
-                    retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
-                        mFollowedCoursesData = followedCoursesData;
-                        user.save((err, user) => {
-                            if (!err) {
-                                Course.findById(req.body.courseId, (err, course) => {
-                                    if (req.body.userId) {
-                                        course.views.push({authorId: req.body.userId});
-                                        course.save((err, updatedCourses) => {
-                                            console.log(err);
-                                            if (!err && (index + 1) == req.user.firstTimeCheck.length && !res.headersSent) {
-                                                res.json({
-                                                    course: updatedCourses,
-                                                    followedCourses: user.followedCourses,
-                                                    followedCoursesData: mFollowedCoursesData
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        res.status(405).send();
-                                    }
-                                })
-                            } else {
-                                res.status(500).send();
-                            }
-                        });
-                    });
-                });
-            }
-        });
-    } else {
-
-        // this is really messy and bad code.
-        // TODO clean this up.
-
-        User.find({token: req.body.token}, (err, user) => {
-            user = user[0];
-
-            if(!user.firstTimeCheck.includes(req.body.courseId)) {
-                user.firstTimeCheck.push(req.body.courseId);
-            }
-
-            // follow the course
-
-            if (user.followedCourses.length > 0) {
-                user.followedCourses.forEach((elem, index) => {
-                    let foundCourse = false;
-                    if (elem == req.body.courseId) {
-                        foundCourse = true;
-                    }
-                    if (!foundCourse && !user.followedCourses.includes(elem)) {
-                        user.followedCourses.push(req.body.courseId);
-                    }
-                })
-            } else{
-                user.followedCourses.push(req.body.courseId);
-            }
-            let mFollowedCoursesData = [];
-            retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
-                mFollowedCoursesData = followedCoursesData;
-                user.save((err, user) => {
-                    if (!err) {
-                        Course.findById(req.body.courseId, (err, course) => {
-                            if (req.body.userId) {
-                                course.views.push({authorId: req.body.userId});
-                                course.save((err, updatedCourses) => {
-                                    console.log(err);
-                                    if (!err) res.json({
-                                        course: updatedCourses,
-                                        followedCourses: user.followedCourses,
-                                        followedCoursesData: mFollowedCoursesData
-                                    });
-                                    else res.status(405).send();
-                                });
-                            } else {
-                                res.status(405).send();
-                            }
-                        })
-                    } else {
-                        res.status(500).send();
-                    }
-                });
-            });
-        });
-    }
+    Course.findOne({token: req.body.token}, (err, course) => {
+        if(!err) res.json({course: course});
+        else res.status(500).send();
+    });
 });
 
 router.post('/removeCourse', CheckTokenAndReturnUserInReqUserTeacher, (req, res, next) => {
@@ -561,13 +435,13 @@ router.post('/rateCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) =>
 });
 
 router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) => {
-    User.findOne({token: req.body.token}, (err, user) => {
+    User.findOne({token: req.body.token}, (err, user1) => {
 
 
-        if (user.followedCourses.length > 0) {
-            user.followedCourses.forEach((elem, index) => {
+        if (user1.followedCourses.length > 0) {
+            user1.followedCourses.forEach((elem, index) => {
                 if (elem == req.body.courseId) {
-                    user.followedCourses.splice(index, 1);
+                    user1.followedCourses.splice(index, 1);
                 }
             });
         } else {
@@ -577,10 +451,10 @@ router.post('/unfollowCourse', CheckTokenAndReturnUserInReqUser, (req, res, next
         let mFollowedCoursesData = [];
         retrieveFollowedCoursesData(req, res, next, (followedCoursesData) => {
             mFollowedCoursesData = followedCoursesData;
-            user.save((err, user) => {
+            user1.save((err, user2) => {
                 if (!err) {
                     res.json({
-                        followedCourses: user.followedCourses,
+                        followedCourses: user2.followedCourses,
                         followedCoursesData: mFollowedCoursesData,
                     });
                 } else {
@@ -602,13 +476,15 @@ router.post('/followCourse', CheckTokenAndReturnUserInReqUser, (req, res, next) 
                     foundCourse = true;
                 }
                 console.log(`
-                
+
                 USER FOLLOWEDCOURSES
-                
-                `, !user.followedCourses.includes(elem));
-                if (!foundCourse && !user.followedCourses.includes(elem)) {
+
+                `, !user.followedCourses.includes(elem))
+
+                if (foundCourse === false && !user.followedCourses.includes(req.body.courseId)) {
                     user.followedCourses.push(req.body.courseId);
                 }
+                console.log(user.followedCourses, req.body.courseId);
             })
         } else {
             user.followedCourses.push(req.body.courseId);
@@ -750,19 +626,22 @@ router.post('/getStats', CheckTokenAndReturnUserInReqUserTeacher, (req, res, nex
     });
 });
 
-router.post('/getFollowedCourses', CheckTokenAndReturnUserInReqUserTeacher, (req,res,next) => {
+router.post('/getFollowedCourses', CheckTokenAndReturnUserInReqUser, (req,res,next) => {
     if(req.user.followedCourses.length > 0) {
         let followedCoursesData = [];
         req.user.followedCourses.forEach((elem, index) => {
-           Course.findById(elem, (err, course) => {
-                 followedCoursesData.push(course);
-                 if((index + 1) == req.user.followedCourses.length) {
-                     res.json({
-                         followedCoursesData: followedCoursesData,
-                     })
-                 }
-           });
+            Course.findById(elem, (err, course) => {
+                followedCoursesData.push(course);
+                console.log('FOLLOWED COURSES', req.user.followedCourses.length, followedCoursesData.length, req.user.followedCourses.length == followedCoursesData.length);
+                if(req.user.followedCourses.length == followedCoursesData.length) {
+                    console.log('FOLLOWED COURSES', req.user.followedCourses.length, followedCoursesData.length);
+                    res.json({
+                        followedCoursesData: followedCoursesData,
+                    })
+                }
+            });
         });
+
     }  else {
         res.json({
             followedCoursesData: [],
